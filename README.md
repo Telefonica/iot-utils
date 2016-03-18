@@ -1,6 +1,6 @@
 # General utilities
 ## 1.- Easy manage environments hosts access
-For easy manage environment hosts access we can use https://pdihub.hi.inet/cjmm219/iot-utils/tree/develop/myenvironments<br>
+For easy manage environment hosts access<br>
 Needs:
 - Memory remember many clusters, environments, hostnames, ips, etc?
 - Quickly find a specific hosts to access it
