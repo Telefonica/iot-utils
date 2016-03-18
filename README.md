@@ -1,4 +1,5 @@
 # General utilities
+
 ## 1.- Easy manage environments hosts access
 For easy manage environment hosts access<br>
 Needs:
@@ -40,6 +41,7 @@ wget https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz
 cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
+
 ### 1.2.- Howto install
 Launch:
 ```
@@ -49,6 +51,7 @@ cp -rp iot-utils/myenvironments $HOME
 cp -rp iot-utils/tools $HOME
 rm -rf iot-utils
 ```
+
 ### 1.3.- Configure
 Read and apply all related task in: `$HOME/myenvironments/conf`
 ```
@@ -62,7 +65,9 @@ pycharm.info
 vpnconnect.info
 ```
 As final step we need to ensure that all session terminals are close, and open new terminals
+
 ### 1.4.- Start and howto use
+
 #### 1.4.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)
 Launch:
 `noostservers.sh`
@@ -71,9 +76,11 @@ The host lists are stored at `$HOME/myenvironments/envs/iotenvNOOST_*.hosts`
 Launch:
 `ostservers.sh`
 The host lists are stored at `$HOME/myenvironments/envs/iotenvOST_*.hosts`
+
 #### 1.4.3.- Use of SSH access to hosts
 Launch:
 `sshaccess.sh`
+
 #### 1.4.4.- Manually configure openstack environments
 - For EPG launch (Selecting desired tenant, and green color):
   ```. openstackenvEPG.sh```
@@ -83,8 +90,10 @@ Launch:
   ```. openstackenvPRODSN.sh```
 - Clear current environment:
   ```. openstackenvCLEAR.sh```
+
 ### 1.4.5.- Manage VPNs
 To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` whitout parameters
+
 ### 1.4.6.- Use PyCharm IDE
 The first time we need to execute PyCharm IDE from startup script (as no root user):
 ```
@@ -256,6 +265,7 @@ Stop-Service sshd
 powershell .\uninstall-sshlsa.ps1
 Restart-Computer
 ```
+
 
 ## 4.- Enjoy it...
 
