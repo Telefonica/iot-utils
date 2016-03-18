@@ -1,0 +1,3 @@
+OSTENV=<EPG|PREDSN|PRODSN> OS_TENANT_NAME=<tenant_name> OS_TENANT_ID=<tenant_id> OS_AUTH_URL=<url_ost_auth> OS_USERNAME=<ost_personal_username> OS_PASSWORD=<ost_personal_password>
+...
+

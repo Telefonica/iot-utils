@@ -1,0 +1,9 @@
+StrictHostKeyChecking no
+ServerAliveInterval 30
+ServerAliveCountMax 3
+
+Host github.com 
+ IdentityFile ~/.ssh/id_rsa_private_github
+
+Host pdihub.hi.inet 
+ IdentityFile ~/.ssh/id_rsa_private_pdihub

@@ -1,0 +1,6 @@
+HOWTO CONFIGURE PYCHARM
+
+1.- Add to $HOME/.bash the following lines:
+# For PyCharm https://youtrack.jetbrains.com/issue/IDEA-78860
+export IBUS_ENABLE_SYNC_MODE=1
+

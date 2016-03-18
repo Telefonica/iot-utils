@@ -1,0 +1,66 @@
+# Set github.com and pdihub.hi.inet users for ssh key-chain to use private repositories
+# HOWTO CONFIGURE (you can read howtoconfigpublicprivatekeys.info)
+# Copy this script template as $HOME/githubprivateenv.sh
+# Configure pdihub and github usernames and emails
+# Copy the following ssh private and public keys: for pdihub and github
+# $HOME/.ssh/id_rsa_private_github
+# $HOME/.ssh/id_rsa_private_pdihub
+# Copy the following pem files for access to needed environments EPG PRE and PRO
+# $HOME/.ssh/smc_epg.pem
+# $HOME/.ssh/smc_pre.pem
+# $HOME/.ssh/smc_pro.pem
+# Set permissions:
+# chmod 600 $HOME/.ssh/*
+#
+
+cd $HOME
+sudo touch /etc/gitconfig
+sudo chmod 666 /etc/gitconfig
+
+# Global section (PdiHub)
+git config --global color.ui "true"
+git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+git config --global user.name "<PdiHub username>"
+git config --global user.email "<PdiHub email>"
+git config --global http.sslVerify false
+# Uncomment only if we have timeout problems with GitHub
+# git config --global url.https://github.insteadof git://github
+
+# Local section (GitHub)
+mkdir -p $HOME/.git
+git config --local color.ui "true"
+git config --local alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+git config --local user.name "<GitHub username>"
+git config --local user.email "<GitHub email>"
+git config --local http.sslVerify false
+# Uncomment only if we have timeout problems with GitHub
+# git config --local url.https://github.insteadof git://github
+
+cd - 2>&1>/dev/null
+
+SSH_ENV=$HOME/.ssh/environment
+
+# start the ssh-agent
+function start_agent {
+    echo "Initializing new SSH agent..."
+    # spawn ssh-agent
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > ${SSH_ENV}
+    echo succeeded
+    chmod 600 ${SSH_ENV}
+    . ${SSH_ENV} > /dev/null
+    # Disable identity of own machine because limit number of keys to negotiate
+    # /usr/bin/ssh-add
+    # /usr/bin/ssh-add $HOME/.ssh/id_rsa_private_github
+    # /usr/bin/ssh-add $HOME/.ssh/id_rsa_private_pdihub
+    /usr/bin/ssh-add $HOME/.ssh/smc_*.pem
+}
+
+if [ -f "${SSH_ENV}" ]; then
+     . ${SSH_ENV} > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
+fi
+

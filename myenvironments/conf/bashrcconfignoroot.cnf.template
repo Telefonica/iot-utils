@@ -1,0 +1,13 @@
+. $HOME/githubprivateenv.sh
+export WINDOWS_USER="<windows_admin_user_for_ansible_machines>"
+export WINDOWS_PASS_PRE="<windows_admin_pass_for_ansible_machines_PRE>"
+export WINDOWS_PASS_PRO="<windows_admin_pass_for_ansible_machines_PRO>"
+export DSN_USER="<username_VPN>"
+export DSN_PASS="<password_VPN>"
+export PEMEPG=\$HOME/.ssh/smc_epg.pem
+export PEMPREDSN=\$HOME/.ssh/smc_pre.pem
+export PEMPRODSN=\$HOME/.ssh/smc_pro.pem
+export PATH=$PATH:$HOME/myenvironments/bin:$HOME/tools
+
+# I dont like vim...
+unalias vi
