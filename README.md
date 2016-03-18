@@ -13,6 +13,8 @@ Needs:
 
 ### 1.1.- Requirements
 - No root user for this
+- Compatibility for ZSH friends:<br>
+  In general, all in this repository is compatible with zsh shell. I known a difference, with zsh, we don't need launch ". command.sh" when we need to execute and load environments, only to run "command.sh" is sufficient.
 - Install following software:
 Launch:
 ```
