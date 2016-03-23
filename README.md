@@ -143,7 +143,7 @@ ansible-vault-git-diff.sh
 decryptansiblefiles.sh
 # Encrypt files to use with Ansible
 encryptansiblefiles.sh
-# Show differences of all commits of a current branch and write to diffcreds directory, over git repo directory parent
+# Show differences inside encrypted files of a current git branch and write to diffcreds directory, over git repo directory parent
 findcredentialchanges.sh
 # Memory process sum threads
 ps_mem.py
