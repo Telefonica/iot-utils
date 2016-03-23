@@ -137,7 +137,7 @@ UNKNOWN: ENV <iotenvOST_PRODSN_IOT-L.hosts PKG <iot-agent-base> CANNOT ACCESS
 UNKNOWN: ENV <iotenvOST_PRODSN_IOT-L.hosts PKG <iot-agent-base> CANNOT ACCESS
 
 
-# Show diffs of a file between actual git branch and a commit
+# Show diffs of a encrypted file between actual git branch and a commit
 ansible-vault-git-diff.sh
 # Decrypt encrypted Ansible files
 decryptansiblefiles.sh
