@@ -48,7 +48,7 @@ tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 Launch:
 ```
 cd $HOME
-git clone git@pdihub.hi.inet:cjmm219/iot-utils.git
+git clone git@github.com:Telefonica/iot-utils.git
 cp -rp iot-utils/myenvironments $HOME
 cp -rp iot-utils/tools $HOME
 rm -rf iot-utils
