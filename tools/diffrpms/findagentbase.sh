@@ -12,7 +12,7 @@ cd ./${GITNAMEREPO}
 git checkout ${BRANCH}
 
 SHORTSHA1="$(git rev-parse --short HEAD)"
-NUMCOMMITS="$(git rev-list --all --boundary --no-merges --count ^HEAD)"
+NUMCOMMITS="$(git rev-list --all --left-right --pretty=oneline --count HEAD...${VERSION}/KO | cut -f1)"
 cd - 2>/dev/null
 
 echo "*********************************************************"
