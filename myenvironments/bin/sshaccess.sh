@@ -13,7 +13,7 @@ declare -a FORMATTEDLISTHOSTENV
 ENVFILES="$(find ${HOME_BASEDIR}/envs/iotenv*.hosts -printf %f\\n | sort)"
 ENVS="$(echo "${ENVFILES}" | sed -e 's/^iotenv//' -e 's/\.hosts$//')"
 
-SELECTEDENV="$(dialog --stdout --title "IOT ENVIRONMENTS" --menu "IOT ENVIRONMENT LIST" \
+SELECTEDENV="$(dialog --stdout --no-mouse --title "IOT ENVIRONMENTS" --menu "IOT ENVIRONMENT LIST" \
   0 0 0 $(paste --delimiters ' ' <(echo "${ENVFILES}") <(echo "${ENVS}")))"
 
 SELECTEDSHORTENV="$(echo "${SELECTEDENV}" | sed -e 's/^iotenv//' -e 's/\.hosts$//')"
@@ -42,7 +42,7 @@ done <<< "$(cat ${HOME_BASEDIR}/envs/${SELECTEDENV} | sort)"
 # echo "*****"
 
 # For debug we can add the flag --args
-INDEXSELECTEDHOST="$(dialog --stdout --title "IOT ENVIRONMENTS" --menu "IOT ${SELECTEDSHORTENV} ENVIRONMENT" 0 0 0 \
+INDEXSELECTEDHOST="$(dialog --stdout --no-mouse --title "IOT ENVIRONMENTS" --menu "IOT ${SELECTEDSHORTENV} ENVIRONMENT" 0 0 0 \
 "${FORMATTEDLISTHOSTENV[@]}")"
 
 INFOSELECTEDHOST="$(echo "${FORMATTEDLISTHOSTENV[((${INDEXSELECTEDHOST}*2-1))]}")"
