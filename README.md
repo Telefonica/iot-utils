@@ -161,7 +161,7 @@ We can configure any Windows host to easy access with ssh and work with Windows 
 
 ### 3.1.- Microsoft has finally integrated into Windows openssh. To install it, follow the steps:
 
-- Download a copy of Win-OpenSSH from https://github.com/PowerShell/Win32-OpenSSH. The last is here: https://github.com/PowerShell/Win32-OpenSSH/releases/download/2_25_2016/OpenSSH-Win64.zip
+- Download a copy of Win-OpenSSH from https://github.com/PowerShell/Win32-OpenSSH.<br>The last is here: https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip
 
 - Unzip inside folder C:\openssh
 
