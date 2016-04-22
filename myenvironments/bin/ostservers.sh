@@ -15,6 +15,11 @@ echo "******************************************************"
 
 cd ${HOME_BASEDIR}
 mkdir -p ${HOME_BASEDIR}/envs
+# Before to remove old hosts, we try to remove existing entries inside $HOME/.ssh/known_hosts file
+for oldhost in $(cat ${HOME_BASEDIR}/envs/iotenvOST_*.hosts | cut -d'@' -f2)
+do
+  ssh-keygen -R ${oldhost} -f $HOME/.ssh/known_hosts >/dev/null 2>&1
+done
 rm -f ${HOME_BASEDIR}/envs/iotenvOST_*.hosts
 
 echo
@@ -135,4 +140,11 @@ do
    echo "****** FINAL list:"
    echo "${LISTSRVFINAL}" | sort | tee ${HOME_BASEDIR}/envs/iotenvOST_${OSTENV}_${OS_TENANT_NAME}.hosts
 done <<< "${LISTOSTENVS}"
+
+# After calculate new hosts we remove this hosts, we try to remove existing entries inside $HOME/.ssh/known_hosts file
+for oldhost in $(cat ${HOME_BASEDIR}/envs/iotenvOST_*.hosts | cut -d'@' -f2)
+do
+  ssh-keygen -R ${oldhost} -f $HOME/.ssh/known_hosts >/dev/null 2>&1
+done
+
 
