@@ -269,5 +269,44 @@ Restart-Computer
 ```
 
 
-## 4.- Enjoy it...
+## 4.- Operation process
+Inside iot-utils/operations we store processes to operate systems.
+By now, exists the following:
+```
+bin/changeloglevelnginx.sh
+```
+- Change (locally, inside a machine with SSH) the level log of nginx server online.
+- Help of use:
+```
+./changeloglevelnginx.sh 
+****************************************
+NGINX CHANGE LOG LEVEL
+****************************************
+
+Usage: changeloglevelnginx.sh <loglevel>
+Where loglevel can be:
+    emerg: Emergency situations where the system is in an unusable state.
+    alert: Severe situation where action is needed promptly.
+    crit: Important problems that need to be addressed.
+    error: An Error has occurred. Something was unsuccessful.
+    warn: Something out of the ordinary happened, but not a cause for concern.
+    notice: Something normal, but worth noting has happened.
+    info: An informational message that might be nice to know.
+    debug: Debugging information that can be useful to pinpoint where a problem is occurring.
+
+
+For debug level visit http://nginx.org/en/docs/debugging_log.html
+```
+- Example of use:
+./changeloglevelnginx.sh warn
+```
+****************************************
+NGINX CHANGE LOG LEVEL
+****************************************
+INFO: Change loglevel to <warn> in file </etc/nginx/conf.d/myweb1.conf>
+INFO: Change loglevel to <warn> in file </etc/nginx/conf.d/myweb2.conf>
+```
+ 
+
+## 5.- Enjoy it...
 
