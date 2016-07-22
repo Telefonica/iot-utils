@@ -315,10 +315,10 @@ Here we document tools for manage and administer databases
 The MongoDB database is a simple no-sql database, oriented to documents using JSON and BSON formats
 
 #### 5.1.1.- Tools for any version of MongoDB
-In [managemongodb] we have processes to manage many task for MongoDB
-These tools are designed to be used by many people: Developers, Dbas, Release Engineers and Support, under the following concepts: extensive use of regexp expressions, high flexibility, high separated modularity functions, easy configuration and low level design (only use MongoDB tools, nodejs software inside MongoDB tools and Bash)
-Because this design, at beginning the use of these tools can be complicated and difficult
-Because there are bugs in older MongoDB versions 2.x and 3.1.x and 3.2.x (not manage correctly error code status and not manage a lot of special characters, by example the slash "/"), we construct specific process to do backups and restore MongoDB databases with these characteristics
+Inside [managemongodb](managemongodb) we have processes to manage many task for MongoDB<br>
+These tools are designed to be used by many people: Developers, Dbas, Release Engineers and Support, under the following concepts: extensive use of regexp expressions, high flexibility, high separated modularity functions, easy configuration and low level design (only use MongoDB tools, nodejs software inside MongoDB tools and Bash)<br>
+Because this design, at beginning the use of these tools can be complicated and difficult<br>
+Because there are bugs in older MongoDB versions 2.x and 3.1.x and 3.2.x (not manage correctly error code status and not manage a lot of special characters, by example the slash "/"), we construct specific process to do backups and restore MongoDB databases with these characteristics<br>
 For MongoDB 3.3.x versions and higher these bugs are resolved, and for these versions we will develop better tools
 
 ##### 5.1.1.1.- Howto use
@@ -444,7 +444,7 @@ STHrestoreonedb.sh --dirbackup /home/ec2-user/managemongodbs/backups/backupsth -
 ```
 
 ##### 5.1.1.3.- One example howto backup all MongoDB databases with slashes
-We assume that the MongoDB databases are named as prefix '^sth_'
+We assume that the MongoDB databases are named as prefix '^sth_'<br>
 Then we execute two steps:
 
 - Backup of all databases no '^sth_'
