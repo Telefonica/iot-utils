@@ -145,7 +145,7 @@ decryptansiblefiles.sh
 encryptansiblefiles.sh
 # Show differences inside encrypted files of a current git branch and write to diffcreds directory, over git repo directory parent
 findcredentialchanges.sh
-# Memory process sum threads
+# Memory processes sum threads
 ps_mem.py
 # Example:
 sudo python ps_mem.py | grep httpd
@@ -308,5 +308,158 @@ INFO: Change loglevel to <warn> in file </etc/nginx/conf.d/myweb2.conf>
 ```
  
 
-## 5.- Enjoy it...
+## 5.- Manage and administer databases
+Here we document tools for manage and administer databases
+
+### 5.1.- Manage and administer MongoDB databases
+The MongoDB database is a simple no-sql database, oriented to documents using JSON and BSON formats
+
+#### 5.1.1.- Tools for any version of MongoDB
+In [managemongodb] we have processes to manage many task for MongoDB
+These tools are designed to be used by many people: Developers, Dbas, Release Engineers and Support, under the following concepts: extensive use of regexp expressions, high flexibility, high separated modularity functions, easy configuration and low level design (only use MongoDB tools, nodejs software inside MongoDB tools and Bash)
+Because this design, at beginning the use of these tools can be complicated and difficult
+Because there are bugs in older MongoDB versions 2.x and 3.1.x and 3.2.x (not manage correctly error code status and not manage a lot of special characters, by example the slash "/"), we construct specific process to do backups and restore MongoDB databases with these characteristics
+For MongoDB 3.3.x versions and higher these bugs are resolved, and for these versions we will develop better tools
+
+##### 5.1.1.1.- Howto use
+The use is simple, given that for each task we have a separated and isolated process.
+- We need to configure according to our needs the files inside conf directory. The environment variables are self-explained
+- All database backups are stored inside backup folder, as specified by the --backupprefix parameter of backup processes
+- All commands are inside bin folder, and the use is self-explained. For howto use and help we can execute any command without parameters
+
+
+##### 5.1.1.2.- Commands
+Here we list all commands that we can use
+
+- listdbs.sh
+```
+*************************************************
+List mongo db names
+*************************************************
+
+Usage: listdbs.sh [--help | --alldbs | --db "searchstring"]
+```
+
+- listcolls.sh
+```
+*************************************************
+List mongo collection names of a db
+*************************************************
+
+Usage: listcolls.sh [--help | --db "dbname" [ --col "searchstring" ] ]
+```
+
+- copydb.sh
+```
+*************************************************
+Copy a mongo db
+*************************************************
+
+Usage: copydb.sh [--help | --dbfrom "dbsource" --dbto "dbtarget"]
+```
+
+- dropdb.sh
+```
+*************************************************
+Drop a mongo db
+*************************************************
+
+Usage: dropdb.sh [--help | --db "dbname"]
+```
+
+- rencolls.sh
+```
+*************************************************
+Rename collection names of a mongo db
+*************************************************
+
+Usage: rencolls.sh [--help | --db "dbname" --find "searchstring" --replace "replacestring" [ --dochanges ] ]
+Where searchstring can be a regexp, and replacepattern is a string to replace the pattern
+Examples:
+
+- Find collections that start with sth_ and next char not /, and replace by sth_/
+  rencolls.sh --db mydbname --find '^sth_(([^/])|$)' --replace 'sth_\/\1' --dochanges
+- Find collections that start with sth_/ and next any char and replace by sth_
+  rencolls.sh --db mydbname --find '^sth_\/' --replace 'sth_' --dochanges
+
+- Find collections that start with sth_ and next char not /, and TRY replace by sth_/ (don't apply any changes)
+  rencolls.sh --db mydbname --find '^sth_(([^/])|$)' --replace 'sth_\/\1'
+- Find collections that start with sth_/ and next any char and TRY replace by sth_ (don't apply any changes)
+  rencolls.sh --db mydbname --find '^sth_\/' --replace 'sth_'
+```
+
+- backuponedb.sh
+```
+*************************************************
+Backup a mongo db with BSON format
+*************************************************
+
+Usage: backuponedb.sh [--help | --db "dbtobackup" [--backupprefix "prefix" default: default] [--rotate <True|othervalue> default: True]]
+```
+
+- backupdbs.sh
+```
+*************************************************
+Backup mongo dbs with BSON format
+*************************************************
+
+Usage: backupdbs.sh [--help | --alldbs | --dbs "searchstring" [--backupprefix "prefix" default: default] [--rotate <True|othervalue> default: True]]
+```
+
+- restoreonedb.sh
+```
+*************************************************
+Restore a mongo db with BSON format
+*************************************************
+
+Usage: restoreonedb.sh [--help | --dirbackup "path_abs_dir_backup" --dbsource "dbsource" [--dbtarget "dbtarget"]]
+```
+
+- restoredbs.sh
+```
+*************************************************
+Restore mongo dbs with BSON format
+*************************************************
+
+Usage: restoredbs.sh [--help | --dirbackup "path_abs_dir_backup" <--dbs "searchstring" | --alldbs]>
+```
+
+- STHbackupdbs.sh (a specific process to backup MongoDB databases with slashes inside collection names)
+```
+*************************************************
+STH backup databases
+*************************************************
+
+Usage: STHbackupdbs.sh [--help | --done]
+```
+
+- STHrestoreonedb.sh (a specific process to restore a MongoDB database with slashes inside collection names)
+```
+*************************************************
+WARNING: Restore databases is very dangerous...
+The original database will be dropped...
+*************************************************
+Example:
+STHrestoreonedb.sh --dirbackup /home/ec2-user/managemongodbs/backups/backupsth --dbbackup Bsth_db --dborigin sth_db
+```
+
+##### 5.1.1.3.- One example howto backup all MongoDB databases with slashes
+We assume that the MongoDB databases are named as prefix '^sth_'
+Then we execute two steps:
+
+- Backup of all databases no '^sth_'
+```
+./backupdbs.sh  --dbs '^(?!sth_)' --backupprefix backupnosth
+```
+
+- Backup of all databases '^sth_'
+```
+/STHbackupdbs.sh --done
+```
+
+#### 5.1.2.- Tools for MongoDB versions 3.3.x and higher
+In the future we realize these tools more simple and efficient that current tools
+
+
+## 6.- Enjoy it...
 
