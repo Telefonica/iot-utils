@@ -67,20 +67,22 @@ do
    # Using non-greedy patterns
    LISTACCESS="$(echo "${LISTALLDATASRV}" | grep -Po "IoT-Management=.*?\;" | grep -Po "([0-9]+\.)+[0-9]+\;" | tr -d ';')"
    LISTSRVNAMEACCESS=$(paste --delimiters ' ' <(echo "${LISTSRVNAMES}") <(echo "${LISTACCESS}"))
+   LISTSRVNAMEACCESS="$(echo "${LISTSRVNAMEACCESS}" | sed '/^\s*$/d')"
    # Uncomment for debug
    # echo "***********************************************"
-   # echo "${LISTSRVNAMEACCESS}"
+   # echo "<${LISTSRVNAMEACCESS}>"
    # echo "***********************************************"
 
    LISTSRVFINAL=""
    while read -r mysrv
    do
+     [[ "${mysrv}" == "" ]] && echo "INFO: Dont have any machines..." && continue
      echo "****** PROCESSING ${mysrv}"
      myname="$(echo ${mysrv} | cut -d ' ' -f1)"
      myaccess="$(echo ${mysrv} | cut -d ' ' -f2)"
      # If we are inside EPG environments, we try to determine the ssh user
      # The default is DEFAULTSSHUSER
-     if [ "${OSTENV}" == "EPG" ]
+     if [[ "${OSTENV}" =~ ^EPG ]]
      then
        myuser="$(nova --insecure console-log ${myname} | grep -Po "Authorized keys from .* for user [^\+]*")"
        myuser="$(echo ${myuser##* })"
@@ -109,19 +111,24 @@ do
          fi
        fi
      else
-       sshuser="${DEFAULTSSHUSER}"
+       if [[ "${OSTENV}" =~ ^.*DSNAH ]]
+       then
+         sshuser="${SPECIFICSSHUSER}"
+       else
+         sshuser="${DEFAULTSSHUSER}"
+       fi
      fi
-     if [ "${OSTENV}" == "EPG" ]
+     if [[ "${OSTENV}" =~ ^EPG ]]
      then
        # Unificate operations
        # sshcommand="ssh -i ${PEMEPG} ${sshuser}@${myaccess}"
        sshcommand="ssh ${sshuser}@${myaccess}"
-     elif [ "${OSTENV}" == "PREDSN" ]
+     elif [[ "${OSTENV}" =~ ^PREDSN ]]
      then
        # Unificate operations
        # sshcommand="ssh -i ${PEMPREDSN} ${sshuser}@${myaccess}"
        sshcommand="ssh ${sshuser}@${myaccess}"
-     elif [ "${OSTENV}" == "PRODSN" ]
+     elif [[ "${OSTENV}" =~ ^PRODSN ]]
      then
        # Unificate operations
        # sshcommand="ssh -i ${PEMPRODSN} ${sshuser}@${myaccess}"

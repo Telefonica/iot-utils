@@ -6,12 +6,12 @@ echo "We assume we have only one tenant..."
 echo "******************************************************"
 
 OSTENVFILE="${HOME}/listostenvs.cnf"
-LISTOSTENVS="$(cat ${OSTENVFILE} | grep ^OSTENV=PREDSN)"
+LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=PREDSN ')"
 
-if [ "$(echo "${LISTOSTENVS}" | wc -l)" != "1" ]
+if [ "$(echo "${LISTOSTENVS}" | wc -l)" != "1" ] || [ "$(echo "${LISTOSTENVS}")" == "" ]
 then
   echo "ERROR: We need only one tenant in ${HOME}/listostenvs.cnf"
-  exit 1
+  return 1
 fi
 
 export PYTHONWARNINGS="ignore:Unverified HTTPS request"
