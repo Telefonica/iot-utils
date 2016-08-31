@@ -4,6 +4,7 @@ unset OS_TENANT_ID
 unset OS_TENANT_NAME
 unset OS_USERNAME
 unset OS_PASSWORD
+unset OST_ACCESS_USER
 unalias nova
 unalias openstack
 unalias cinder

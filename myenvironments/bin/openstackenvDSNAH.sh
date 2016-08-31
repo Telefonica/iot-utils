@@ -5,11 +5,11 @@ echo "* CJMM *"
 echo "********"
 echo
 echo "******************************************************"
-echo "SELECT OST TENANT FOR EPG ENVIRONMENTS"
+echo "SELECT OST TENANT FOR DSNAH ENVIRONMENTS"
 echo "******************************************************"
 
 OSTENVFILE="${HOME}/listostenvs.cnf"
-LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=EPG')"
+LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=.*DSNAH.*')"
 
 unset options i
 while read -r myostenv
