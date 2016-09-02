@@ -150,6 +150,14 @@ wget https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz
 cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
+#### 1.1.1.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
+The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
+- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
+```
+git clone git@github.com:Telefonica/iot-utils.git
+cd iot-utils
+patch -p0 < ./patchs/ansible.patch14438.patch
+```
 
 ### 1.2.- Howto install
 Launch:
