@@ -23,17 +23,124 @@ sudo yum install sshpass -y
 sudo yum install openconnect -y
 # A program for making large letters out of ordinary text
 sudo yum install figlet -y
+```
+- Install Ansible and OST python clients in system python environment (not recommended)
+```
+# Ansible 2.0 version
+ANSIBLE_VERSION=2.0.2.0
+WINRM_VERSION=0.1.1
 
-pip install ansible
-# For work with windows machines
-pip install pywinrm
-# OpenStack client tools
-pip install python-cinderclient
-pip install python-glanceclient
-pip install python-keystoneclient
-pip install python-neutronclient
-pip install python-novaclient
-pip install python-openstackclient
+# Install Ansible package
+pip install ansible==${ANSIBLE_VERSION}
+
+# Install WIN RM for work with Windows machines
+pip install pywinrm==${WINRM_VERSION}
+
+# Install OpenStack client tools
+pip install python-cinderclient==1.4.0
+pip install python-glanceclient==1.1.0
+pip install python-keystoneclient==1.7.2
+pip install python-neutronclient==3.1.0
+pip install python-novaclient==2.30.1
+pip install python-openstackclient==1.7.2
+```
+- Install Ansible and OST python clients in virtual python environments (recommended)
+```
+yum install virtualenv
+# Ansible 1.9 version
+ANSIBLE_VERSION=1.9.6
+WINRM_VERSION=0.1.1
+
+# Ansible 2.0 version
+ANSIBLE_VERSION=2.0.2.0
+WINRM_VERSION=0.1.1
+
+# Ansible 2.1 version
+ANSIBLE_VERSION=2.1.1.0
+WINRM_VERSION=0.2.0
+
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+# Install Ansible package
+pip install ansible==${ANSIBLE_VERSION}
+
+# Install WIN RM for work with Windows machines
+pip install pywinrm==${WINRM_VERSION}
+
+# Install OpenStack client tools
+pip install python-cinderclient==1.4.0
+pip install python-glanceclient==1.1.0
+pip install python-keystoneclient==1.7.2
+pip install python-neutronclient==3.1.0
+pip install python-novaclient==2.30.1
+pip install python-openstackclient==1.7.2
+```
+- Install Ansible and OST python clients from requirements file. Create a file requirements.txt as follows:
+```
+ansible==2.1.1.0
+appdirs==1.4.0
+Babel==2.3.4
+cffi==1.7.0
+cliff==2.2.0
+cliff-tablib==2.0
+cmd2==0.6.8
+cryptography==1.5
+debtcollector==1.8.0
+enum34==1.1.6
+funcsigs==1.0.2
+functools32==3.2.3.post2
+idna==2.1
+ipaddress==1.0.16
+iso8601==0.1.11
+Jinja2==2.8
+jsonpatch==1.14
+jsonpointer==1.10
+jsonschema==2.5.1
+keystoneauth1==2.12.1
+MarkupSafe==0.23
+monotonic==1.2
+msgpack-python==0.4.8
+netaddr==0.7.18
+netifaces==0.10.5
+os-client-config==1.21.0
+oslo.config==3.17.0
+oslo.i18n==3.9.0
+oslo.serialization==2.13.0
+oslo.utils==3.16.0
+paramiko==2.0.2
+pbr==1.10.0
+positional==1.1.1
+prettytable==0.7.2
+pyasn1==0.1.9
+pycparser==2.14
+pycrypto==2.6.1
+pyparsing==2.1.8
+python-cinderclient==1.4.0
+python-glanceclient==1.1.0
+python-keystoneclient==1.7.2
+python-neutronclient==3.1.0
+python-novaclient==2.30.1
+python-ntlm3==1.0.2
+python-openstackclient==1.7.2
+pytz==2016.6.1
+pywinrm==0.2.0
+PyYAML==3.12
+requests==2.11.1
+requests-ntlm==0.3.0
+requestsexceptions==1.1.3
+rfc3986==0.4.1
+simplejson==3.8.2
+six==1.10.0
+stevedore==1.17.1
+tablib==0.11.2
+unicodecsv==0.14.1
+warlock==1.3.0
+wrapt==1.10.8
+xmltodict==0.10.2
+```
+Launch:
+```
+pip install -r requirements.txt
 ```
 And for PyCharm, as no root user:
 ```
