@@ -1,0 +1,33 @@
+diff -Naur lib/python2.7/site-packages/ansible/playbook/block.py lib/python2.7/site-packages/ansible.patch14438/playbook/block.py
+--- lib/python2.7/site-packages/ansible/playbook/block.py	2016-09-02 15:39:26.256017000 +0200
++++ lib/python2.7/site-packages/ansible.patch14438/playbook/block.py	2016-09-02 15:40:46.795018000 +0200
+@@ -271,9 +271,6 @@
+         if self._parent_block is not None:
+             if not self._parent_block.evaluate_conditional(templar, all_vars):
+                 return False
+-        elif self._role is not None:
+-            if not self._role.evaluate_conditional(templar, all_vars):
+-                return False
+         return super(Block, self).evaluate_conditional(templar, all_vars)
+ 
+     def set_loader(self, loader):
+diff -Naur lib/python2.7/site-packages/ansible/playbook/role/__init__.py lib/python2.7/site-packages/ansible.patch14438/playbook/role/__init__.py
+--- lib/python2.7/site-packages/ansible/playbook/role/__init__.py	2016-09-02 15:39:26.259017000 +0200
++++ lib/python2.7/site-packages/ansible.patch14438/playbook/role/__init__.py	2016-09-02 15:41:33.507018000 +0200
+@@ -118,16 +118,6 @@
+             if role_include.role not in play.ROLE_CACHE:
+                 play.ROLE_CACHE[role_include.role] = dict()
+ 
+-            if parent_role:
+-                if parent_role.when:
+-                    new_when = parent_role.when[:]
+-                    new_when.extend(r.when or [])
+-                    r.when = new_when
+-                if parent_role.tags:
+-                    new_tags = parent_role.tags[:]
+-                    new_tags.extend(r.tags or [])
+-                    r.tags = new_tags
+-
+             play.ROLE_CACHE[role_include.role][hashed_params] = r
+             return r
+ 
