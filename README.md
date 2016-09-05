@@ -159,7 +159,7 @@ The problem: If a role is skipped due to failed conditional, the role's dependen
 python --version
 which python
 ```
-- Test Ansible version (chack that is 2.0.2.0)
+- Test Ansible version (check that is 2.0.2.0)
 ```
 ansible --version
 ```
@@ -167,6 +167,7 @@ ansible --version
 ```
 cd <anydirectory>
 wget -N https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
+```
 - Apply patch automatically (one option)
 ```
 cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
