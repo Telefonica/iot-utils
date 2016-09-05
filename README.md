@@ -151,9 +151,10 @@ cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
 
-#### 1.2.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
+### 1.2.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
 The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
-1.2.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
+
+####1.2.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
 - Test python version and location that you used
 ```
 python --version
