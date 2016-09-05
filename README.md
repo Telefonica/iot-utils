@@ -151,20 +151,32 @@ cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
 
-#### 1.1.1.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
+#### 1.2.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
 The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
-- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
+1.2.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
+- Test python version and location that you used
 ```
-Test python version and location that you used
 python --version
 which python
-Test Ansible version (chack that is 2.0.2.0)
+```
+- Test Ansible version (chack that is 2.0.2.0)
+```
 ansible --version
-Download and install
+```
+- Download
+```
 cd <anydirectory>
 wget -N https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
+- Apply patch automatically (one option)
+```
 cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
 sudo patch -p0 < <anydirectory>/ansible.patch14438.patch
+```
+- Apply patch manually (other option)
+```
+cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
+Edit the file playbook/block.py and delete the lines specified in the patch file (from line 271, delete three lines)
+Edit the file playbook/role/__init__.py and delete the lines specified in the patch file (from line 118, delete ten lines)
 ```
 
 ### 1.2.- Howto install
