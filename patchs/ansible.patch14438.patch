@@ -1,6 +1,6 @@
-diff -Naur lib/python2.7/site-packages/ansible/playbook/block.py lib/python2.7/site-packages/ansible.patch14438/playbook/block.py
---- lib/python2.7/site-packages/ansible/playbook/block.py	2016-09-02 15:39:26.256017000 +0200
-+++ lib/python2.7/site-packages/ansible.patch14438/playbook/block.py	2016-09-02 15:40:46.795018000 +0200
+diff -Naur playbook/block.py ansible.patch14438/playbook/block.py
+--- playbook/block.py	2016-09-02 15:39:26.256017000 +0200
++++ ansible.patch14438/playbook/block.py	2016-09-02 15:40:46.795018000 +0200
 @@ -271,9 +271,6 @@
          if self._parent_block is not None:
              if not self._parent_block.evaluate_conditional(templar, all_vars):
@@ -11,9 +11,9 @@ diff -Naur lib/python2.7/site-packages/ansible/playbook/block.py lib/python2.7/s
          return super(Block, self).evaluate_conditional(templar, all_vars)
  
      def set_loader(self, loader):
-diff -Naur lib/python2.7/site-packages/ansible/playbook/role/__init__.py lib/python2.7/site-packages/ansible.patch14438/playbook/role/__init__.py
---- lib/python2.7/site-packages/ansible/playbook/role/__init__.py	2016-09-02 15:39:26.259017000 +0200
-+++ lib/python2.7/site-packages/ansible.patch14438/playbook/role/__init__.py	2016-09-02 15:41:33.507018000 +0200
+diff -Naur playbook/role/__init__.py ansible.patch14438/playbook/role/__init__.py
+--- playbook/role/__init__.py	2016-09-02 15:39:26.259017000 +0200
++++ ansible.patch14438/playbook/role/__init__.py	2016-09-02 15:41:33.507018000 +0200
 @@ -118,16 +118,6 @@
              if role_include.role not in play.ROLE_CACHE:
                  play.ROLE_CACHE[role_include.role] = dict()

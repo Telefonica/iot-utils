@@ -155,9 +155,16 @@ tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
 - Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
 ```
-git clone git@github.com:Telefonica/iot-utils.git
-cd ~/venv-ansible-${ANSIBLE_VERSION}
-patch -p0 < ~/iot-utils/patchs/ansible.patch14438.patch
+Test python version and location that you used
+python --version
+which python
+Test Ansible version (chack that is 2.0.2.0)
+ansible --version
+Download and install
+cd <anydirectory>
+wget https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
+cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
+sudo patch -p0 < <anydirectory>/ansible.patch14438.patch
 ```
 
 ### 1.2.- Howto install
