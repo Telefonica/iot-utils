@@ -448,24 +448,89 @@ INFO: Change loglevel to <warn> in file </etc/nginx/conf.d/myweb2.conf>
 ## 5.- Manage and administer databases
 Here we document tools for manage and administer databases
 
-### 5.1.- Manage and administer MongoDB databases
+### 5.1.- Manage and administer Postgres databases
+Postgres is an object-relational database management system (ORDBMS) with an emphasis on extensibility and standards-compliance
+
+#### 5.1.1.- Troubleshootings
+Solutions for Postgres failures
+
+##### 5.1.1.1.- POSTGRES FAILURE missing chunk number 0 in pg_toasts
+When appear: hardware failures, cluster failures, and obsoleted Linux Kernels. Steps:
+- Stop postgres
+
+- Add following line to /var/lib/pgsql/9.3/data/postgresql.conf
+```
+allow_system_table_mods = on
+```
+
+- Enter postgres session in the affected database
+```
+psql -U postgres db_affected
+```
+
+- From the toast table number of the log failed (here is 2619)
+```
+SELECT relname from pg_class where oid = 2619;
+   relname    
+--------------
+ pg_statistic
+(1 row)
+```
+
+- Test that this table is failing
+```
+SELECT count (*) from pg_statistic;
+ERROR:  invalid page in block 25 of relation base/16386/12629
+```
+
+- Repair:
+```
+SET zero_damaged_pages = on;
+REINDEX TABLE pg_statistic;
+DELETE from pg_statistic;
+REINDEX table pg_statistic;
+VACUUM analyze pg_statistic;
+WARNING:  relation "pg_statistic" page 25 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 9 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 10 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 11 is uninitialized --- fixing
+VACUUM
+```
+
+- Exit session and remove from /var/lib/pgsql/9.3/data/postgresql.conf the parameter added previously
+```
+allow_system_table_mods = on
+```
+
+- Stop and start postgres. Now the database is repaired
+
+- Do yum update to prevent the same error (Steps only for RH/Centos 6,x)
+```
+yum update -y bind* coreutils* chkconfig* device-mapper* binutils* dracut* elf* fence* kernel* lvm*
+```
+
+- Reboot the machine
+```
+reboot
+```
+### 5.2.- Manage and administer MongoDB databases
 The MongoDB database is a simple no-sql database, oriented to documents using JSON and BSON formats
 
-#### 5.1.1.- Tools for any version of MongoDB
+#### 5.2.1.- Tools for any version of MongoDB
 Inside [managemongodb](managemongodb) we have processes to manage many task for MongoDB<br>
 These tools are designed to be used by many people: Developers, Dbas, Release Engineers and Support, under the following concepts: extensive use of regexp expressions, high flexibility, high separated modularity functions, easy configuration and low level design (only use MongoDB tools, nodejs software inside MongoDB tools and Bash)<br>
 Because this design, at beginning the use of these tools can be complicated and difficult<br>
 Because there are bugs in older MongoDB versions 2.x and 3.1.x and 3.2.x (not manage correctly error code status and not manage a lot of special characters, by example the slash "/"), we construct specific process to do backups and restore MongoDB databases with these characteristics<br>
 For MongoDB 3.3.x versions and higher these bugs are resolved, and for these versions we will develop better tools
 
-##### 5.1.1.1.- Howto use
+##### 5.2.1.1.- Howto use
 The use is simple, given that for each task we have a separated and isolated process.
 - We need to configure according to our needs the files inside conf directory. The environment variables are self-explained
 - All database backups are stored inside backup folder, as specified by the --backupprefix parameter of backup processes
 - All commands are inside bin folder, and the use is self-explained. For howto use and help we can execute any command without parameters
 
 
-##### 5.1.1.2.- Commands
+##### 5.2.1.2.- Commands
 Here we list all commands that we can use
 
 - listdbs.sh
@@ -580,7 +645,7 @@ Example:
 STHrestoreonedb.sh --dirbackup /home/ec2-user/managemongodbs/backups/backupsth --dbbackup Bsth_db --dborigin sth_db
 ```
 
-##### 5.1.1.3.- One example howto backup all MongoDB databases with slashes
+##### 5.2.1.3.- One example howto backup all MongoDB databases with slashes
 We assume that the MongoDB databases are named as prefix '^sth_'<br>
 Then we execute two steps:
 
@@ -594,7 +659,7 @@ Then we execute two steps:
 /STHbackupdbs.sh --done
 ```
 
-#### 5.1.2.- Tools for MongoDB versions 3.3.x and higher
+#### 5.2.2.- Tools for MongoDB versions 3.3.x and higher
 In the future we realize these tools more simple and efficient that current tools
 
 
