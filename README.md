@@ -519,7 +519,7 @@ allow_system_table_mods = on
 
 - Stop and start postgres. Now the database is repaired
 
-- Do yum update to prevent the same error (Steps only for RH/Centos 6,x)
+- Do yum update to prevent the same error (Steps only for RH/Centos 6.x)
 ```
 yum update -y bind* coreutils* chkconfig* device-mapper* binutils* dracut* elf* fence* kernel* lvm*
 ```
