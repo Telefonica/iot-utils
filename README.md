@@ -486,10 +486,25 @@ ERROR:  invalid page in block 25 of relation base/16386/12629
 - Repair:
 ```
 SET zero_damaged_pages = on;
+Output:
+SET
+
 REINDEX TABLE pg_statistic;
+Output:
+WARNING:  invalid page in block 25 of relation base/16386/12629; zeroing out page
+ERROR:  could not create unique index "pg_statistic_relid_att_inh_index"
+DETAIL:  Key (starelid, staattnum, stainherit)=(1259, 1, f) is duplicated.
+
 DELETE from pg_statistic;
+Output:
+DELETE 443
+
 REINDEX table pg_statistic;
+Output:
+REINDEX
+
 VACUUM analyze pg_statistic;
+Output:
 WARNING:  relation "pg_statistic" page 25 is uninitialized --- fixing
 WARNING:  relation "pg_toast_2619" page 9 is uninitialized --- fixing
 WARNING:  relation "pg_toast_2619" page 10 is uninitialized --- fixing
