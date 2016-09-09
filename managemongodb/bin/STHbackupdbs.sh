@@ -89,7 +89,7 @@ do
   [[ $? != 0 ]] && echo "ERROR: Replace slash in collections of backup STH database failed. Cannot backup <${sthdb}>" >&2 && RESULT=0 && continue
 
   echo "INFO: Backup of backup STH database <${baksthdb}>"
-  backupsthdb="$(${SCRIPT_BASEDIR}/backuponedb.sh --db ${baksthdb} --backupprefix ${STHBACKUPPREFIX} --rotate False)"
+  backupsthdb="$(${SCRIPT_BASEDIR}/backuponedb.sh --db ${baksthdb} --backupprefix ${STHBACKUPPREFIX} --rotate ${ROTATE})"
   [[ $? != 0 ]] && echo "ERROR: Cannot backup of backup STH database <${baksthdb}>" >&2 && RESULT=0 && continue
 
   echo "INFO: Drop backup STH database <${baksthdb}>"
