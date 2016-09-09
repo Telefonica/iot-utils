@@ -70,8 +70,6 @@ LISTSTHDBS="$(echo "${LISTALLDBS}" | grep -P -- "${STHFIND_DBS}")"
 # Only rotate when first item backup correctly
 ROTATE="True"
 
-LISTSTHDBS=sth_sc_vlci
-
 for sthdb in ${LISTSTHDBS}
 do
   echo "INFO: Backup of STH database <${sthdb}>"
@@ -88,10 +86,7 @@ do
   echo "INFO: Replace slash in collections of backup STH database <${baksthdb}>"
   echo "INFO: Finding <${STHFINDSLASH_COLLS}> and replace by <${STHREPLACESLASH_COLLS}>"
   replaceslashcollsdbbackup="$(${SCRIPT_BASEDIR}/rencolls.sh --db "${baksthdb}" --find "${STHFINDSLASH_COLLS}" --replace "${STHREPLACESLASH_COLLS}" --dochanges)"
-echo "${replaceslashcollsdbbackup}"
   [[ $? != 0 ]] && echo "ERROR: Replace slash in collections of backup STH database failed. Cannot backup <${sthdb}>" >&2 && RESULT=0 && continue
-
-exit
 
   echo "INFO: Backup of backup STH database <${baksthdb}>"
   backupsthdb="$(${SCRIPT_BASEDIR}/backuponedb.sh --db ${baksthdb} --backupprefix ${STHBACKUPPREFIX} --rotate False)"
