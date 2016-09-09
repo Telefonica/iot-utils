@@ -135,5 +135,8 @@ else
   echo "INFO: It has not done anything in the database"
 fi
 
+# When we replace a big number of collections the mongo API is not fast enougth syncing and fail renaming (MongoDB BUG)
+sleep 2
+
 exit ${RESULT}
 
