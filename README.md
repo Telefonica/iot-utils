@@ -458,6 +458,11 @@ Solutions for Postgres failures
 When appear: hardware failures, cluster failures, and obsoleted Linux Kernels. Steps:
 - Stop postgres
 
+- File system repair
+```
+e2fsck -fp /dev/<device>
+```
+
 - Add following line to /var/lib/pgsql/9.3/data/postgresql.conf
 ```
 allow_system_table_mods = on
