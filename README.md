@@ -15,134 +15,272 @@ Needs:
 - No root user for this
 - Compatibility for ZSH friends:<br>
   In general, all in this repository is compatible with zsh shell. I known a difference, with zsh, we don't need launch ". command.sh" when we need to execute and load environments, only to run "command.sh" is sufficient.
-- Install following software:
+
+### 1.2.- Install basic software
 Launch:
 ```
+# The git client and dialog window text
 sudo yum install dialog git -y
+# Use passwords inside scripts
 sudo yum install sshpass -y
+# Create VPNs
 sudo yum install openconnect -y
 # A program for making large letters out of ordinary text
 sudo yum install figlet -y
+# Create python virtual environments
+sudo yum install virtualenv -y
+# Install NetCat utility for Centos/RH 7 and higher
+sudo yum install nmap-ncat -y
+# Install NetCat utility for Centos/RH 6 and lower
+sudo yum install nc -y
 ```
-- Install Ansible and OST python clients in system python environment (not recommended)
-```
-# Ansible 2.0 version
-ANSIBLE_VERSION=2.0.2.0
-WINRM_VERSION=0.1.1
 
-# Install Ansible package
-pip install ansible==${ANSIBLE_VERSION}
+### 1.3.- Install Ansible and WinRM
+First choose versions
 
-# Install WIN RM for work with Windows machines
-pip install pywinrm==${WINRM_VERSION}
-
-# Install OpenStack client tools
-pip install python-cinderclient==1.4.0
-pip install python-glanceclient==1.1.0
-pip install python-keystoneclient==1.7.2
-pip install python-neutronclient==3.1.0
-pip install python-novaclient==2.30.1
-pip install python-openstackclient==1.7.2
+- For Ansible 1.9.6 (obsolete)
 ```
-- Install Ansible and OST python clients in virtual python environments (recommended)
-```
-yum install virtualenv
 # Ansible 1.9 version
 ANSIBLE_VERSION=1.9.6
 WINRM_VERSION=0.1.1
+```
 
-# Ansible 2.0 version
+- For Ansible 2.0.2.0 (obsolete)
+```
+# Ansible 2.0.2.0 version
 ANSIBLE_VERSION=2.0.2.0
 WINRM_VERSION=0.1.1
+```
 
-# Ansible 2.1 version
+- For Ansible 2.1.1.0 (actual)
+```
+# Ansible 2.1.1.0 version
 ANSIBLE_VERSION=2.1.1.0
 WINRM_VERSION=0.2.0
+```
 
+Then install software
+```
+rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
 source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
 # Install Ansible package
 pip install ansible==${ANSIBLE_VERSION}
-
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
+```
 
-# Install OpenStack client tools
-pip install python-cinderclient==1.4.0
-pip install python-glanceclient==1.1.0
-pip install python-keystoneclient==1.7.2
-pip install python-neutronclient==3.1.0
-pip install python-novaclient==2.30.1
-pip install python-openstackclient==1.7.2
+### 1.4.- Install OpenStack client tools
+If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO, but we recommend LIBERTY
+
+- Install LIBERTY OpenStack (compatible with KILO) client tools
 ```
-- Install Ansible and OST python clients from requirements file. Create a file requirements.txt as follows:
+pip install --upgrade python-barbicanclient==3.3.0
+pip install --upgrade python-ceilometerclient==1.5.2
+pip install --upgrade python-cinderclient==1.4.0
+pip install --upgrade python-congressclient==1.2.0
+pip install --upgrade python-designateclient==1.5.0
+pip install --upgrade python-glanceclient==1.1.1
+pip install --upgrade python-heatclient==0.8.1
+pip install --upgrade python-ironic-inspector-client==1.2.0
+pip install --upgrade python-ironicclient==0.8.2
+pip install --upgrade python-keystoneclient==1.7.4
+pip install --upgrade python-magnumclient==0.2.1
+pip install --upgrade python-manilaclient==1.4.0
+pip install --upgrade python-mistralclient==1.1.0
+pip install --upgrade python-muranoclient==0.7.3
+pip install --upgrade python-neutronclient==3.1.1
+pip install --upgrade python-novaclient==2.30.2
+pip install --upgrade python-openstackclient==1.7.2
+pip install --upgrade python-saharaclient==0.11.1
+pip install --upgrade python-swiftclient==2.6.0
+pip install --upgrade python-tripleoclient==0.1.1
+pip install --upgrade python-troveclient==1.3.0
+pip install --upgrade python-zaqarclient==0.2.0
 ```
+
+- Install KILO OpenStack client tools
+```
+pip install --upgrade python-barbicanclient==3.0.3
+pip install --upgrade python-ceilometerclient==1.1.2
+pip install --upgrade python-cinderclient==1.1.3
+pip install --upgrade python-designateclient==1.1.1
+pip install --upgrade python-glanceclient==0.17.3
+pip install --upgrade python-heatclient==0.4.0
+pip install --upgrade python-ironicclient==0.5.1
+pip install --upgrade python-keystoneclient==1.3.4
+pip install --upgrade python-manilaclient==1.1.0
+pip install --upgrade python-muranoclient==0.5.10
+pip install --upgrade python-neutronclient==2.5.0
+pip install --upgrade python-novaclient==2.23.3
+pip install --upgrade python-openstackclient==1.0.5
+pip install --upgrade python-saharaclient==0.8.0
+pip install --upgrade python-swiftclient==2.4.0
+pip install --upgrade python-troveclient==1.0.9
+```
+
+### 1.5.- Generate python requirements file for backup software versions
+We recommend to generate the requirements file of this python environment
+
+- Launch for Ansible 2.1.1.0 and OST Liberty
+```
+pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
+```
+
+- List of requirements file for Ansible 2.1.1.0 and OST Liberty
+```
+cat $HOME/requirements-ansible-2.1.1.0-OST-liberty.txt 
+alembic==0.8.8
+amqp==1.4.9
 ansible==2.1.1.0
+anyjson==0.3.3
 appdirs==1.4.0
 Babel==2.3.4
-cffi==1.7.0
+backports.ssl-match-hostname==3.5.0.1
+beautifulsoup4==4.5.1
+cachetools==1.1.6
+cffi==1.8.2
 cliff==2.2.0
 cliff-tablib==2.0
 cmd2==0.6.8
+contextlib2==0.5.4
+croniter==0.3.12
 cryptography==1.5
 debtcollector==1.8.0
+decorator==4.0.10
+docker-py==1.7.2
+dogpile.cache==0.6.2
 enum34==1.1.6
+eventlet==0.19.0
+fasteners==0.14.1
 funcsigs==1.0.2
 functools32==3.2.3.post2
+futures==3.0.5
+futurist==0.18.0
+greenlet==0.4.10
+httplib2==0.9.2
 idna==2.1
-ipaddress==1.0.16
+ipaddress==1.0.17
 iso8601==0.1.11
 Jinja2==2.8
 jsonpatch==1.14
 jsonpointer==1.10
 jsonschema==2.5.1
 keystoneauth1==2.12.1
+keystonemiddleware==4.9.0
+kombu==3.0.35
+logutils==0.3.3
+lxml==3.6.4
+Mako==1.0.4
 MarkupSafe==0.23
+mistral==2.0.0
+mock==2.0.0
 monotonic==1.2
 msgpack-python==0.4.8
 netaddr==0.7.18
 netifaces==0.10.5
-os-client-config==1.21.0
+networkx==1.11
+openstacksdk==0.9.6
+os-client-config==1.21.1
+os-cloud-config==0.4.1
+osc-lib==1.1.0
+oslo.concurrency==3.14.0
 oslo.config==3.17.0
+oslo.context==2.9.0
+oslo.db==4.13.3
 oslo.i18n==3.9.0
+oslo.log==3.16.0
+oslo.messaging==5.10.0
+oslo.middleware==3.19.0
 oslo.serialization==2.13.0
+oslo.service==1.16.0
 oslo.utils==3.16.0
 paramiko==2.0.2
+passlib==1.6.5
+Paste==2.0.3
+PasteDeploy==1.5.2
 pbr==1.10.0
+pecan==1.1.2
+pika==0.10.0
+pika-pool==0.1.3
+ply==3.9
 positional==1.1.1
 prettytable==0.7.2
 pyasn1==0.1.9
+pycadf==2.4.0
 pycparser==2.14
 pycrypto==2.6.1
-pyparsing==2.1.8
-python-cinderclient==1.4.0
-python-glanceclient==1.1.0
-python-keystoneclient==1.7.2
-python-neutronclient==3.1.0
-python-novaclient==2.30.1
+pyinotify==0.9.6
+pyOpenSSL==16.1.0
+pyparsing==2.1.9
+python-barbicanclient==4.1.0
+python-ceilometerclient==2.6.1
+python-cinderclient==1.9.0
+python-congressclient==1.2.0
+python-dateutil==2.5.3
+python-designateclient==1.5.0
+python-editor==1.0.1
+python-glanceclient==2.5.0
+python-heatclient==1.4.0
+python-ironic-inspector-client==1.9.0
+python-ironicclient==1.7.0
+python-keystoneclient==3.5.0
+python-magnumclient==0.2.1
+python-manilaclient==1.4.0
+python-mistralclient==2.1.1
+python-muranoclient==0.7.3
+python-neutronclient==6.0.0
+python-novaclient==6.0.0
 python-ntlm3==1.0.2
-python-openstackclient==1.7.2
+python-openstackclient==3.2.0
+python-saharaclient==0.11.1
+python-swiftclient==3.1.0
+python-tripleoclient==0.1.1
+python-troveclient==1.3.0
+python-zaqarclient==0.2.0
 pytz==2016.6.1
 pywinrm==0.2.0
 PyYAML==3.12
+repoze.lru==0.6
 requests==2.11.1
 requests-ntlm==0.3.0
 requestsexceptions==1.1.3
+retrying==1.3.3
 rfc3986==0.4.1
+Routes==2.3.1
+simplegeneric==0.8.1
 simplejson==3.8.2
+singledispatch==3.4.0.3
 six==1.10.0
+SQLAlchemy==1.0.15
+sqlalchemy-migrate==0.10.0
+sqlparse==0.2.1
 stevedore==1.17.1
 tablib==0.11.2
+Tempita==0.5.2
+tooz==1.43.0
+tripleo-common==5.0.0
 unicodecsv==0.14.1
-warlock==1.3.0
+voluptuous==0.9.3
+waitress==1.0.0
+warlock==1.2.0
+WebOb==1.6.1
+websocket-client==0.37.0
+WebTest==2.0.23
 wrapt==1.10.8
+WSME==0.8.0
 xmltodict==0.10.2
+yaql==1.1.1
 ```
-Launch:
+
+- To recreate other python virtual environment
 ```
-pip install -r requirements.txt
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
 ```
-And for PyCharm, as no root user:
+
+### 1.6.- Install PyCharm IDE Python develop environment
+With no root user
 ```
 mkdir -p $HOME/software
 cd $HOME/software
@@ -151,10 +289,10 @@ cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
 
-### 1.2.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
+### 1.7.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
 The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
 
-####1.2.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
+####1.7.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
 - Test python version and location that you used
 ```
 python --version
@@ -181,7 +319,7 @@ Edit the file playbook/block.py and delete the lines specified in the patch file
 Edit the file playbook/role/__init__.py and delete the lines specified in the patch file (from line 118, delete ten lines)
 ```
 
-### 1.2.- Howto install
+### 1.8.- Howto install myenvironments tools
 Launch:
 ```
 cd $HOME
@@ -191,7 +329,7 @@ cp -rp iot-utils/tools $HOME
 rm -rf iot-utils
 ```
 
-### 1.3.- Configure
+### 1.9.- Configure
 Read and apply all related task in: `$HOME/myenvironments/conf`
 ```
 bashrcconfignoroot.cnf.template
@@ -205,22 +343,22 @@ vpnconnect.info
 ```
 As final step we need to ensure that all session terminals are close, and open new terminals
 
-### 1.4.- Start and howto use
+### 1.10.- Start and howto use
 
-#### 1.4.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)
+#### 1.10.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)
 Launch:
 `noostservers.sh`
 The host lists are stored at `$HOME/myenvironments/envs/iotenvNOOST_*.hosts`
-#### 1.4.2.- Generate host lists of OST environments
+#### 1.10.2.- Generate host lists of OST environments
 Launch:
 `ostservers.sh`
 The host lists are stored at `$HOME/myenvironments/envs/iotenvOST_*.hosts`
 
-#### 1.4.3.- Use of SSH access to hosts
+#### 1.10.3.- Use of SSH access to hosts
 Launch:
 `sshaccess.sh`
 
-#### 1.4.4.- Manually configure openstack environments
+#### 1.10.4.- Manually configure openstack environments
 - For EPG launch (Selecting desired tenant, and green color):
   ```. openstackenvEPG.sh```
 - For PREDSN launch (blue color):
@@ -230,10 +368,10 @@ Launch:
 - Clear current environment:
   ```. openstackenvCLEAR.sh```
 
-### 1.4.5.- Manage VPNs
+### 1.10.5.- Manage VPNs
 To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` whitout parameters
 
-### 1.4.6.- Use PyCharm IDE
+### 1.10.6.- Use PyCharm IDE
 The first time we need to execute PyCharm IDE from startup script (as no root user):
 ```
 cd $HOME/pycharm-community-5.0.4/bin
