@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Iot-utils by Telefonica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Iot-utils</h1>
+      <h2 class="project-tagline">IOT operation Utilities &amp; systems management tools - Ansible Scripting Python WinSSH OpenStack VirtualBox MySQL Postgress MongoDB DevOPS Admin</h2>
+      <a href="https://github.com/Telefonica/iot-utils" class="btn">View on GitHub</a>
+      <a href="https://github.com/Telefonica/iot-utils/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Telefonica/iot-utils/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="general-utilities" class="anchor" href="#general-utilities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>General utilities</h1>
+
+<h2>
+<a id="1--easy-manage-environments-hosts-access" class="anchor" href="#1--easy-manage-environments-hosts-access" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.- Easy manage environments hosts access</h2>
+
+<p>For easy manage environment hosts access<br>
+Needs:</p>
+
+<ul>
+<li>Memory remember many clusters, environments, hostnames, ips, etc?</li>
+<li>Quickly find a specific hosts to access it</li>
+<li>Dynamic refresh of all existing hosts at the time</li>
+<li>Inspect trace log of large number of hosts finding specific information</li>
+<li>Command utilities information at the time of large number of hosts</li>
+<li>Easy filter groups of hosts (by example name, type, etc)</li>
+<li>Easy VPN access</li>
+</ul>
+
+<h3>
+<a id="11--requirements" class="anchor" href="#11--requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.1.- Requirements</h3>
+
+<ul>
+<li>No root user for this</li>
+<li>Compatibility for ZSH friends:<br>
+In general, all in this repository is compatible with zsh shell. I known a difference, with zsh, we don't need launch ". command.sh" when we need to execute and load environments, only to run "command.sh" is sufficient.</li>
+</ul>
+
+<h3>
+<a id="12--install-basic-software" class="anchor" href="#12--install-basic-software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.2.- Install basic software</h3>
+
+<p>Launch:</p>
+
+<pre><code># The git client and dialog window text
+sudo yum install dialog git -y
+# Use passwords inside scripts
+sudo yum install sshpass -y
+# Create VPNs
+sudo yum install openconnect -y
+# A program for making large letters out of ordinary text
+sudo yum install figlet -y
+# Create python virtual environments
+sudo yum install virtualenv -y
+# Install NetCat utility for Centos/RH 7 and higher
+sudo yum install nmap-ncat -y
+# Install NetCat utility for Centos/RH 6 and lower
+sudo yum install nc -y
+</code></pre>
+
+<h3>
+<a id="13--install-ansible-and-winrm" class="anchor" href="#13--install-ansible-and-winrm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.3.- Install Ansible and WinRM</h3>
+
+<p>First choose versions</p>
+
+<ul>
+<li>For Ansible 1.9.6 (obsolete)</li>
+</ul>
+
+<pre><code># Ansible 1.9 version
+ANSIBLE_VERSION=1.9.6
+WINRM_VERSION=0.1.1
+</code></pre>
+
+<ul>
+<li>For Ansible 2.0.2.0 (obsolete)</li>
+</ul>
+
+<pre><code># Ansible 2.0.2.0 version
+ANSIBLE_VERSION=2.0.2.0
+WINRM_VERSION=0.1.1
+</code></pre>
+
+<ul>
+<li>For Ansible 2.1.1.0 (actual)</li>
+</ul>
+
+<pre><code># Ansible 2.1.1.0 version
+ANSIBLE_VERSION=2.1.1.0
+WINRM_VERSION=0.2.0
+</code></pre>
+
+<p>Then install software</p>
+
+<pre><code>rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+# Install Ansible package
+pip install ansible==${ANSIBLE_VERSION}
+# Install WIN RM for work with Windows machines
+pip install pywinrm==${WINRM_VERSION}
+</code></pre>
+
+<h3>
+<a id="14--install-openstack-client-tools" class="anchor" href="#14--install-openstack-client-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.4.- Install OpenStack client tools</h3>
+
+<p>If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO, but we recommend LIBERTY</p>
+
+<ul>
+<li>Install LIBERTY OpenStack (compatible with KILO) client tools</li>
+</ul>
+
+<pre><code>pip install --upgrade python-barbicanclient==3.3.0
+pip install --upgrade python-ceilometerclient==1.5.2
+pip install --upgrade python-cinderclient==1.4.0
+pip install --upgrade python-congressclient==1.2.0
+pip install --upgrade python-designateclient==1.5.0
+pip install --upgrade python-glanceclient==1.1.1
+pip install --upgrade python-heatclient==0.8.1
+pip install --upgrade python-ironic-inspector-client==1.2.0
+pip install --upgrade python-ironicclient==0.8.2
+pip install --upgrade python-keystoneclient==1.7.4
+pip install --upgrade python-magnumclient==0.2.1
+pip install --upgrade python-manilaclient==1.4.0
+pip install --upgrade python-mistralclient==1.1.0
+pip install --upgrade python-muranoclient==0.7.3
+pip install --upgrade python-neutronclient==3.1.1
+pip install --upgrade python-novaclient==2.30.2
+pip install --upgrade python-openstackclient==1.7.2
+pip install --upgrade python-saharaclient==0.11.1
+pip install --upgrade python-swiftclient==2.6.0
+pip install --upgrade python-tripleoclient==0.1.1
+pip install --upgrade python-troveclient==1.3.0
+pip install --upgrade python-zaqarclient==0.2.0
+</code></pre>
+
+<ul>
+<li>Install KILO OpenStack client tools</li>
+</ul>
+
+<pre><code>pip install --upgrade python-barbicanclient==3.0.3
+pip install --upgrade python-ceilometerclient==1.1.2
+pip install --upgrade python-cinderclient==1.1.3
+pip install --upgrade python-designateclient==1.1.1
+pip install --upgrade python-glanceclient==0.17.3
+pip install --upgrade python-heatclient==0.4.0
+pip install --upgrade python-ironicclient==0.5.1
+pip install --upgrade python-keystoneclient==1.3.4
+pip install --upgrade python-manilaclient==1.1.0
+pip install --upgrade python-muranoclient==0.5.10
+pip install --upgrade python-neutronclient==2.5.0
+pip install --upgrade python-novaclient==2.23.3
+pip install --upgrade python-openstackclient==1.0.5
+pip install --upgrade python-saharaclient==0.8.0
+pip install --upgrade python-swiftclient==2.4.0
+pip install --upgrade python-troveclient==1.0.9
+</code></pre>
+
+<h3>
+<a id="15--generate-python-requirements-file-for-backup-software-versions" class="anchor" href="#15--generate-python-requirements-file-for-backup-software-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.5.- Generate python requirements file for backup software versions</h3>
+
+<p>We recommend to generate the requirements file of this python environment</p>
+
+<ul>
+<li>Launch for Ansible 2.1.1.0 and OST Liberty</li>
+</ul>
+
+<pre><code>pip freeze &gt; $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
+</code></pre>
+
+<ul>
+<li>List of requirements file for Ansible 2.1.1.0 and OST Liberty</li>
+</ul>
+
+<pre><code>cat $HOME/requirements-ansible-2.1.1.0-OST-liberty.txt 
+alembic==0.8.8
+amqp==1.4.9
+ansible==2.1.1.0
+anyjson==0.3.3
+appdirs==1.4.0
+Babel==2.3.4
+backports.ssl-match-hostname==3.5.0.1
+beautifulsoup4==4.5.1
+cachetools==1.1.6
+cffi==1.8.2
+cliff==2.2.0
+cliff-tablib==2.0
+cmd2==0.6.8
+contextlib2==0.5.4
+croniter==0.3.12
+cryptography==1.5
+debtcollector==1.8.0
+decorator==4.0.10
+docker-py==1.7.2
+dogpile.cache==0.6.2
+enum34==1.1.6
+eventlet==0.19.0
+fasteners==0.14.1
+funcsigs==1.0.2
+functools32==3.2.3.post2
+futures==3.0.5
+futurist==0.18.0
+greenlet==0.4.10
+httplib2==0.9.2
+idna==2.1
+ipaddress==1.0.17
+iso8601==0.1.11
+Jinja2==2.8
+jsonpatch==1.14
+jsonpointer==1.10
+jsonschema==2.5.1
+keystoneauth1==2.12.1
+keystonemiddleware==4.9.0
+kombu==3.0.35
+logutils==0.3.3
+lxml==3.6.4
+Mako==1.0.4
+MarkupSafe==0.23
+mistral==2.0.0
+mock==2.0.0
+monotonic==1.2
+msgpack-python==0.4.8
+netaddr==0.7.18
+netifaces==0.10.5
+networkx==1.11
+openstacksdk==0.9.6
+os-client-config==1.21.1
+os-cloud-config==0.4.1
+osc-lib==1.1.0
+oslo.concurrency==3.14.0
+oslo.config==3.17.0
+oslo.context==2.9.0
+oslo.db==4.13.3
+oslo.i18n==3.9.0
+oslo.log==3.16.0
+oslo.messaging==5.10.0
+oslo.middleware==3.19.0
+oslo.serialization==2.13.0
+oslo.service==1.16.0
+oslo.utils==3.16.0
+paramiko==2.0.2
+passlib==1.6.5
+Paste==2.0.3
+PasteDeploy==1.5.2
+pbr==1.10.0
+pecan==1.1.2
+pika==0.10.0
+pika-pool==0.1.3
+ply==3.9
+positional==1.1.1
+prettytable==0.7.2
+pyasn1==0.1.9
+pycadf==2.4.0
+pycparser==2.14
+pycrypto==2.6.1
+pyinotify==0.9.6
+pyOpenSSL==16.1.0
+pyparsing==2.1.9
+python-barbicanclient==4.1.0
+python-ceilometerclient==2.6.1
+python-cinderclient==1.9.0
+python-congressclient==1.2.0
+python-dateutil==2.5.3
+python-designateclient==1.5.0
+python-editor==1.0.1
+python-glanceclient==2.5.0
+python-heatclient==1.4.0
+python-ironic-inspector-client==1.9.0
+python-ironicclient==1.7.0
+python-keystoneclient==3.5.0
+python-magnumclient==0.2.1
+python-manilaclient==1.4.0
+python-mistralclient==2.1.1
+python-muranoclient==0.7.3
+python-neutronclient==6.0.0
+python-novaclient==6.0.0
+python-ntlm3==1.0.2
+python-openstackclient==3.2.0
+python-saharaclient==0.11.1
+python-swiftclient==3.1.0
+python-tripleoclient==0.1.1
+python-troveclient==1.3.0
+python-zaqarclient==0.2.0
+pytz==2016.6.1
+pywinrm==0.2.0
+PyYAML==3.12
+repoze.lru==0.6
+requests==2.11.1
+requests-ntlm==0.3.0
+requestsexceptions==1.1.3
+retrying==1.3.3
+rfc3986==0.4.1
+Routes==2.3.1
+simplegeneric==0.8.1
+simplejson==3.8.2
+singledispatch==3.4.0.3
+six==1.10.0
+SQLAlchemy==1.0.15
+sqlalchemy-migrate==0.10.0
+sqlparse==0.2.1
+stevedore==1.17.1
+tablib==0.11.2
+Tempita==0.5.2
+tooz==1.43.0
+tripleo-common==5.0.0
+unicodecsv==0.14.1
+voluptuous==0.9.3
+waitress==1.0.0
+warlock==1.2.0
+WebOb==1.6.1
+websocket-client==0.37.0
+WebTest==2.0.23
+wrapt==1.10.8
+WSME==0.8.0
+xmltodict==0.10.2
+yaql==1.1.1
+</code></pre>
+
+<ul>
+<li>To recreate other python virtual environment</li>
+</ul>
+
+<pre><code>virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
+</code></pre>
+
+<h3>
+<a id="16--install-pycharm-ide-python-develop-environment" class="anchor" href="#16--install-pycharm-ide-python-develop-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.6.- Install PyCharm IDE Python develop environment</h3>
+
+<p>With no root user</p>
+
+<pre><code>mkdir -p $HOME/software
+cd $HOME/software
+wget https://download.jetbrains.com/python/pycharm-community-5.0.4.tar.gz
+cd $HOME
+tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
+</code></pre>
+
+<h3>
+<a id="17--fix-ansible-bug-httpsgithubcomansibleansibleissues14438-for-ansible-2020" class="anchor" href="#17--fix-ansible-bug-httpsgithubcomansibleansibleissues14438-for-ansible-2020" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.7.- Fix Ansible bug <a href="https://github.com/ansible/ansible/issues/14438">https://github.com/ansible/ansible/issues/14438</a> for Ansible 2.0.2.0</h3>
+
+<p>The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls</p>
+
+<h4>
+<a id="171--apply-the-ansiblepatch14438" class="anchor" href="#171--apply-the-ansiblepatch14438" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.7.1.- Apply the <a href="patchs/ansible.patch14438.patch">ansible.patch14438</a>
+</h4>
+
+<ul>
+<li>Test python version and location that you used</li>
+</ul>
+
+<pre><code>python --version
+which python
+</code></pre>
+
+<ul>
+<li>Test Ansible version (check that is 2.0.2.0)</li>
+</ul>
+
+<pre><code>ansible --version
+</code></pre>
+
+<ul>
+<li>Download</li>
+</ul>
+
+<pre><code>cd &lt;anydirectory&gt;
+wget -N https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
+</code></pre>
+
+<ul>
+<li>Apply patch automatically (one option)</li>
+</ul>
+
+<pre><code>cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
+sudo patch -p0 &lt; &lt;anydirectory&gt;/ansible.patch14438.patch
+</code></pre>
+
+<ul>
+<li>Apply patch manually (other option)</li>
+</ul>
+
+<pre><code>cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
+Edit the file playbook/block.py and delete the lines specified in the patch file (from line 271, delete three lines)
+Edit the file playbook/role/__init__.py and delete the lines specified in the patch file (from line 118, delete ten lines)
+</code></pre>
+
+<h3>
+<a id="18--howto-install-myenvironments-tools" class="anchor" href="#18--howto-install-myenvironments-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.- Howto install myenvironments tools</h3>
+
+<p>Launch:</p>
+
+<pre><code>cd $HOME
+git clone git@github.com:Telefonica/iot-utils.git
+cp -rp iot-utils/myenvironments $HOME
+cp -rp iot-utils/tools $HOME
+rm -rf iot-utils
+</code></pre>
+
+<h3>
+<a id="19--configure" class="anchor" href="#19--configure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.9.- Configure</h3>
+
+<p>Read and apply all related task in: <code>$HOME/myenvironments/conf</code></p>
+
+<pre><code>bashrcconfignoroot.cnf.template
+configetchosts.info
+githubprivateenv.sh.template
+howtoconfigpublicprivatekeys.info
+listostenvs.cnf.template
+sshconfigclientnoroot.template
+pycharm.info
+vpnconnect.info
+</code></pre>
+
+<p>As final step we need to ensure that all session terminals are close, and open new terminals</p>
+
+<h3>
+<a id="110--start-and-howto-use" class="anchor" href="#110--start-and-howto-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.- Start and howto use</h3>
+
+<h4>
+<a id="1101--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" class="anchor" href="#1101--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)</h4>
+
+<p>Launch:
+<code>noostservers.sh</code>
+The host lists are stored at <code>$HOME/myenvironments/envs/iotenvNOOST_*.hosts</code></p>
+
+<h4>
+<a id="1102--generate-host-lists-of-ost-environments" class="anchor" href="#1102--generate-host-lists-of-ost-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.2.- Generate host lists of OST environments</h4>
+
+<p>Launch:
+<code>ostservers.sh</code>
+The host lists are stored at <code>$HOME/myenvironments/envs/iotenvOST_*.hosts</code></p>
+
+<h4>
+<a id="1103--use-of-ssh-access-to-hosts" class="anchor" href="#1103--use-of-ssh-access-to-hosts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.3.- Use of SSH access to hosts</h4>
+
+<p>Launch:
+<code>sshaccess.sh</code></p>
+
+<h4>
+<a id="1104--manually-configure-openstack-environments" class="anchor" href="#1104--manually-configure-openstack-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.4.- Manually configure openstack environments</h4>
+
+<ul>
+<li>For EPG launch (Selecting desired tenant, and green color):
+<code>. openstackenvEPG.sh</code>
+</li>
+<li>For PREDSN launch (blue color):
+<code>. openstackenvPREDSN.sh</code>
+</li>
+<li>For PRODSN launch (red color... Warning!!!):
+<code>. openstackenvPRODSN.sh</code>
+</li>
+<li>Clear current environment:
+<code>. openstackenvCLEAR.sh</code>
+</li>
+</ul>
+
+<h3>
+<a id="1105--manage-vpns" class="anchor" href="#1105--manage-vpns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.5.- Manage VPNs</h3>
+
+<p>To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: <code>vpnconnect.sh</code> whitout parameters</p>
+
+<h3>
+<a id="1106--use-pycharm-ide" class="anchor" href="#1106--use-pycharm-ide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.6.- Use PyCharm IDE</h3>
+
+<p>The first time we need to execute PyCharm IDE from startup script (as no root user):</p>
+
+<pre><code>cd $HOME/pycharm-community-5.0.4/bin
+./pycharm.sh
+</code></pre>
+
+<p>After, we close PyCharm IDE, and automatically PyCharm IDe creates a desktop menu launch at <code>Application-&gt;Programming-&gt;Pycharm Community Edition</code></p>
+
+<h2>
+<a id="2--tools" class="anchor" href="#2--tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.- Tools</h2>
+
+<p>We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths).</p>
+
+<p>Stored at $HOME/tools</p>
+
+<pre><code># Show diffs (Version X.Y.Z and commit number/release number) of RPMs between Git and RPM installed machines
+diffrpms/findagentbase.sh
+HOWTO USE (now only for iot-agent-base):
+cd $HOME/tools/diffrpms
+./findagentbase.sh
+Example output:
+*********************************************************
+VERIFYING RPM...
+*********************************************************
+RPMNAME &lt;iot-agent-base&gt;
+BRANCH &lt;release/1.3.1&gt;
+VERSION &lt;1.3.1&gt;
+GITURLREPO &lt;git@github.com:telefonicaid/fiware-IoTAgent-Cplusplus.git&gt;
+SHORTSHA1 &lt;57b0ee1&gt;
+NUMCOMMITS &lt;117&gt;
+OK: ENV &lt;iotenvOST_EPG_201-IOT-demo.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+OK: ENV &lt;iotenvOST_EPG_201-IOT-demo.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+ERROR: ENV &lt;iotenvOST_EPG_201-IoT-int-ext.hosts&gt; PKG &lt;iot-agent-base&gt; DIFFER: GITREPO 1.3.1.117 VS INSTALLED RPM 1.3.1.115
+ERROR: ENV &lt;iotenvOST_EPG_201-IoT-int-ext.hosts&gt; PKG &lt;iot-agent-base&gt; DIFFER: GITREPO 1.3.1.117 VS INSTALLED RPM 1.3.1.115
+OK: ENV &lt;iotenvOST_EPG_264-iot-int.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+OK: ENV &lt;iotenvOST_EPG_264-iot-int.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+OK: ENV &lt;iotenvOST_PREDSN_IOT-D.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+OK: ENV &lt;iotenvOST_PREDSN_IOT-D.hosts PKG &lt;iot-agent-base&gt; EQUAL GITREPO VS INSTALLED RPM
+UNKNOWN: ENV &lt;iotenvOST_PRODSN_IOT-L.hosts PKG &lt;iot-agent-base&gt; CANNOT ACCESS
+UNKNOWN: ENV &lt;iotenvOST_PRODSN_IOT-L.hosts PKG &lt;iot-agent-base&gt; CANNOT ACCESS
+
+
+# Show diffs of a encrypted file between actual git branch and a commit
+ansible-vault-git-diff.sh
+# Decrypt encrypted Ansible files
+decryptansiblefiles.sh
+# Encrypt files to use with Ansible
+encryptansiblefiles.sh
+# Show differences inside encrypted files of a current git branch and write to diffcreds directory, over git repo directory parent
+findcredentialchanges.sh
+# Memory processes sum threads
+ps_mem.py
+# Example:
+sudo python ps_mem.py | grep httpd
+  4.2 MiB +   6.3 MiB =  10.5 MiB   httpd (6)
+# 10.5 Mib per 6 httpd processes
+# Update a git repo and decrypt Ansible encrypted files
+updateiotansible.sh
+</code></pre>
+
+<h2>
+<a id="3--windows-and-powershell" class="anchor" href="#3--windows-and-powershell" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.- Windows and PowerShell</h2>
+
+<p>We can configure any Windows host to easy access with ssh and work with Windows console and PowerShell</p>
+
+<h3>
+<a id="31--microsoft-has-finally-integrated-into-windows-openssh-to-install-it-follow-the-steps" class="anchor" href="#31--microsoft-has-finally-integrated-into-windows-openssh-to-install-it-follow-the-steps" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1.- Microsoft has finally integrated into Windows openssh. To install it, follow the steps:</h3>
+
+<ul>
+<li><p>Download a copy of Win-OpenSSH from <a href="https://github.com/PowerShell/Win32-OpenSSH">https://github.com/PowerShell/Win32-OpenSSH</a>.<br>The last is here: <a href="https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip">https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip</a></p></li>
+<li><p>Unzip inside folder C:\openssh</p></li>
+<li><p>Open a PowerShell console with administrator privileges</p></li>
+<li><p>Generate server keys with</p></li>
+</ul>
+
+<pre><code>cd C:\openssh
+.\ssh-keygen.exe -A
+</code></pre>
+
+<ul>
+<li>If Windows Firewall is activated:
+Open a port for the SSH server in Windows Firewall:
+Either run the following PowerShell command (Windows 8 and 2012 or newer only), as the Administrator:</li>
+</ul>
+
+<pre><code>New-NetFirewallRule -Protocol TCP -LocalPort 22 -Direction Inbound -Action Allow -DisplayName SSHD
+</code></pre>
+
+<p>or go to Control Panel &gt; System and Security &gt; Windows Firewall &gt; Advanced Settings &gt; Inbound Rules and add a new rule for port 22.</p>
+
+<p>NOTE: New-NetFirewallRule is for servers only. If you're on a workstation try:</p>
+
+<pre><code>netsh advfirewall firewall add rule name='SSH Port' dir=in action=allow protocol=TCP localport=22
+</code></pre>
+
+<ul>
+<li>If you need key-based authentication, run the following to setup the key-auth package</li>
+</ul>
+
+<pre><code>powershell.exe .\install-sshlsa.ps1
+Restart-Computer
+</code></pre>
+
+<ul>
+<li>Edit C:\openssh\sshd_config to configure sftp server:</li>
+</ul>
+
+<pre><code>Subsystem sftp C:\openssh\sftp-server.exe
+</code></pre>
+
+<ul>
+<li>Install SSHD server as service</li>
+</ul>
+
+<pre><code>.\sshd.exe install
+Start-Service sshd
+</code></pre>
+
+<p>Make the service start on boot (PowerShell):</p>
+
+<pre><code>Set-Service sshd -StartupType Automatic
+</code></pre>
+
+<p>Or manually:
+Start the service and/or configure automatic start:
+Go to Control Panel &gt; System and Security &gt; Administrative Tools and open Services. Locate SSHD service.
+If you want the server to start automatically when your machine is started: Go to Action &gt; Properties. In the Properties dialog, change Startup type to Automatic and confirm.
+Start the SSHD service by clicking the Start the service.</p>
+
+<ul>
+<li><p>In your Windows account profile folder (typically in C:\Users\username.ssh)
+Create the .ssh folder (for the authorized_keys file) in your Windows account profile folder (typically in C:\Users\username.ssh).
+Do not change permissions for the .ssh and the authorized_keys.
+Configure authorized_keys file and store the PEM file in .ssh folder.</p></li>
+<li><p>Test ssh connection</p></li>
+</ul>
+
+<pre><code>Enter in Windows console
+ssh user@winmachine
+Enter in Powershell console
+powershell -File -
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>ssh myuser@caprica.hi.inet
+myuser@caprica.hi.inet's password: 
+Microsoft Windows [Versi n 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. Reservados todos los derechos.
+
+admin@CAPRICA C:\Users\admin&gt;powershell -File -
+PS C:\Users\admin&gt; Get-EventLog -Log "Application"
+
+   Index Time          EntryType   Source                 InstanceID Message                                                                                                                           
+   ----- ----          ---------   ------                 ---------- -------                                                                                                                           
+  104935 mar 09 16:04  0           Software Protecti...   1073742727 Se detuvo el servicio de protecci n de software....                                                                               
+  104934 mar 09 15:59  0           Software Protecti...   1073742726 Se inici  el servicio de protecci n de software....                                                                               
+  104933 mar 09 15:59  Information Software Protecti...   1073742827 El servicio de protecci n de software complet  la comprobaci n del estado de licencias....                                        
+  104932 mar 09 15:59  Information Software Protecti...   1073742890 Estado de inicializaci n para objetos de servicio....                                                                             
+  104931 mar 09 15:59  Information Software Protecti...   1073742724 Se est  iniciando el servicio de protecci n de software....                                                                       
+  104930 mar 09 15:59  Information sshd                            0 No se encontr  la descripci n del Id. de evento '0' en el origen 'sshd'. Es posible que el equipo local no tenga la informaci n...
+  104929 mar 09 15:59  Information sshd                            0 No se encontr  la descripci n del Id. de evento '0' en el origen 'sshd'. Es posible que el equipo local no tenga la informaci n...
+  104928 mar 09 15:56  Information sshd                            0 No se encontr  la descripci n del Id. de evento '0' en el origen 'sshd'. Es posible que el equipo local no tenga la informaci n...
+  104927 mar 09 15:56  Information sshd                            0 No se encontr  la descripci n del Id. de evento '0' en el origen 'sshd'. Es posible que el equipo local no tenga la informaci n...
+...
+PS C:\Users\myuser&gt; exit
+
+myuser@CAPRICA C:\Users\myuser&gt;exit
+Connection to caprica.hi.inet closed.
+</code></pre>
+
+<h3>
+<a id="32--uninstall-win-openssh" class="anchor" href="#32--uninstall-win-openssh" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2.- Uninstall Win-OpenSSH</h3>
+
+<ul>
+<li><p>Start Powershell as Administrator</p></li>
+<li><p>Stop the service</p></li>
+</ul>
+
+<pre><code>Stop-Service sshd
+</code></pre>
+
+<ul>
+<li>Uninstall</li>
+</ul>
+
+<pre><code>.\sshd.exe uninstall
+powershell .\uninstall-sshlsa.ps1
+Restart-Computer
+</code></pre>
+
+<h2>
+<a id="4--operation-process" class="anchor" href="#4--operation-process" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4.- Operation process</h2>
+
+<p>Inside iot-utils/operations we store processes to operate systems.
+By now, exists the following:</p>
+
+<pre><code>bin/changeloglevelnginx.sh
+</code></pre>
+
+<ul>
+<li>Change (locally, inside a machine with SSH) the level log of nginx server online.</li>
+<li>Help of use:</li>
+</ul>
+
+<pre><code>./changeloglevelnginx.sh 
+****************************************
+NGINX CHANGE LOG LEVEL
+****************************************
+
+Usage: changeloglevelnginx.sh &lt;loglevel&gt;
+Where loglevel can be:
+    emerg: Emergency situations where the system is in an unusable state.
+    alert: Severe situation where action is needed promptly.
+    crit: Important problems that need to be addressed.
+    error: An Error has occurred. Something was unsuccessful.
+    warn: Something out of the ordinary happened, but not a cause for concern.
+    notice: Something normal, but worth noting has happened.
+    info: An informational message that might be nice to know.
+    debug: Debugging information that can be useful to pinpoint where a problem is occurring.
+
+
+For debug level visit http://nginx.org/en/docs/debugging_log.html
+</code></pre>
+
+<ul>
+<li>Example of use:
+./changeloglevelnginx.sh warn</li>
+</ul>
+
+<pre><code>****************************************
+NGINX CHANGE LOG LEVEL
+****************************************
+INFO: Change loglevel to &lt;warn&gt; in file &lt;/etc/nginx/conf.d/myweb1.conf&gt;
+INFO: Change loglevel to &lt;warn&gt; in file &lt;/etc/nginx/conf.d/myweb2.conf&gt;
+</code></pre>
+
+<h2>
+<a id="5--manage-and-administer-databases" class="anchor" href="#5--manage-and-administer-databases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.- Manage and administer databases</h2>
+
+<p>Here we document tools for manage and administer databases</p>
+
+<h3>
+<a id="51--manage-and-administer-postgres-databases" class="anchor" href="#51--manage-and-administer-postgres-databases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.1.- Manage and administer Postgres databases</h3>
+
+<p>Postgres is an object-relational database management system (ORDBMS) with an emphasis on extensibility and standards-compliance</p>
+
+<h4>
+<a id="511--troubleshootings" class="anchor" href="#511--troubleshootings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.1.1.- Troubleshootings</h4>
+
+<p>Solutions for Postgres failures</p>
+
+<h5>
+<a id="5111--postgres-failure-missing-chunk-number-0-in-pg_toasts" class="anchor" href="#5111--postgres-failure-missing-chunk-number-0-in-pg_toasts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.1.1.1.- POSTGRES FAILURE missing chunk number 0 in pg_toasts</h5>
+
+<p>When appear: hardware failures, cluster failures, and obsoleted Linux Kernels. Steps:</p>
+
+<ul>
+<li><p>Stop postgres</p></li>
+<li><p>File system repair</p></li>
+</ul>
+
+<pre><code>e2fsck -fp /dev/&lt;device&gt;
+</code></pre>
+
+<ul>
+<li>Add following line to /var/lib/pgsql/9.3/data/postgresql.conf</li>
+</ul>
+
+<pre><code>allow_system_table_mods = on
+</code></pre>
+
+<ul>
+<li>Enter postgres session in the affected database</li>
+</ul>
+
+<pre><code>psql -U postgres db_affected
+</code></pre>
+
+<ul>
+<li>From the toast table number of the log failed (here is 2619)</li>
+</ul>
+
+<pre><code>SELECT relname from pg_class where oid = 2619;
+   relname    
+--------------
+ pg_statistic
+(1 row)
+</code></pre>
+
+<ul>
+<li>Test that this table is failing</li>
+</ul>
+
+<pre><code>SELECT count (*) from pg_statistic;
+ERROR:  invalid page in block 25 of relation base/16386/12629
+</code></pre>
+
+<ul>
+<li>Repair:</li>
+</ul>
+
+<pre><code>SET zero_damaged_pages = on;
+Output:
+SET
+
+REINDEX TABLE pg_statistic;
+Output:
+WARNING:  invalid page in block 25 of relation base/16386/12629; zeroing out page
+ERROR:  could not create unique index "pg_statistic_relid_att_inh_index"
+DETAIL:  Key (starelid, staattnum, stainherit)=(1259, 1, f) is duplicated.
+
+DELETE from pg_statistic;
+Output:
+DELETE 443
+
+REINDEX table pg_statistic;
+Output:
+REINDEX
+
+VACUUM analyze pg_statistic;
+Output:
+WARNING:  relation "pg_statistic" page 25 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 9 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 10 is uninitialized --- fixing
+WARNING:  relation "pg_toast_2619" page 11 is uninitialized --- fixing
+VACUUM
+</code></pre>
+
+<ul>
+<li>Exit session and remove from /var/lib/pgsql/9.3/data/postgresql.conf the parameter added previously</li>
+</ul>
+
+<pre><code>allow_system_table_mods = on
+</code></pre>
+
+<ul>
+<li><p>Stop and start postgres. Now the database is repaired</p></li>
+<li><p>Do yum update to prevent the same error (Steps only for RH/Centos 6.x)</p></li>
+</ul>
+
+<pre><code>yum update -y bind* coreutils* chkconfig* device-mapper* binutils* dracut* elf* fence* kernel* lvm*
+</code></pre>
+
+<ul>
+<li>Reboot the machine</li>
+</ul>
+
+<pre><code>reboot
+</code></pre>
+
+<h3>
+<a id="52--manage-and-administer-mongodb-databases" class="anchor" href="#52--manage-and-administer-mongodb-databases" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.- Manage and administer MongoDB databases</h3>
+
+<p>The MongoDB database is a simple no-sql database, oriented to documents using JSON and BSON formats</p>
+
+<h4>
+<a id="521--tools-for-any-version-of-mongodb" class="anchor" href="#521--tools-for-any-version-of-mongodb" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.1.- Tools for any version of MongoDB</h4>
+
+<p>Inside <a href="managemongodb">managemongodb</a> we have processes to manage many task for MongoDB<br>
+These tools are designed to be used by many people: Developers, Dbas, Release Engineers and Support, under the following concepts: extensive use of regexp expressions, high flexibility, high separated modularity functions, easy configuration and low level design (only use MongoDB tools, nodejs software inside MongoDB tools and Bash)<br>
+Because this design, at beginning the use of these tools can be complicated and difficult<br>
+Because there are bugs in older MongoDB versions 2.x and 3.1.x and 3.2.x (not manage correctly error code status and not manage a lot of special characters, by example the slash "/"), we construct specific process to do backups and restore MongoDB databases with these characteristics<br>
+For MongoDB 3.3.x versions and higher these bugs are resolved, and for these versions we will develop better tools</p>
+
+<h5>
+<a id="5211--howto-use" class="anchor" href="#5211--howto-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.1.1.- Howto use</h5>
+
+<p>The use is simple, given that for each task we have a separated and isolated process.</p>
+
+<ul>
+<li>We need to configure according to our needs the files inside conf directory. The environment variables are self-explained</li>
+<li>All database backups are stored inside backup folder, as specified by the --backupprefix parameter of backup processes</li>
+<li>All commands are inside bin folder, and the use is self-explained. For howto use and help we can execute any command without parameters</li>
+</ul>
+
+<h5>
+<a id="5212--commands" class="anchor" href="#5212--commands" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.1.2.- Commands</h5>
+
+<p>Here we list all commands that we can use</p>
+
+<ul>
+<li>listdbs.sh</li>
+</ul>
+
+<pre><code>*************************************************
+List mongo db names
+*************************************************
+
+Usage: listdbs.sh [--help | --alldbs | --db "searchstring"]
+</code></pre>
+
+<ul>
+<li>listcolls.sh</li>
+</ul>
+
+<pre><code>*************************************************
+List mongo collection names of a db
+*************************************************
+
+Usage: listcolls.sh [--help | --db "dbname" [ --col "searchstring" ] ]
+</code></pre>
+
+<ul>
+<li>copydb.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Copy a mongo db
+*************************************************
+
+Usage: copydb.sh [--help | --dbfrom "dbsource" --dbto "dbtarget"]
+</code></pre>
+
+<ul>
+<li>dropdb.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Drop a mongo db
+*************************************************
+
+Usage: dropdb.sh [--help | --db "dbname"]
+</code></pre>
+
+<ul>
+<li>rencolls.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Rename collection names of a mongo db
+*************************************************
+
+Usage: rencolls.sh [--help | --db "dbname" --find "searchstring" --replace "replacestring" [ --dochanges ] ]
+Where searchstring can be a regexp, and replacepattern is a string to replace the pattern
+Examples:
+
+- Find collections that start with sth_ and next char not /, and replace by sth_/
+  rencolls.sh --db mydbname --find '^sth_(([^/])|$)' --replace 'sth_\/\1' --dochanges
+- Find collections that start with sth_/ and next any char and replace by sth_
+  rencolls.sh --db mydbname --find '^sth_\/' --replace 'sth_' --dochanges
+
+- Find collections that start with sth_ and next char not /, and TRY replace by sth_/ (don't apply any changes)
+  rencolls.sh --db mydbname --find '^sth_(([^/])|$)' --replace 'sth_\/\1'
+- Find collections that start with sth_/ and next any char and TRY replace by sth_ (don't apply any changes)
+  rencolls.sh --db mydbname --find '^sth_\/' --replace 'sth_'
+</code></pre>
+
+<ul>
+<li>backuponedb.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Backup a mongo db with BSON format
+*************************************************
+
+Usage: backuponedb.sh [--help | --db "dbtobackup" [--backupprefix "prefix" default: default] [--rotate &lt;True|othervalue&gt; default: True]]
+</code></pre>
+
+<ul>
+<li>backupdbs.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Backup mongo dbs with BSON format
+*************************************************
+
+Usage: backupdbs.sh [--help | --alldbs | --dbs "searchstring" [--backupprefix "prefix" default: default] [--rotate &lt;True|othervalue&gt; default: True]]
+</code></pre>
+
+<ul>
+<li>restoreonedb.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Restore a mongo db with BSON format
+*************************************************
+
+Usage: restoreonedb.sh [--help | --dirbackup "path_abs_dir_backup" --dbsource "dbsource" [--dbtarget "dbtarget"]]
+</code></pre>
+
+<ul>
+<li>restoredbs.sh</li>
+</ul>
+
+<pre><code>*************************************************
+Restore mongo dbs with BSON format
+*************************************************
+
+Usage: restoredbs.sh [--help | --dirbackup "path_abs_dir_backup" &lt;--dbs "searchstring" | --alldbs]&gt;
+</code></pre>
+
+<ul>
+<li>STHbackupdbs.sh (a specific process to backup MongoDB databases with slashes inside collection names)</li>
+</ul>
+
+<pre><code>*************************************************
+STH backup databases
+*************************************************
+
+Usage: STHbackupdbs.sh [--help | --done]
+</code></pre>
+
+<ul>
+<li>STHrestoreonedb.sh (a specific process to restore a MongoDB database with slashes inside collection names)</li>
+</ul>
+
+<pre><code>*************************************************
+WARNING: Restore databases is very dangerous...
+The original database will be dropped...
+*************************************************
+Example:
+STHrestoreonedb.sh --dirbackup /home/ec2-user/managemongodbs/backups/backupsth --dbbackup Bsth_db --dborigin sth_db
+</code></pre>
+
+<h5>
+<a id="5213--one-example-howto-backup-all-mongodb-databases-with-slashes" class="anchor" href="#5213--one-example-howto-backup-all-mongodb-databases-with-slashes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.1.3.- One example howto backup all MongoDB databases with slashes</h5>
+
+<p>We assume that the MongoDB databases are named as prefix '^sth_'<br>
+Then we execute two steps:</p>
+
+<ul>
+<li>Backup of all databases no '^sth_'</li>
+</ul>
+
+<pre><code>./backupdbs.sh  --dbs '^(?!sth_)' --backupprefix backupnosth
+</code></pre>
+
+<ul>
+<li>Backup of all databases '^sth_'</li>
+</ul>
+
+<pre><code>/STHbackupdbs.sh --done
+</code></pre>
+
+<h4>
+<a id="522--tools-for-mongodb-versions-33x-and-higher" class="anchor" href="#522--tools-for-mongodb-versions-33x-and-higher" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5.2.2.- Tools for MongoDB versions 3.3.x and higher</h4>
+
+<p>In the future we realize these tools more simple and efficient that current tools</p>
+
+<h2>
+<a id="6--enjoy-it" class="anchor" href="#6--enjoy-it" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>6.- Enjoy it...</h2>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Telefonica/iot-utils">Iot-utils</a> is maintained by <a href="https://github.com/Telefonica">Telefonica</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
