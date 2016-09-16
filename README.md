@@ -71,9 +71,9 @@ pip install pywinrm==${WINRM_VERSION}
 ```
 
 ### 1.4.- Install OpenStack client tools
-If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO, but we recommend LIBERTY
+If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO. For KILO please use KILO
 
-- Install LIBERTY OpenStack (compatible with KILO) client tools
+- Install LIBERTY OpenStack client tools
 ```
 pip install --upgrade python-barbicanclient==3.3.0
 pip install --upgrade python-ceilometerclient==1.5.2
@@ -112,7 +112,8 @@ pip install --upgrade python-keystoneclient==1.3.4
 pip install --upgrade python-manilaclient==1.1.0
 pip install --upgrade python-muranoclient==0.5.10
 pip install --upgrade python-neutronclient==2.5.0
-pip install --upgrade python-novaclient==2.23.3
+# NOTE: Not use 2.23.3 please
+pip install --upgrade python-novaclient==2.23.2
 pip install --upgrade python-openstackclient==1.0.5
 pip install --upgrade python-saharaclient==0.8.0
 pip install --upgrade python-swiftclient==2.4.0
