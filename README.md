@@ -103,18 +103,17 @@ pip install --upgrade python-zaqarclient==0.2.0
 ```
 pip install --upgrade python-barbicanclient==3.0.3
 pip install --upgrade python-ceilometerclient==1.1.2
-pip install --upgrade python-cinderclient==1.1.3
+pip install --upgrade python-cinderclient==1.6.0
 pip install --upgrade python-designateclient==1.1.1
-pip install --upgrade python-glanceclient==0.17.3
+pip install --upgrade python-glanceclient==2.0.0
 pip install --upgrade python-heatclient==0.4.0
 pip install --upgrade python-ironicclient==0.5.1
-pip install --upgrade python-keystoneclient==1.3.4
+pip install --upgrade python-keystoneclient==2.3.1
 pip install --upgrade python-manilaclient==1.1.0
 pip install --upgrade python-muranoclient==0.5.9
-pip install --upgrade python-neutronclient==2.5.0
-# NOTE: Not use 2.23.3 please
-pip install --upgrade python-novaclient==2.23.2
-pip install --upgrade python-openstackclient==1.0.5
+pip install --upgrade python-neutronclient==4.0.0
+pip install --upgrade python-novaclient==3.4.0
+pip install --upgrade python-openstackclient==2.3.0
 pip install --upgrade python-saharaclient==0.8.0
 pip install --upgrade python-swiftclient==2.4.0
 pip install --upgrade python-troveclient==1.0.9
