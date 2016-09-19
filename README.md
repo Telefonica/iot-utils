@@ -110,7 +110,7 @@ pip install --upgrade python-heatclient==0.4.0
 pip install --upgrade python-ironicclient==0.5.1
 pip install --upgrade python-keystoneclient==1.3.4
 pip install --upgrade python-manilaclient==1.1.0
-pip install --upgrade python-muranoclient==0.5.10
+pip install --upgrade python-muranoclient==0.5.9
 pip install --upgrade python-neutronclient==2.5.0
 # NOTE: Not use 2.23.3 please
 pip install --upgrade python-novaclient==2.23.2
