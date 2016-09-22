@@ -101,22 +101,16 @@ pip install --upgrade python-zaqarclient==0.2.0
 
 - Install KILO OpenStack client tools
 ```
-pip install --upgrade python-barbicanclient==3.0.3
-pip install --upgrade python-ceilometerclient==1.1.2
-pip install --upgrade python-cinderclient==1.6.0
-pip install --upgrade python-designateclient==1.1.1
-pip install --upgrade python-glanceclient==2.0.0
-pip install --upgrade python-heatclient==0.4.0
-pip install --upgrade python-ironicclient==0.5.1
-pip install --upgrade python-keystoneclient==2.3.1
-pip install --upgrade python-manilaclient==1.1.0
-pip install --upgrade python-muranoclient==0.5.9
-pip install --upgrade python-neutronclient==4.0.0
-pip install --upgrade python-novaclient==3.4.0
-pip install --upgrade python-openstackclient==2.3.0
-pip install --upgrade python-saharaclient==0.8.0
-pip install --upgrade python-swiftclient==2.4.0
-pip install --upgrade python-troveclient==1.0.9
+pip install --upgrade python-cinderclient==1.9.0
+pip install --upgrade python-glanceclient==2.5.0
+pip install --upgrade python-heatclient==1.4.0
+pip install --upgrade python-keystoneclient==3.5.0
+pip install --upgrade python-neutronclient==6.0.0
+pip install --upgrade python-novaclient==4.0.0
+pip install --upgrade python-openstackclient==3.2.0
+pip install --upgrade python-swiftclient==3.1.0
+# Nova versión 4.0.0. For python scripts to work correctly (dependencies force to 6.0.0)
+pip install --upgrade python-novaclient==4.0.0
 ```
 
 ### 1.5.- Generate python requirements file for backup software versions
