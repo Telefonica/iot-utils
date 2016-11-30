@@ -75,7 +75,7 @@ pip install ansible==${ANSIBLE_VERSION}
 pip install pywinrm==${WINRM_VERSION}
 ```
 - Install KILO OpenStack client tools<br>
-If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
+  If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
 ```
 pip install --upgrade python-cinderclient==1.9.0
 pip install --upgrade python-glanceclient==2.5.0
@@ -86,8 +86,8 @@ pip install --upgrade python-novaclient==6.0.0
 pip install --upgrade python-openstackclient==3.2.0
 pip install --upgrade python-swiftclient==3.1.0
 ```
-- Generate python requirements file for backup software versions
-We recommend to generate the requirements file of this python environment
+- Generate python requirements file for backup software versions<br>
+  We recommend to generate the requirements file of this python environment
 ```
 # Ansible 2.2.0.0 version
 ANSIBLE_VERSION=2.2.0.0
@@ -111,16 +111,15 @@ pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ### 1.4.- Install Ansible WinRM and OpenStack client tools (Windows with CygWin)
 We need to use Python version 2.7.12 and architecture x86. With CygWin we use own Python installation, but we can have a Windows Python installation (https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi)
 - Install CygWin: https://cygwin.com/setup-x86_64.exe (mininal install)
-- Setup Cygwin64 Terminal ICON
-
-    Check execute this program as Administrator AAAAAAAAAAAA
-- Disable access to Windows Python installation
+- Setup Cygwin64 Terminal ICON<br>
+  Check execute this program as Administrator AAAAAAAAAAAA
+- Disable access to Windows Python installation<br>
   Enter in a Cygwin64 session
 ```
 echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | paste -sd:)' >> .bash_profile
 exit
 ```
-- Install base packages
+- Install base packages<br>
   Enter in a Cygwin64 session
 ```
 curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
@@ -135,9 +134,8 @@ exit
 # libffi-devel: Portable foreign function interface library
 # gcc-g++: GNU Compiler Collection (C++)
 ```
-- Install Python packages
-
-Enter in a Cygwin64 session
+- Install Python packages<br>
+  Enter in a Cygwin64 session
 ```
 easy_install-2.7 pip
 pip install --upgrade pip
@@ -146,9 +144,8 @@ pip install --upgrade wheel
 pip install virtualenv
 exit
 ```
-- Install final software
-
-Enter in a Cygwin64 session
+- Install final software<br>
+  Enter in a Cygwin64 session
 ```
 # Information of outdated Python packages
 pip list --format=columns --outdated
@@ -238,14 +235,22 @@ Launch:
 
 #### 1.8.4.- Configure openstack environments
 Launch:
-```. openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh```
+```
+. openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh
+```
 Or
-```source openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh```
+```
+source openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh
+```
 
 Clear current environment:
-```. openstackenvCLEAR.sh```
+```
+. openstackenvCLEAR.sh
+```
 Or
-```source openstackenvCLEAR.sh```
+```
+source openstackenvCLEAR.sh
+```
 
 ### 1.8.5.- Manage VPNs
 To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` whitout parameters
@@ -260,8 +265,7 @@ After, we close PyCharm IDE, and automatically PyCharm IDe creates a desktop men
 
 
 ## 2.- Tools
-We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths).
-
+We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths)<br>
 Stored at $HOME/tools
 ```
 # Show diffs (Version X.Y.Z and commit number/release number) of RPMs between Git and RPM installed machines
@@ -313,9 +317,11 @@ updateiotansible.sh
 ## 3.- Windows and PowerShell
 We can configure any Windows host to easy access with ssh and work with Windows console and PowerShell
 
-### 3.1.- Microsoft has finally integrated into Windows openssh. To install it, follow the steps:
+### 3.1.- Microsoft has finally integrated into Windows openssh
+To install it, follow the steps:
 
-- Download a copy of Win-OpenSSH from https://github.com/PowerShell/Win32-OpenSSH.<br>The last is here: https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip
+- Download a copy of Win-OpenSSH from https://github.com/PowerShell/Win32-OpenSSH
+- The last is here: https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip
 
 - Unzip inside folder C:\openssh
 
@@ -328,13 +334,12 @@ cd C:\openssh
 ```
 
 - If Windows Firewall is activated:
-Open a port for the SSH server in Windows Firewall:
+Open a port for the SSH server in Windows Firewall:<br>
 Either run the following PowerShell command (Windows 8 and 2012 or newer only), as the Administrator:
 ```
 New-NetFirewallRule -Protocol TCP -LocalPort 22 -Direction Inbound -Action Allow -DisplayName SSHD
 ```
-or go to Control Panel > System and Security > Windows Firewall > Advanced Settings > Inbound Rules and add a new rule for port 22.
-
+or go to Control Panel > System and Security > Windows Firewall > Advanced Settings > Inbound Rules and add a new rule for port 22.<br>
 NOTE: New-NetFirewallRule is for servers only. If you're on a workstation try:
 ```
 netsh advfirewall firewall add rule name='SSH Port' dir=in action=allow protocol=TCP localport=22
@@ -361,17 +366,18 @@ Make the service start on boot (PowerShell):
 Set-Service sshd -StartupType Automatic
 ```
 Or manually:
-Start the service and/or configure automatic start:
-Go to Control Panel > System and Security > Administrative Tools and open Services. Locate SSHD service.
-If you want the server to start automatically when your machine is started: Go to Action > Properties. In the Properties dialog, change Startup type to Automatic and confirm.
-Start the SSHD service by clicking the Start the service.
+- Start the service and/or configure automatic start:
+- Go to Control Panel > System and Security > Administrative Tools and open Services. Locate SSHD service.
+- If you want the server to start automatically when your machine is started: Go to Action > Properties.
+- In the Properties dialog, change Startup type to Automatic and confirm.
+- Start the SSHD service by clicking the Start the service.
 
-- In your Windows account profile folder (typically in C:\Users\username\.ssh)
-Create the .ssh folder (for the authorized_keys file) in your Windows account profile folder (typically in C:\Users\username\.ssh).
-Do not change permissions for the .ssh and the authorized_keys.
-Configure authorized_keys file and store the PEM file in .ssh folder.
+In your Windows account profile folder (typically in C:\Users\username\.ssh):
+- Create the .ssh folder (for the authorized_keys file) in your Windows account profile folder (typically in C:\Users\username\.ssh).
+- Do not change permissions for the .ssh and the authorized_keys.
+- Configure authorized_keys file and store the PEM file in .ssh folder.
 
-- Test ssh connection
+* Test ssh connection
 ```
 Enter in Windows console
 ssh user@winmachine
@@ -424,8 +430,7 @@ Restart-Computer
 
 
 ## 4.- Operation process
-Inside iot-utils/operations we store processes to operate systems.
-By now, exists the following:
+Inside iot-utils/operations we store processes to operate systems. By now, exists the following:
 ```
 bin/changeloglevelnginx.sh
 ```
