@@ -11,10 +11,12 @@ Needs:
 - Easy filter groups of hosts (by example name, type, etc)
 - Easy VPN access
 
+
 ### 1.1.- Requirements
 - No root user for this
 - Compatibility for ZSH friends:<br>
   In general, all in this repository is compatible with zsh shell. I known a difference, with zsh, we don't need launch ". command.sh" when we need to execute and load environments, only to run "command.sh" is sufficient.
+
 
 ### 1.2.- Install basic software
 Launch:
@@ -27,127 +29,161 @@ sudo yum install sshpass -y
 sudo yum install openconnect -y
 # A program for making large letters out of ordinary text
 sudo yum install figlet -y
-# Create python virtual environments
-sudo yum install virtualenv -y
 # Install NetCat utility for Centos/RH 7 and higher
 sudo yum install nmap-ncat -y
 # Install NetCat utility for Centos/RH 6 and lower
 sudo yum install nc -y
+
+# For use OpenStack clients and Ansible, we have two options:
+
+# Installing RPM packages
+# Create python virtual environments
+sudo yum install python-virtualenv -y
+sudo yum install python-virtualenvwrapper -y
+
+# Or installing Python packages (in system Python)
+sudo pip install --upgrade pbr
+sudo pip install --upgrade PyYAML
+sudo pip install --upgrade virtualenv
+sudo pip install --upgrade virtualenvwrapper
+
+# How to update all python packages:
+sudo pip list --outdated | sed 's/(.*//g' | xargs -n1 pip install -U
 ```
 
-### 1.3.- Install Ansible and WinRM
+
+### 1.3.- Install Ansible WinRM and OpenStack client tools (Linux)
 First choose versions
-
-- For Ansible 1.9.6 (obsolete)
+- For Ansible 2.2.0.0 (actual)
 ```
-# Ansible 1.9 version
-ANSIBLE_VERSION=1.9.6
-WINRM_VERSION=0.1.1
+# Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
 ```
-
-- For Ansible 2.0.2.0 (obsolete)
-```
-# Ansible 2.0.2.0 version
-ANSIBLE_VERSION=2.0.2.0
-WINRM_VERSION=0.1.1
-```
-
-- For Ansible 2.1.1.0 (actual)
-```
-# Ansible 2.1.1.0 version
-ANSIBLE_VERSION=2.1.1.0
-WINRM_VERSION=0.2.0
-```
-
 Then install software
 ```
 rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
 source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+# Update basic Python packages
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
 # Install Ansible package
 pip install ansible==${ANSIBLE_VERSION}
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
 ```
-
-### 1.4.- Install OpenStack client tools
-If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO. For KILO please use KILO
-
-- Install LIBERTY OpenStack client tools
-```
-pip install --upgrade python-barbicanclient==3.3.0
-pip install --upgrade python-ceilometerclient==1.5.2
-pip install --upgrade python-cinderclient==1.4.0
-pip install --upgrade python-congressclient==1.2.0
-pip install --upgrade python-designateclient==1.5.0
-pip install --upgrade python-glanceclient==1.1.1
-pip install --upgrade python-heatclient==0.8.1
-pip install --upgrade python-ironic-inspector-client==1.2.0
-pip install --upgrade python-ironicclient==0.8.2
-pip install --upgrade python-keystoneclient==1.7.4
-pip install --upgrade python-magnumclient==0.2.1
-pip install --upgrade python-manilaclient==1.4.0
-pip install --upgrade python-mistralclient==1.1.0
-pip install --upgrade python-muranoclient==0.7.3
-pip install --upgrade python-neutronclient==3.1.1
-pip install --upgrade python-novaclient==2.30.2
-pip install --upgrade python-openstackclient==1.7.2
-pip install --upgrade python-saharaclient==0.11.1
-pip install --upgrade python-swiftclient==2.6.0
-pip install --upgrade python-tripleoclient==0.1.1
-pip install --upgrade python-troveclient==1.3.0
-pip install --upgrade python-zaqarclient==0.2.0
-```
-
 - Install KILO OpenStack client tools
+If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
 ```
 pip install --upgrade python-cinderclient==1.9.0
 pip install --upgrade python-glanceclient==2.5.0
 pip install --upgrade python-heatclient==1.4.0
-pip install --upgrade python-keystoneclient==3.5.0
+pip install --upgrade python-keystoneclient==3.7.0
 pip install --upgrade python-neutronclient==6.0.0
-pip install --upgrade python-novaclient==4.0.0
+pip install --upgrade python-novaclient==6.0.0
 pip install --upgrade python-openstackclient==3.2.0
 pip install --upgrade python-swiftclient==3.1.0
-# Nova versión 4.0.0. For python scripts to work correctly (dependencies force to 6.0.0)
-pip install --upgrade python-novaclient==4.0.0
 ```
-
-### 1.5.- Generate python requirements file for backup software versions
+- Generate python requirements file for backup software versions
 We recommend to generate the requirements file of this python environment
-
-- Example for Ansible 2.1.1.0
 ```
-# Ansible 2.1.1.0 version
-ANSIBLE_VERSION=2.1.1.0
-WINRM_VERSION=0.2.0
+# Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
 
-pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-<liberty or kilo>.txt
+pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ```
-
 - To recreate other python virtual environment
 ```
-# Ansible 2.1.1.0 version
-ANSIBLE_VERSION=2.1.1.0
-WINRM_VERSION=0.2.0
+# Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
 
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
-pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-<liberty or kilo>.txt
+pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
+```
+- Download requirements file Ansible
+[requirements-ansible-2.2.0.0-OST-kilo.txt](myenvironments/conf/requirements-ansible-2.2.0.0-OST-kilo.txt)
+
+
+### 1.4.- Install Ansible WinRM and OpenStack client tools (Windows with CygWin)
+We need to use Python version 2.7.12 and architecture x86. With CygWin we use own Python installation, but we can have a Windows Python installation (https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi)
+- Install CygWin: https://cygwin.com/setup-x86_64.exe (mininal install)
+- Setup Cygwin64 Terminal ICON
+Check execute this program as Administrator
+- Disable access to Windows Python installation
+Enter in a Cygwin64 session
+```
+echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | paste -sd:)' >> .bash_profile
+exit
+```
+- Install base packages
+Enter in a Cygwin64 session
+```
+curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
+./setup-x86_64.exe -q --packages python python-devel python-setuptools openssl-devel libffi-devel gcc-g++
+exit
+
+# Description packages
+# python: Python language interpreter
+# python-devel: Python language interpreter
+# python-setuptools: Python package management tool
+# openssl-devel: A general purpose cryptography toolkit with TLS implementation (development)
+# libffi-devel: Portable foreign function interface library
+# gcc-g++: GNU Compiler Collection (C++)
+```
+- Install Python packages
+Enter in a Cygwin64 session
+```
+easy_install-2.7 pip
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
+pip install virtualenv
+exit
+```
+- Install final software
+Enter in a Cygwin64 session
+```
+# Information of outdated Python packages
+pip list --format=columns --outdated
+
+# Workaround to compile with gcc (u_int header type unknown)
+export CFLAGS="-D_DEFAULT_SOURCE"
+# Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
+
+rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
+# Install Ansible package
+pip install ansible==${ANSIBLE_VERSION}
+# Install WIN RM for work with Windows machines
+pip install pywinrm==${WINRM_VERSION}
+
+pip install --upgrade python-cinderclient==1.9.0
+pip install --upgrade python-glanceclient==2.5.0
+pip install --upgrade python-heatclient==1.4.0
+pip install --upgrade python-keystoneclient==3.7.0
+pip install --upgrade python-neutronclient==6.0.0
+pip install --upgrade python-novaclient==6.0.0
+pip install --upgrade python-openstackclient==3.2.0
+pip install --upgrade python-swiftclient==3.1.0
+
+pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
+
+# Show list of installed packages
+cygcheck -c
 ```
 
-- Download requirements file Ansible 2.1.1.0 and Kilo
-[requirements-ansible-2.1.1.0-OST-kilo.txt](requirements-ansible-python/requirements-ansible-2.1.1.0-OST-kilo.txt)
 
-- Download requirements file Ansible 2.0.2.0 and Kilo
-[requirements-ansible-2.0.2.0-OST-kilo.txt](requirements-ansible-python/requirements-ansible-2.0.2.0-OST-kilo.txt)
-
-- Download requirements file Ansible 2.1.1.0 and Liberty
-[requirements-ansible-2.1.1.0-OST-liberty.txt](requirements-ansible-python/requirements-ansible-2.1.1.0-OST-liberty.txt)
-
-- Download requirements file Ansible 2.0.2.0 and Liberty
-[requirements-ansible-2.0.2.0-OST-liberty.txt](requirements-ansible-python/requirements-ansible-2.0.2.0-OST-liberty.txt)
-
-### 1.6.- Install PyCharm IDE Python develop environment
+### 1.5.- Install PyCharm IDE Python develop environment
 With no root user
 ```
 mkdir -p $HOME/software
@@ -157,37 +193,8 @@ cd $HOME
 tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 ```
 
-### 1.7.- Fix Ansible bug https://github.com/ansible/ansible/issues/14438 for Ansible 2.0.2.0
-The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls
 
-####1.7.1.- Apply the [ansible.patch14438](patchs/ansible.patch14438.patch)
-- Test python version and location that you used
-```
-python --version
-which python
-```
-- Test Ansible version (check that is 2.0.2.0)
-```
-ansible --version
-```
-- Download
-```
-cd <anydirectory>
-wget -N https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
-```
-- Apply patch automatically (one option)
-```
-cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
-sudo patch -p0 < <anydirectory>/ansible.patch14438.patch
-```
-- Apply patch manually (other option)
-```
-cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
-Edit the file playbook/block.py and delete the lines specified in the patch file (from line 271, delete three lines)
-Edit the file playbook/role/__init__.py and delete the lines specified in the patch file (from line 118, delete ten lines)
-```
-
-### 1.8.- Howto install myenvironments tools
+### 1.6.- Howto install myenvironments tools
 Launch:
 ```
 cd $HOME
@@ -197,7 +204,7 @@ cp -rp iot-utils/tools $HOME
 rm -rf iot-utils
 ```
 
-### 1.9.- Configure
+### 1.7.- Configure
 Read and apply all related task in: `$HOME/myenvironments/conf`
 ```
 bashrcconfignoroot.cnf.template
@@ -211,35 +218,36 @@ vpnconnect.info
 ```
 As final step we need to ensure that all session terminals are close, and open new terminals
 
-### 1.10.- Start and howto use
+### 1.8.- Start and howto use
 
-#### 1.10.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)
+#### 1.8.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)
 Launch:
 `noostservers.sh`
 The host lists are stored at `$HOME/myenvironments/envs/iotenvNOOST_*.hosts`
-#### 1.10.2.- Generate host lists of OST environments
+#### 1.8.2.- Generate host lists of OST environments
 Launch:
 `ostservers.sh`
 The host lists are stored at `$HOME/myenvironments/envs/iotenvOST_*.hosts`
 
-#### 1.10.3.- Use of SSH access to hosts
+#### 1.8.3.- Use of SSH access to hosts
 Launch:
 `sshaccess.sh`
 
-#### 1.10.4.- Manually configure openstack environments
-- For EPG launch (Selecting desired tenant, and green color):
-  ```. openstackenvEPG.sh```
-- For PREDSN launch (blue color):
-  ```. openstackenvPREDSN.sh```
-- For PRODSN launch (red color... Warning!!!):
-  ```. openstackenvPRODSN.sh```
-- Clear current environment:
-  ```. openstackenvCLEAR.sh```
+#### 1.8.4.- Configure openstack environments
+Launch:
+```. openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh```
+Or
+```source openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh```
 
-### 1.10.5.- Manage VPNs
+Clear current environment:
+```. openstackenvCLEAR.sh```
+Or
+```source openstackenvCLEAR.sh```
+
+### 1.8.5.- Manage VPNs
 To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` whitout parameters
 
-### 1.10.6.- Use PyCharm IDE
+### 1.8.6.- Use PyCharm IDE
 The first time we need to execute PyCharm IDE from startup script (as no root user):
 ```
 cd $HOME/pycharm-community-5.0.4/bin

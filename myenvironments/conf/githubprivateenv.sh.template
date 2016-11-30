@@ -53,6 +53,7 @@ function start_agent {
     # /usr/bin/ssh-add $HOME/.ssh/id_rsa_private_github
     # /usr/bin/ssh-add $HOME/.ssh/id_rsa_private_pdihub
     /usr/bin/ssh-add $HOME/.ssh/smc_*.pem
+    /usr/bin/ssh-add $HOME/.ssh/iotpkey
 }
 
 if [ -f "${SSH_ENV}" ]; then

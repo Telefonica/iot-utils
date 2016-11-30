@@ -1,12 +1,12 @@
 #!/bin/bash
 
 echo "******************************************************"
-echo "OST TENANT FOR PREDSN ENVIRONMENTS"
+echo "OST TENANT FOR OLDPRE ENVIRONMENTS"
 echo "We assume we have only one tenant..."
 echo "******************************************************"
 
 OSTENVFILE="${HOME}/listostenvs.cnf"
-LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=PREDSN ')"
+LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=OLDPRE ')"
 
 if [ "$(echo "${LISTOSTENVS}" | wc -l)" != "1" ] || [ "$(echo "${LISTOSTENVS}")" == "" ]
 then

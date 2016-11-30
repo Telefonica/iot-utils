@@ -5,6 +5,9 @@ unset OS_TENANT_NAME
 unset OS_USERNAME
 unset OS_PASSWORD
 unset OST_ACCESS_USER
+unset SPLUNK_INSTALL
+unset TELEGRAF_INSTALL
+unset CYCLOPS_INSTALL
 unalias nova
 unalias openstack
 unalias cinder
