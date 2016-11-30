@@ -114,7 +114,7 @@ We need to use Python version 2.7.12 and architecture x86. With CygWin we use ow
 - Setup Cygwin64 Terminal ICON
 Check execute this program as Administrator
 - Disable access to Windows Python installation
-  Enter in a Cygwin64 session
+    Enter in a Cygwin64 session
 ```
 echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | paste -sd:)' >> .bash_profile
 exit
