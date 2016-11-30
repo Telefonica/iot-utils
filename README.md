@@ -74,7 +74,7 @@ pip install ansible==${ANSIBLE_VERSION}
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
 ```
-- Install KILO OpenStack client tools
+- Install KILO OpenStack client tools<br>
 If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
 ```
 pip install --upgrade python-cinderclient==1.9.0
