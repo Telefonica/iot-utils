@@ -5,11 +5,11 @@ echo "* CJMM *"
 echo "********"
 echo
 echo "******************************************************"
-echo "SELECT OST TENANT FOR DSNAH ENVIRONMENTS"
+echo "SELECT OST TENANT FOR DSN AH ENVIRONMENTS"
 echo "******************************************************"
 
 OSTENVFILE="${HOME}/listostenvs.cnf"
-LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=.*DSNAH.*')"
+LISTOSTENVS="$(cat ${OSTENVFILE} | egrep '^OSTENV=.*AH.*')"
 
 unset options i
 while read -r myostenv
@@ -43,4 +43,5 @@ export PS1="[\u@\h \W]\[\e[7;32m\][\${OSTENV}]-[\${OS_TENANT_NAME}]\[\e[m\]\$ "
 
 env | grep ^OS
 env | grep ^PS1
+env | grep _INSTALL
 

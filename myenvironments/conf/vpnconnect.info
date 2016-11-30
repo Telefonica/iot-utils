@@ -6,7 +6,7 @@ And copy your certificate to $HOME/certs/personalcert.pfx
 
 2.- Check that task bashrcconfignoroot.cnf.template is apply, and DSN_USER and DSN_PASS are set correctly
 
-3.- Add to $HOME/.bash the following lines:
+3.- Add to $HOME/.bashrc the following lines:
 # For VPN access
 export CERTFILE=$HOME/certs/personalcert.pfx
 export CERTPASS=<pass_of_my_cert>
