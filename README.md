@@ -120,6 +120,7 @@ echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | 
 exit
 ```
 - Install base packages
+
     Enter in a Cygwin64 session
 ```
 curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
