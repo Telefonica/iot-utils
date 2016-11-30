@@ -112,6 +112,7 @@ pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 We need to use Python version 2.7.12 and architecture x86. With CygWin we use own Python installation, but we can have a Windows Python installation (https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi)
 - Install CygWin: https://cygwin.com/setup-x86_64.exe (mininal install)
 - Setup Cygwin64 Terminal ICON
+
         Check execute this program as Administrator AAAAAAAAAAAA
 - Disable access to Windows Python installation
   Enter in a Cygwin64 session
