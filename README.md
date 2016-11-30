@@ -120,7 +120,8 @@ echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | 
 exit
 ```
 - Install base packages
-  Enter in a Cygwin64 session
+
+Enter in a Cygwin64 session
 ```
 curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
 ./setup-x86_64.exe -q --packages python python-devel python-setuptools openssl-devel libffi-devel gcc-g++
@@ -135,7 +136,8 @@ exit
 # gcc-g++: GNU Compiler Collection (C++)
 ```
 - Install Python packages
-  Enter in a Cygwin64 session
+
+Enter in a Cygwin64 session
 ```
 easy_install-2.7 pip
 pip install --upgrade pip
@@ -145,6 +147,7 @@ pip install virtualenv
 exit
 ```
 - Install final software
+
 Enter in a Cygwin64 session
 ```
 # Information of outdated Python packages
