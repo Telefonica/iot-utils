@@ -253,7 +253,7 @@ source openstackenvCLEAR.sh
 ```
 
 ### 1.8.5.- Manage VPNs
-To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` whitout parameters
+To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect.sh` without parameters
 
 ### 1.8.6.- Use PyCharm IDE
 The first time we need to execute PyCharm IDE from startup script (as no root user):
