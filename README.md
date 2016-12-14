@@ -79,12 +79,18 @@ pip install pywinrm==${WINRM_VERSION}
 ```
 pip install --upgrade python-cinderclient==1.9.0
 pip install --upgrade python-glanceclient==2.5.0
-pip install --upgrade python-heatclient==1.4.0
-pip install --upgrade python-keystoneclient==3.7.0
+pip install --upgrade python-heatclient==1.6.1
+pip install --upgrade python-keystoneclient==3.8.0
 pip install --upgrade python-neutronclient==6.0.0
 pip install --upgrade python-novaclient==6.0.0
-pip install --upgrade python-openstackclient==3.2.0
-pip install --upgrade python-swiftclient==3.1.0
+pip install --upgrade python-openstackclient==3.4.1
+pip install --upgrade python-swiftclient==3.2.0
+pip install --upgrade python-designateclient==2.3.0
+pip install --upgrade python-ironicclient==1.8.0
+pip install --upgrade python-magnumclient==2.3.1
+pip install --upgrade python-mistralclient==2.1.2
+pip install --upgrade python-troveclient==2.6.0
+pip install --upgrade shade==1.13.2
 ```
 - Generate python requirements file for backup software versions<br>
   We recommend to generate the requirements file of this python environment
@@ -169,12 +175,18 @@ pip install pywinrm==${WINRM_VERSION}
 
 pip install --upgrade python-cinderclient==1.9.0
 pip install --upgrade python-glanceclient==2.5.0
-pip install --upgrade python-heatclient==1.4.0
-pip install --upgrade python-keystoneclient==3.7.0
+pip install --upgrade python-heatclient==1.6.1
+pip install --upgrade python-keystoneclient==3.8.0
 pip install --upgrade python-neutronclient==6.0.0
 pip install --upgrade python-novaclient==6.0.0
-pip install --upgrade python-openstackclient==3.2.0
-pip install --upgrade python-swiftclient==3.1.0
+pip install --upgrade python-openstackclient==3.4.1
+pip install --upgrade python-swiftclient==3.2.0
+pip install --upgrade python-designateclient==2.3.0
+pip install --upgrade python-ironicclient==1.8.0
+pip install --upgrade python-magnumclient==2.3.1
+pip install --upgrade python-mistralclient==2.1.2
+pip install --upgrade python-troveclient==2.6.0
+pip install --upgrade shade==1.13.2
 
 pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 
