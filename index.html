@@ -60,44 +60,40 @@ sudo yum install sshpass -y
 sudo yum install openconnect -y
 # A program for making large letters out of ordinary text
 sudo yum install figlet -y
-# Create python virtual environments
-sudo yum install virtualenv -y
 # Install NetCat utility for Centos/RH 7 and higher
 sudo yum install nmap-ncat -y
 # Install NetCat utility for Centos/RH 6 and lower
 sudo yum install nc -y
+
+# For use OpenStack clients and Ansible, we have two options:
+
+# Installing RPM packages
+# Create python virtual environments
+sudo yum install python-virtualenv -y
+sudo yum install python-virtualenvwrapper -y
+
+# Or installing Python packages (in system Python)
+sudo pip install --upgrade pbr
+sudo pip install --upgrade PyYAML
+sudo pip install --upgrade virtualenv
+sudo pip install --upgrade virtualenvwrapper
+
+# How to update all python packages:
+sudo pip list --outdated | sed 's/(.*//g' | xargs -n1 pip install -U
 </code></pre>
 
 <h3>
-<a id="13--install-ansible-and-winrm" class="anchor" href="#13--install-ansible-and-winrm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.3.- Install Ansible and WinRM</h3>
+<a id="13--install-ansible-winrm-and-openstack-client-tools-linux" class="anchor" href="#13--install-ansible-winrm-and-openstack-client-tools-linux" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.3.- Install Ansible WinRM and OpenStack client tools (Linux)</h3>
 
 <p>First choose versions</p>
 
 <ul>
-<li>For Ansible 1.9.6 (obsolete)</li>
+<li>For Ansible 2.2.0.0 (actual)</li>
 </ul>
 
-<pre><code># Ansible 1.9 version
-ANSIBLE_VERSION=1.9.6
-WINRM_VERSION=0.1.1
-</code></pre>
-
-<ul>
-<li>For Ansible 2.0.2.0 (obsolete)</li>
-</ul>
-
-<pre><code># Ansible 2.0.2.0 version
-ANSIBLE_VERSION=2.0.2.0
-WINRM_VERSION=0.1.1
-</code></pre>
-
-<ul>
-<li>For Ansible 2.1.1.0 (actual)</li>
-</ul>
-
-<pre><code># Ansible 2.1.1.0 version
-ANSIBLE_VERSION=2.1.1.0
-WINRM_VERSION=0.2.0
+<pre><code># Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
 </code></pre>
 
 <p>Then install software</p>
@@ -105,237 +101,151 @@ WINRM_VERSION=0.2.0
 <pre><code>rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
 source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+# Update basic Python packages
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
 # Install Ansible package
 pip install ansible==${ANSIBLE_VERSION}
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
 </code></pre>
 
-<h3>
-<a id="14--install-openstack-client-tools" class="anchor" href="#14--install-openstack-client-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.4.- Install OpenStack client tools</h3>
-
-<p>If we will work inside OST environments, we need to install the OpenStack client tools. We have two options, LIBERTY or KILO, but we recommend LIBERTY</p>
-
 <ul>
-<li>Install LIBERTY OpenStack (compatible with KILO) client tools</li>
+<li>Install KILO OpenStack client tools<br>
+If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.</li>
 </ul>
 
-<pre><code>pip install --upgrade python-barbicanclient==3.3.0
-pip install --upgrade python-ceilometerclient==1.5.2
-pip install --upgrade python-cinderclient==1.4.0
-pip install --upgrade python-congressclient==1.2.0
-pip install --upgrade python-designateclient==1.5.0
-pip install --upgrade python-glanceclient==1.1.1
-pip install --upgrade python-heatclient==0.8.1
-pip install --upgrade python-ironic-inspector-client==1.2.0
-pip install --upgrade python-ironicclient==0.8.2
-pip install --upgrade python-keystoneclient==1.7.4
-pip install --upgrade python-magnumclient==0.2.1
-pip install --upgrade python-manilaclient==1.4.0
-pip install --upgrade python-mistralclient==1.1.0
-pip install --upgrade python-muranoclient==0.7.3
-pip install --upgrade python-neutronclient==3.1.1
-pip install --upgrade python-novaclient==2.30.2
-pip install --upgrade python-openstackclient==1.7.2
-pip install --upgrade python-saharaclient==0.11.1
-pip install --upgrade python-swiftclient==2.6.0
-pip install --upgrade python-tripleoclient==0.1.1
-pip install --upgrade python-troveclient==1.3.0
-pip install --upgrade python-zaqarclient==0.2.0
+<pre><code>pip install --upgrade python-cinderclient==1.9.0
+pip install --upgrade python-glanceclient==2.5.0
+pip install --upgrade python-heatclient==1.4.0
+pip install --upgrade python-keystoneclient==3.7.0
+pip install --upgrade python-neutronclient==6.0.0
+pip install --upgrade python-novaclient==6.0.0
+pip install --upgrade python-openstackclient==3.2.0
+pip install --upgrade python-swiftclient==3.1.0
 </code></pre>
 
 <ul>
-<li>Install KILO OpenStack client tools</li>
+<li>Generate python requirements file for backup software versions<br>
+We recommend to generate the requirements file of this python environment</li>
 </ul>
 
-<pre><code>pip install --upgrade python-barbicanclient==3.0.3
-pip install --upgrade python-ceilometerclient==1.1.2
-pip install --upgrade python-cinderclient==1.1.3
-pip install --upgrade python-designateclient==1.1.1
-pip install --upgrade python-glanceclient==0.17.3
-pip install --upgrade python-heatclient==0.4.0
-pip install --upgrade python-ironicclient==0.5.1
-pip install --upgrade python-keystoneclient==1.3.4
-pip install --upgrade python-manilaclient==1.1.0
-pip install --upgrade python-muranoclient==0.5.10
-pip install --upgrade python-neutronclient==2.5.0
-pip install --upgrade python-novaclient==2.23.3
-pip install --upgrade python-openstackclient==1.0.5
-pip install --upgrade python-saharaclient==0.8.0
-pip install --upgrade python-swiftclient==2.4.0
-pip install --upgrade python-troveclient==1.0.9
-</code></pre>
+<pre><code># Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
 
-<h3>
-<a id="15--generate-python-requirements-file-for-backup-software-versions" class="anchor" href="#15--generate-python-requirements-file-for-backup-software-versions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.5.- Generate python requirements file for backup software versions</h3>
-
-<p>We recommend to generate the requirements file of this python environment</p>
-
-<ul>
-<li>Launch for Ansible 2.1.1.0 and OST Liberty</li>
-</ul>
-
-<pre><code>pip freeze &gt; $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
-</code></pre>
-
-<ul>
-<li>List of requirements file for Ansible 2.1.1.0 and OST Liberty</li>
-</ul>
-
-<pre><code>cat $HOME/requirements-ansible-2.1.1.0-OST-liberty.txt 
-alembic==0.8.8
-amqp==1.4.9
-ansible==2.1.1.0
-anyjson==0.3.3
-appdirs==1.4.0
-Babel==2.3.4
-backports.ssl-match-hostname==3.5.0.1
-beautifulsoup4==4.5.1
-cachetools==1.1.6
-cffi==1.8.2
-cliff==2.2.0
-cliff-tablib==2.0
-cmd2==0.6.8
-contextlib2==0.5.4
-croniter==0.3.12
-cryptography==1.5
-debtcollector==1.8.0
-decorator==4.0.10
-docker-py==1.7.2
-dogpile.cache==0.6.2
-enum34==1.1.6
-eventlet==0.19.0
-fasteners==0.14.1
-funcsigs==1.0.2
-functools32==3.2.3.post2
-futures==3.0.5
-futurist==0.18.0
-greenlet==0.4.10
-httplib2==0.9.2
-idna==2.1
-ipaddress==1.0.17
-iso8601==0.1.11
-Jinja2==2.8
-jsonpatch==1.14
-jsonpointer==1.10
-jsonschema==2.5.1
-keystoneauth1==2.12.1
-keystonemiddleware==4.9.0
-kombu==3.0.35
-logutils==0.3.3
-lxml==3.6.4
-Mako==1.0.4
-MarkupSafe==0.23
-mistral==2.0.0
-mock==2.0.0
-monotonic==1.2
-msgpack-python==0.4.8
-netaddr==0.7.18
-netifaces==0.10.5
-networkx==1.11
-openstacksdk==0.9.6
-os-client-config==1.21.1
-os-cloud-config==0.4.1
-osc-lib==1.1.0
-oslo.concurrency==3.14.0
-oslo.config==3.17.0
-oslo.context==2.9.0
-oslo.db==4.13.3
-oslo.i18n==3.9.0
-oslo.log==3.16.0
-oslo.messaging==5.10.0
-oslo.middleware==3.19.0
-oslo.serialization==2.13.0
-oslo.service==1.16.0
-oslo.utils==3.16.0
-paramiko==2.0.2
-passlib==1.6.5
-Paste==2.0.3
-PasteDeploy==1.5.2
-pbr==1.10.0
-pecan==1.1.2
-pika==0.10.0
-pika-pool==0.1.3
-ply==3.9
-positional==1.1.1
-prettytable==0.7.2
-pyasn1==0.1.9
-pycadf==2.4.0
-pycparser==2.14
-pycrypto==2.6.1
-pyinotify==0.9.6
-pyOpenSSL==16.1.0
-pyparsing==2.1.9
-python-barbicanclient==4.1.0
-python-ceilometerclient==2.6.1
-python-cinderclient==1.9.0
-python-congressclient==1.2.0
-python-dateutil==2.5.3
-python-designateclient==1.5.0
-python-editor==1.0.1
-python-glanceclient==2.5.0
-python-heatclient==1.4.0
-python-ironic-inspector-client==1.9.0
-python-ironicclient==1.7.0
-python-keystoneclient==3.5.0
-python-magnumclient==0.2.1
-python-manilaclient==1.4.0
-python-mistralclient==2.1.1
-python-muranoclient==0.7.3
-python-neutronclient==6.0.0
-python-novaclient==6.0.0
-python-ntlm3==1.0.2
-python-openstackclient==3.2.0
-python-saharaclient==0.11.1
-python-swiftclient==3.1.0
-python-tripleoclient==0.1.1
-python-troveclient==1.3.0
-python-zaqarclient==0.2.0
-pytz==2016.6.1
-pywinrm==0.2.0
-PyYAML==3.12
-repoze.lru==0.6
-requests==2.11.1
-requests-ntlm==0.3.0
-requestsexceptions==1.1.3
-retrying==1.3.3
-rfc3986==0.4.1
-Routes==2.3.1
-simplegeneric==0.8.1
-simplejson==3.8.2
-singledispatch==3.4.0.3
-six==1.10.0
-SQLAlchemy==1.0.15
-sqlalchemy-migrate==0.10.0
-sqlparse==0.2.1
-stevedore==1.17.1
-tablib==0.11.2
-Tempita==0.5.2
-tooz==1.43.0
-tripleo-common==5.0.0
-unicodecsv==0.14.1
-voluptuous==0.9.3
-waitress==1.0.0
-warlock==1.2.0
-WebOb==1.6.1
-websocket-client==0.37.0
-WebTest==2.0.23
-wrapt==1.10.8
-WSME==0.8.0
-xmltodict==0.10.2
-yaql==1.1.1
+pip freeze &gt; $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 </code></pre>
 
 <ul>
 <li>To recreate other python virtual environment</li>
 </ul>
 
-<pre><code>virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
-pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-liberty.txt
+<pre><code># Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
+
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
+</code></pre>
+
+<ul>
+<li>Download requirements file Ansible
+<a href="myenvironments/conf/requirements-ansible-2.2.0.0-OST-kilo.txt">requirements-ansible-2.2.0.0-OST-kilo.txt</a>
+</li>
+</ul>
+
+<h3>
+<a id="14--install-ansible-winrm-and-openstack-client-tools-windows-with-cygwin" class="anchor" href="#14--install-ansible-winrm-and-openstack-client-tools-windows-with-cygwin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.4.- Install Ansible WinRM and OpenStack client tools (Windows with CygWin)</h3>
+
+<p>We need to use Python version 2.7.12 and architecture x86. With CygWin we use own Python installation, but we can have a Windows Python installation (<a href="https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi">https://www.python.org/ftp/python/2.7.12/python-2.7.12.msi</a>)</p>
+
+<ul>
+<li>Install CygWin: <a href="https://cygwin.com/setup-x86_64.exe">https://cygwin.com/setup-x86_64.exe</a> (mininal install)</li>
+<li>Setup Cygwin64 Terminal ICON<br>
+Check execute this program as Administrator</li>
+<li>Disable access to Windows Python installation<br>
+Enter in a Cygwin64 session</li>
+</ul>
+
+<pre><code>echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | paste -sd:)' &gt;&gt; .bash_profile
+exit
+</code></pre>
+
+<ul>
+<li>Install base packages<br>
+Enter in a Cygwin64 session</li>
+</ul>
+
+<pre><code>curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
+./setup-x86_64.exe -q --packages python python-devel python-setuptools openssl-devel libffi-devel gcc-g++
+exit
+
+# Description packages
+# python: Python language interpreter
+# python-devel: Python language interpreter
+# python-setuptools: Python package management tool
+# openssl-devel: A general purpose cryptography toolkit with TLS implementation (development)
+# libffi-devel: Portable foreign function interface library
+# gcc-g++: GNU Compiler Collection (C++)
+</code></pre>
+
+<ul>
+<li>Install Python packages<br>
+Enter in a Cygwin64 session</li>
+</ul>
+
+<pre><code>easy_install-2.7 pip
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
+pip install virtualenv
+exit
+</code></pre>
+
+<ul>
+<li>Install final software<br>
+Enter in a Cygwin64 session</li>
+</ul>
+
+<pre><code># Information of outdated Python packages
+pip list --format=columns --outdated
+
+# Workaround to compile with gcc (u_int header type unknown)
+export CFLAGS="-D_DEFAULT_SOURCE"
+# Ansible 2.2.0.0 version
+ANSIBLE_VERSION=2.2.0.0
+WINRM_VERSION=0.2.1
+
+rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
+virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
+source ~/venv-ansible-${ANSIBLE_VERSION}/bin/activate
+pip install --upgrade pip
+pip install --upgrade setuptools
+pip install --upgrade wheel
+# Install Ansible package
+pip install ansible==${ANSIBLE_VERSION}
+# Install WIN RM for work with Windows machines
+pip install pywinrm==${WINRM_VERSION}
+
+pip install --upgrade python-cinderclient==1.9.0
+pip install --upgrade python-glanceclient==2.5.0
+pip install --upgrade python-heatclient==1.4.0
+pip install --upgrade python-keystoneclient==3.7.0
+pip install --upgrade python-neutronclient==6.0.0
+pip install --upgrade python-novaclient==6.0.0
+pip install --upgrade python-openstackclient==3.2.0
+pip install --upgrade python-swiftclient==3.1.0
+
+pip freeze &gt; $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
+
+# Show list of installed packages
+cygcheck -c
 </code></pre>
 
 <h3>
-<a id="16--install-pycharm-ide-python-develop-environment" class="anchor" href="#16--install-pycharm-ide-python-develop-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.6.- Install PyCharm IDE Python develop environment</h3>
+<a id="15--install-pycharm-ide-python-develop-environment" class="anchor" href="#15--install-pycharm-ide-python-develop-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.5.- Install PyCharm IDE Python develop environment</h3>
 
 <p>With no root user</p>
 
@@ -347,56 +257,7 @@ tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 </code></pre>
 
 <h3>
-<a id="17--fix-ansible-bug-httpsgithubcomansibleansibleissues14438-for-ansible-2020" class="anchor" href="#17--fix-ansible-bug-httpsgithubcomansibleansibleissues14438-for-ansible-2020" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.7.- Fix Ansible bug <a href="https://github.com/ansible/ansible/issues/14438">https://github.com/ansible/ansible/issues/14438</a> for Ansible 2.0.2.0</h3>
-
-<p>The problem: If a role is skipped due to failed conditional, the role's dependencies are skipped in subsequent calls</p>
-
-<h4>
-<a id="171--apply-the-ansiblepatch14438" class="anchor" href="#171--apply-the-ansiblepatch14438" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.7.1.- Apply the <a href="patchs/ansible.patch14438.patch">ansible.patch14438</a>
-</h4>
-
-<ul>
-<li>Test python version and location that you used</li>
-</ul>
-
-<pre><code>python --version
-which python
-</code></pre>
-
-<ul>
-<li>Test Ansible version (check that is 2.0.2.0)</li>
-</ul>
-
-<pre><code>ansible --version
-</code></pre>
-
-<ul>
-<li>Download</li>
-</ul>
-
-<pre><code>cd &lt;anydirectory&gt;
-wget -N https://raw.github.com/Telefonica/iot-utils/develop/patchs/ansible.patch14438.patch
-</code></pre>
-
-<ul>
-<li>Apply patch automatically (one option)</li>
-</ul>
-
-<pre><code>cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
-sudo patch -p0 &lt; &lt;anydirectory&gt;/ansible.patch14438.patch
-</code></pre>
-
-<ul>
-<li>Apply patch manually (other option)</li>
-</ul>
-
-<pre><code>cd $(python -c 'import os; import importlib; module = importlib.import_module("ansible"); print os.path.dirname(module.__file__)')
-Edit the file playbook/block.py and delete the lines specified in the patch file (from line 271, delete three lines)
-Edit the file playbook/role/__init__.py and delete the lines specified in the patch file (from line 118, delete ten lines)
-</code></pre>
-
-<h3>
-<a id="18--howto-install-myenvironments-tools" class="anchor" href="#18--howto-install-myenvironments-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.- Howto install myenvironments tools</h3>
+<a id="16--howto-install-myenvironments-tools" class="anchor" href="#16--howto-install-myenvironments-tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.6.- Howto install myenvironments tools</h3>
 
 <p>Launch:</p>
 
@@ -408,7 +269,7 @@ rm -rf iot-utils
 </code></pre>
 
 <h3>
-<a id="19--configure" class="anchor" href="#19--configure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.9.- Configure</h3>
+<a id="17--configure" class="anchor" href="#17--configure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.7.- Configure</h3>
 
 <p>Read and apply all related task in: <code>$HOME/myenvironments/conf</code></p>
 
@@ -425,53 +286,58 @@ vpnconnect.info
 <p>As final step we need to ensure that all session terminals are close, and open new terminals</p>
 
 <h3>
-<a id="110--start-and-howto-use" class="anchor" href="#110--start-and-howto-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.- Start and howto use</h3>
+<a id="18--start-and-howto-use" class="anchor" href="#18--start-and-howto-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.- Start and howto use</h3>
 
 <h4>
-<a id="1101--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" class="anchor" href="#1101--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)</h4>
+<a id="181--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" class="anchor" href="#181--generate-host-lists-of-vmware-environments-vmware-envs-only-useful-specific-for-iot-not-use-for-others" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.1.- Generate host lists of VMWARE environments (VMWARE envs only useful specific for IOT, not use for others)</h4>
 
 <p>Launch:
 <code>noostservers.sh</code>
 The host lists are stored at <code>$HOME/myenvironments/envs/iotenvNOOST_*.hosts</code></p>
 
 <h4>
-<a id="1102--generate-host-lists-of-ost-environments" class="anchor" href="#1102--generate-host-lists-of-ost-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.2.- Generate host lists of OST environments</h4>
+<a id="182--generate-host-lists-of-ost-environments" class="anchor" href="#182--generate-host-lists-of-ost-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.2.- Generate host lists of OST environments</h4>
 
 <p>Launch:
 <code>ostservers.sh</code>
 The host lists are stored at <code>$HOME/myenvironments/envs/iotenvOST_*.hosts</code></p>
 
 <h4>
-<a id="1103--use-of-ssh-access-to-hosts" class="anchor" href="#1103--use-of-ssh-access-to-hosts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.3.- Use of SSH access to hosts</h4>
+<a id="183--use-of-ssh-access-to-hosts" class="anchor" href="#183--use-of-ssh-access-to-hosts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.3.- Use of SSH access to hosts</h4>
 
 <p>Launch:
 <code>sshaccess.sh</code></p>
 
 <h4>
-<a id="1104--manually-configure-openstack-environments" class="anchor" href="#1104--manually-configure-openstack-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.4.- Manually configure openstack environments</h4>
+<a id="184--configure-openstack-environments" class="anchor" href="#184--configure-openstack-environments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.4.- Configure openstack environments</h4>
 
-<ul>
-<li>For EPG launch (Selecting desired tenant, and green color):
-<code>. openstackenvEPG.sh</code>
-</li>
-<li>For PREDSN launch (blue color):
-<code>. openstackenvPREDSN.sh</code>
-</li>
-<li>For PRODSN launch (red color... Warning!!!):
-<code>. openstackenvPRODSN.sh</code>
-</li>
-<li>Clear current environment:
-<code>. openstackenvCLEAR.sh</code>
-</li>
-</ul>
+<p>Launch:</p>
+
+<pre><code>. openstackenv&lt;EPG|DSNAH|PREDSN|PRODSN&gt;.sh
+</code></pre>
+
+<p>Or</p>
+
+<pre><code>source openstackenv&lt;EPG|DSNAH|PREDSN|PRODSN&gt;.sh
+</code></pre>
+
+<p>Clear current environment:</p>
+
+<pre><code>. openstackenvCLEAR.sh
+</code></pre>
+
+<p>Or</p>
+
+<pre><code>source openstackenvCLEAR.sh
+</code></pre>
 
 <h3>
-<a id="1105--manage-vpns" class="anchor" href="#1105--manage-vpns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.5.- Manage VPNs</h3>
+<a id="185--manage-vpns" class="anchor" href="#185--manage-vpns" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.5.- Manage VPNs</h3>
 
-<p>To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: <code>vpnconnect.sh</code> whitout parameters</p>
+<p>To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: <code>vpnconnect.sh</code> without parameters</p>
 
 <h3>
-<a id="1106--use-pycharm-ide" class="anchor" href="#1106--use-pycharm-ide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.10.6.- Use PyCharm IDE</h3>
+<a id="186--use-pycharm-ide" class="anchor" href="#186--use-pycharm-ide" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.8.6.- Use PyCharm IDE</h3>
 
 <p>The first time we need to execute PyCharm IDE from startup script (as no root user):</p>
 
@@ -484,9 +350,8 @@ The host lists are stored at <code>$HOME/myenvironments/envs/iotenvOST_*.hosts</
 <h2>
 <a id="2--tools" class="anchor" href="#2--tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.- Tools</h2>
 
-<p>We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths).</p>
-
-<p>Stored at $HOME/tools</p>
+<p>We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths)<br>
+Stored at $HOME/tools</p>
 
 <pre><code># Show diffs (Version X.Y.Z and commit number/release number) of RPMs between Git and RPM installed machines
 diffrpms/findagentbase.sh
@@ -539,10 +404,14 @@ updateiotansible.sh
 <p>We can configure any Windows host to easy access with ssh and work with Windows console and PowerShell</p>
 
 <h3>
-<a id="31--microsoft-has-finally-integrated-into-windows-openssh-to-install-it-follow-the-steps" class="anchor" href="#31--microsoft-has-finally-integrated-into-windows-openssh-to-install-it-follow-the-steps" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1.- Microsoft has finally integrated into Windows openssh. To install it, follow the steps:</h3>
+<a id="31--microsoft-has-finally-integrated-into-windows-openssh" class="anchor" href="#31--microsoft-has-finally-integrated-into-windows-openssh" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1.- Microsoft has finally integrated into Windows openssh</h3>
+
+<p>To install it, follow the steps:</p>
 
 <ul>
-<li><p>Download a copy of Win-OpenSSH from <a href="https://github.com/PowerShell/Win32-OpenSSH">https://github.com/PowerShell/Win32-OpenSSH</a>.<br>The last is here: <a href="https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip">https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip</a></p></li>
+<li>Download a copy of Win-OpenSSH from <a href="https://github.com/PowerShell/Win32-OpenSSH">https://github.com/PowerShell/Win32-OpenSSH</a>
+</li>
+<li><p>The last is here: <a href="https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip">https://github.com/PowerShell/Win32-OpenSSH/releases/download/4_5_2016/OpenSSH-Win64.zip</a></p></li>
 <li><p>Unzip inside folder C:\openssh</p></li>
 <li><p>Open a PowerShell console with administrator privileges</p></li>
 <li><p>Generate server keys with</p></li>
@@ -554,16 +423,15 @@ updateiotansible.sh
 
 <ul>
 <li>If Windows Firewall is activated:
-Open a port for the SSH server in Windows Firewall:
+Open a port for the SSH server in Windows Firewall:<br>
 Either run the following PowerShell command (Windows 8 and 2012 or newer only), as the Administrator:</li>
 </ul>
 
 <pre><code>New-NetFirewallRule -Protocol TCP -LocalPort 22 -Direction Inbound -Action Allow -DisplayName SSHD
 </code></pre>
 
-<p>or go to Control Panel &gt; System and Security &gt; Windows Firewall &gt; Advanced Settings &gt; Inbound Rules and add a new rule for port 22.</p>
-
-<p>NOTE: New-NetFirewallRule is for servers only. If you're on a workstation try:</p>
+<p>or go to Control Panel &gt; System and Security &gt; Windows Firewall &gt; Advanced Settings &gt; Inbound Rules and add a new rule for port 22.<br>
+NOTE: New-NetFirewallRule is for servers only. If you're on a workstation try:</p>
 
 <pre><code>netsh advfirewall firewall add rule name='SSH Port' dir=in action=allow protocol=TCP localport=22
 </code></pre>
@@ -596,17 +464,22 @@ Start-Service sshd
 <pre><code>Set-Service sshd -StartupType Automatic
 </code></pre>
 
-<p>Or manually:
-Start the service and/or configure automatic start:
-Go to Control Panel &gt; System and Security &gt; Administrative Tools and open Services. Locate SSHD service.
-If you want the server to start automatically when your machine is started: Go to Action &gt; Properties. In the Properties dialog, change Startup type to Automatic and confirm.
-Start the SSHD service by clicking the Start the service.</p>
+<p>Or manually:</p>
 
 <ul>
-<li><p>In your Windows account profile folder (typically in C:\Users\username.ssh)
-Create the .ssh folder (for the authorized_keys file) in your Windows account profile folder (typically in C:\Users\username.ssh).
-Do not change permissions for the .ssh and the authorized_keys.
-Configure authorized_keys file and store the PEM file in .ssh folder.</p></li>
+<li>Start the service and/or configure automatic start:</li>
+<li>Go to Control Panel &gt; System and Security &gt; Administrative Tools and open Services. Locate SSHD service.</li>
+<li>If you want the server to start automatically when your machine is started: Go to Action &gt; Properties.</li>
+<li>In the Properties dialog, change Startup type to Automatic and confirm.</li>
+<li>Start the SSHD service by clicking the Start the service.</li>
+</ul>
+
+<p>In your Windows account profile folder (typically in C:\Users\username.ssh):</p>
+
+<ul>
+<li>Create the .ssh folder (for the authorized_keys file) in your Windows account profile folder (typically in C:\Users\username.ssh).</li>
+<li>Do not change permissions for the .ssh and the authorized_keys.</li>
+<li><p>Configure authorized_keys file and store the PEM file in .ssh folder.</p></li>
 <li><p>Test ssh connection</p></li>
 </ul>
 
@@ -667,8 +540,7 @@ Restart-Computer
 <h2>
 <a id="4--operation-process" class="anchor" href="#4--operation-process" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4.- Operation process</h2>
 
-<p>Inside iot-utils/operations we store processes to operate systems.
-By now, exists the following:</p>
+<p>Inside iot-utils/operations we store processes to operate systems. By now, exists the following:</p>
 
 <pre><code>bin/changeloglevelnginx.sh
 </code></pre>
