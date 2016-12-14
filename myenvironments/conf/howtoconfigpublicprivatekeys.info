@@ -1,0 +1,38 @@
+Howto config public private keys
+
+1.- Directory $HOME/.ssh of no root user
+Launch:
+mkdir -p $HOME/.ssh
+We need store two public private keys:
+# Key of own machine not needed
+# id_rsa
+# id_rsa.pub
+id_rsa_private_github
+id_rsa_private_github.pub
+id_rsa_private_pdihub
+id_rsa_private_pdihub.pub
+
+1.1.- Keys for own machine (id_rsa and id_rsa.pub)
+ssh-keygen -t rsa -f $HOME/.ssh/id_rsa -N ""
+
+1.2.- Keys for pdihub personal user
+Store it at path:
+$HOME/.ssh/id_rsa_private_pdihub
+$HOME/.ssh/id_rsa_private_pdihub.pub
+
+1.3.- Keys for github personal user
+Store it at path:
+$HOME/.ssh/id_rsa_private_github
+$HOME/.ssh/id_rsa_private_github.pub
+
+1.4.- Store PEM files for environment authentication at $HOME/.ssh
+$HOME/.ssh/smc_epg.pem
+$HOME/.ssh/smc_pre.pem
+$HOME/.ssh/smc_pro.pem
+
+2.- Set permissions
+Launch:
+chmod 700 $HOME/.ssh
+chmod 600 $HOME/.ssh/*
+
+

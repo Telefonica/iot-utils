@@ -1,0 +1,4 @@
+<my_ip_ansible_machine> <my_name_ansible_machine>.hi.inet my_name_ansible_machine # host where use Ansible
+10.26.238.217 ost-controller-lb-dev.service-d.dsn.inet # Auth for PRE
+10.26.238.209 ost-controller-lb-del.service-l.dsn.inet # Auth for PRO
+
