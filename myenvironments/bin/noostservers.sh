@@ -32,8 +32,8 @@ git clone git@pdihub.hi.inet:ep/iot_ansible.git 2>/dev/null
 if [ "$(find -mindepth 1 -maxdepth 1 -name "iot_ansible" -type d)" != "" ]
 then
   cd ./iot_ansible
-  git checkout develop
-  git pull origin
+  git checkout master
+  git pull origin master
   cd ..
 else
   echo "ERROR: Git Ansible repo not found..."
@@ -66,7 +66,7 @@ then
   exit 5
 fi
 
-LISTPLATFORMS="hadoop vmware"
+LISTPLATFORMS="vmware"
 
 for platform in ${LISTPLATFORMS}
 do
