@@ -1,8 +1,7 @@
 #!/bin/bash
 
 cd $HOME/sw/iot_ansible
-git checkout develop
-# git checkout release/4.0
+git checkout master
 # git checkout release/4.1
 
 git status

@@ -5,20 +5,20 @@ INTEGRATION=group_vars/integration
 PREPRODUCTION=group_vars/preproduction
 PRODUCTION=group_vars/production
 
-LISTFILES="${INTEGRATORS}/1credentials.yml ${INTEGRATORS}/2credentials_provision.yml ${INTEGRATORS}/3certificates.yml \
-${INTEGRATION}/1credentials.yml ${INTEGRATION}/2credentials_provision.yml ${INTEGRATION}/3certificates.yml \
-${PREPRODUCTION}/1credentials.yml ${PREPRODUCTION}/2credentials_provision.yml ${PREPRODUCTION}/3certificates.yml \
-${PRODUCTION}/1credentials.yml ${PRODUCTION}/2credentials_provision.yml ${PRODUCTION}/3certificates.yml "
+LISTFILES="${INTEGRATORS}/1credentials.yml ${INTEGRATORS}/2credentials_provision.yml ${INTEGRATORS}/3certificates.yml ${INTEGRATORS}/4syncthing_certificates.yml \
+${INTEGRATION}/1credentials.yml ${INTEGRATION}/2credentials_provision.yml ${INTEGRATION}/3certificates.yml ${INTEGRATION}/4syncthing_certificates.yml \
+${PREPRODUCTION}/1credentials.yml ${PREPRODUCTION}/2credentials_provision.yml ${PREPRODUCTION}/3certificates.yml ${PREPRODUCTION}/4syncthing_certificates.yml \
+${PRODUCTION}/1credentials.yml ${PRODUCTION}/2credentials_provision.yml ${PRODUCTION}/3certificates.yml ${PRODUCTION}/4syncthing_certificates.yml "
 
-echo "LIST DIFFERENCES FROM branch develop"
+echo "LIST DIFFERENCES FROM branch master"
 echo "You need to launch from home directory of git repo..."
 echo "Changes in diffcreds"
 rm -rf ./diffcreds
 mkdir -p ./diffcreds
 
 cd iot_ansible
-git checkout develop
-git pull origin develop
+git checkout master
+git pull origin master
 
 for myfile in ${LISTFILES}
 do
