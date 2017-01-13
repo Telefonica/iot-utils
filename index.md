@@ -20,6 +20,7 @@ Needs:
 
 ### 1.2.- Install basic software
 Launch:
+
 ```
 # The git client and dialog window text
 sudo yum install dialog git -y
@@ -55,12 +56,15 @@ sudo pip list --outdated | sed 's/(.*//g' | xargs -n1 pip install -U
 ### 1.3.- Install Ansible WinRM and OpenStack client tools (Linux)
 First choose versions
 - For Ansible 2.2.0.0 (actual)
+
 ```
 # Ansible 2.2.0.0 version
 ANSIBLE_VERSION=2.2.0.0
 WINRM_VERSION=0.2.1
 ```
+
 Then install software
+
 ```
 rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
@@ -74,8 +78,10 @@ pip install ansible==${ANSIBLE_VERSION}
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
 ```
+
 - Install KILO OpenStack client tools<br>
   If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
+
 ```
 pip install --upgrade python-cinderclient==1.9.0
 pip install --upgrade python-glanceclient==2.5.0
@@ -92,8 +98,10 @@ pip install --upgrade python-mistralclient==2.1.2
 pip install --upgrade python-troveclient==2.6.0
 pip install --upgrade shade==1.13.2
 ```
+
 - Generate python requirements file for backup software versions<br>
   We recommend to generate the requirements file of this python environment
+
 ```
 # Ansible 2.2.0.0 version
 ANSIBLE_VERSION=2.2.0.0
@@ -101,7 +109,9 @@ WINRM_VERSION=0.2.1
 
 pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ```
+
 - To recreate other python virtual environment
+
 ```
 # Ansible 2.2.0.0 version
 ANSIBLE_VERSION=2.2.0.0
@@ -110,6 +120,7 @@ WINRM_VERSION=0.2.1
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
 pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ```
+
 - Download requirements file Ansible
 [requirements-ansible-2.2.0.0-OST-kilo.txt](myenvironments/conf/requirements-ansible-2.2.0.0-OST-kilo.txt)
 
@@ -121,12 +132,15 @@ We need to use Python version 2.7.12 and architecture x86. With CygWin we use ow
   Check execute this program as Administrator
 - Disable access to Windows Python installation<br>
   Enter in a Cygwin64 session
+
 ```
 echo $'PATH=$(echo $PATH | tr \':\' \'\\n\' | grep -v "/cygdrive/.*/Python27" | paste -sd:)' >> .bash_profile
 exit
 ```
+
 - Install base packages<br>
   Enter in a Cygwin64 session
+
 ```
 curl https://cygwin.com/setup-x86_64.exe -o setup-x86_64.exe
 ./setup-x86_64.exe -q --packages python python-devel python-setuptools openssl-devel libffi-devel gcc-g++
@@ -140,8 +154,10 @@ exit
 # libffi-devel: Portable foreign function interface library
 # gcc-g++: GNU Compiler Collection (C++)
 ```
+
 - Install Python packages<br>
   Enter in a Cygwin64 session
+
 ```
 easy_install-2.7 pip
 pip install --upgrade pip
@@ -150,8 +166,10 @@ pip install --upgrade wheel
 pip install virtualenv
 exit
 ```
+
 - Install final software<br>
   Enter in a Cygwin64 session
+
 ```
 # Information of outdated Python packages
 pip list --format=columns --outdated
@@ -197,6 +215,7 @@ cygcheck -c
 
 ### 1.5.- Install PyCharm IDE Python develop environment
 With no root user
+
 ```
 mkdir -p $HOME/software
 cd $HOME/software
@@ -208,6 +227,7 @@ tar xvfz software/xvfz pycharm-community-5.0.4.tar.gz
 
 ### 1.6.- Howto install myenvironments tools
 Launch:
+
 ```
 cd $HOME
 git clone git@github.com:Telefonica/iot-utils.git
@@ -218,6 +238,7 @@ rm -rf iot-utils
 
 ### 1.7.- Configure
 Read and apply all related task in: `$HOME/myenvironments/conf`
+
 ```
 bashrcconfignoroot.cnf.template
 configetchosts.info
@@ -228,6 +249,7 @@ sshconfigclientnoroot.template
 pycharm.info
 vpnconnect.info
 ```
+
 As final step we need to ensure that all session terminals are close, and open new terminals
 
 ### 1.8.- Start and howto use
@@ -247,19 +269,25 @@ Launch:
 
 #### 1.8.4.- Configure openstack environments
 Launch:
+
 ```
 . openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh
 ```
+
 Or
+
 ```
 source openstackenv<EPG|DSNAH|PREDSN|PRODSN>.sh
 ```
 
 Clear current environment:
+
 ```
 . openstackenvCLEAR.sh
 ```
+
 Or
+
 ```
 source openstackenvCLEAR.sh
 ```
@@ -269,16 +297,19 @@ To manage VPNs we can use vpnconnect.sh. Howto use and help, launch: `vpnconnect
 
 ### 1.8.6.- Use PyCharm IDE
 The first time we need to execute PyCharm IDE from startup script (as no root user):
+
 ```
 cd $HOME/pycharm-community-5.0.4/bin
 ./pycharm.sh
 ```
+
 After, we close PyCharm IDE, and automatically PyCharm IDe creates a desktop menu launch at `Application->Programming->Pycharm Community Edition`
 
 
 ## 2.- Tools
 We have tools for work better. These tools are not robust (by now), then you need to modify it to work properly (Ex. paths)<br>
 Stored at $HOME/tools
+
 ```
 # Show diffs (Version X.Y.Z and commit number/release number) of RPMs between Git and RPM installed machines
 diffrpms/findagentbase.sh
@@ -340,6 +371,7 @@ To install it, follow the steps:
 - Open a PowerShell console with administrator privileges
 
 - Generate server keys with
+
 ```
 cd C:\openssh
 .\ssh-keygen.exe -A
@@ -348,35 +380,44 @@ cd C:\openssh
 - If Windows Firewall is activated:
 Open a port for the SSH server in Windows Firewall:<br>
 Either run the following PowerShell command (Windows 8 and 2012 or newer only), as the Administrator:
+
 ```
 New-NetFirewallRule -Protocol TCP -LocalPort 22 -Direction Inbound -Action Allow -DisplayName SSHD
 ```
+
 or go to Control Panel > System and Security > Windows Firewall > Advanced Settings > Inbound Rules and add a new rule for port 22.<br>
 NOTE: New-NetFirewallRule is for servers only. If you're on a workstation try:
+
 ```
 netsh advfirewall firewall add rule name='SSH Port' dir=in action=allow protocol=TCP localport=22
 ```
 
 - If you need key-based authentication, run the following to setup the key-auth package
+
 ```
 powershell.exe .\install-sshlsa.ps1
 Restart-Computer
 ```
 
 - Edit C:\openssh\sshd_config to configure sftp server:
+
 ```
 Subsystem sftp C:\openssh\sftp-server.exe
 ```
 
 - Install SSHD server as service
+
 ```
 .\sshd.exe install
 Start-Service sshd
 ```
+
 Make the service start on boot (PowerShell):
+
 ```
 Set-Service sshd -StartupType Automatic
 ```
+
 Or manually:
 - Start the service and/or configure automatic start:
 - Go to Control Panel > System and Security > Administrative Tools and open Services. Locate SSHD service.
@@ -390,6 +431,7 @@ In your Windows account profile folder (typically in C:\Users\username\.ssh):
 - Configure authorized_keys file and store the PEM file in .ssh folder.
 
 * Test ssh connection
+
 ```
 Enter in Windows console
 ssh user@winmachine
@@ -398,6 +440,7 @@ powershell -File -
 ```
 
 Example:
+
 ```
 ssh myuser@caprica.hi.inet
 myuser@caprica.hi.inet's password: 
@@ -429,11 +472,13 @@ Connection to caprica.hi.inet closed.
 - Start Powershell as Administrator
 
 - Stop the service
+
 ```
 Stop-Service sshd
 ```
 
 - Uninstall
+
 ```
 .\sshd.exe uninstall
 powershell .\uninstall-sshlsa.ps1
@@ -443,11 +488,14 @@ Restart-Computer
 
 ## 4.- Operation process
 Inside iot-utils/operations we store processes to operate systems. By now, exists the following:
+
 ```
 bin/changeloglevelnginx.sh
 ```
+
 - Change (locally, inside a machine with SSH) the level log of nginx server online.
 - Help of use:
+
 ```
 ./changeloglevelnginx.sh 
 ****************************************
@@ -468,8 +516,10 @@ Where loglevel can be:
 
 For debug level visit http://nginx.org/en/docs/debugging_log.html
 ```
+
 - Example of use:
 ./changeloglevelnginx.sh warn
+
 ```
 ****************************************
 NGINX CHANGE LOG LEVEL
@@ -493,21 +543,25 @@ When appear: hardware failures, cluster failures, and obsoleted Linux Kernels. S
 - Stop postgres
 
 - File system repair
+
 ```
 e2fsck -fp /dev/<device>
 ```
 
 - Add following line to /var/lib/pgsql/9.3/data/postgresql.conf
+
 ```
 allow_system_table_mods = on
 ```
 
 - Enter postgres session in the affected database
+
 ```
 psql -U postgres db_affected
 ```
 
 - From the toast table number of the log failed (here is 2619)
+
 ```
 SELECT relname from pg_class where oid = 2619;
    relname    
@@ -517,12 +571,14 @@ SELECT relname from pg_class where oid = 2619;
 ```
 
 - Test that this table is failing
+
 ```
 SELECT count (*) from pg_statistic;
 ERROR:  invalid page in block 25 of relation base/16386/12629
 ```
 
 - Repair:
+
 ```
 SET zero_damaged_pages = on;
 Output:
@@ -552,6 +608,7 @@ VACUUM
 ```
 
 - Exit session and remove from /var/lib/pgsql/9.3/data/postgresql.conf the parameter added previously
+
 ```
 allow_system_table_mods = on
 ```
@@ -559,14 +616,17 @@ allow_system_table_mods = on
 - Stop and start postgres. Now the database is repaired
 
 - Do yum update to prevent the same error (Steps only for RH/Centos 6.x)
+
 ```
 yum update -y bind* coreutils* chkconfig* device-mapper* binutils* dracut* elf* fence* kernel* lvm*
 ```
 
 - Reboot the machine
+
 ```
 reboot
 ```
+
 ### 5.2.- Manage and administer MongoDB databases
 The MongoDB database is a simple no-sql database, oriented to documents using JSON and BSON formats
 
@@ -588,6 +648,7 @@ The use is simple, given that for each task we have a separated and isolated pro
 Here we list all commands that we can use
 
 - listdbs.sh
+
 ```
 *************************************************
 List mongo db names
@@ -597,6 +658,7 @@ Usage: listdbs.sh [--help | --alldbs | --db "searchstring"]
 ```
 
 - listcolls.sh
+
 ```
 *************************************************
 List mongo collection names of a db
@@ -606,6 +668,7 @@ Usage: listcolls.sh [--help | --db "dbname" [ --col "searchstring" ] ]
 ```
 
 - copydb.sh
+
 ```
 *************************************************
 Copy a mongo db
@@ -615,6 +678,7 @@ Usage: copydb.sh [--help | --dbfrom "dbsource" --dbto "dbtarget"]
 ```
 
 - dropdb.sh
+
 ```
 *************************************************
 Drop a mongo db
@@ -624,6 +688,7 @@ Usage: dropdb.sh [--help | --db "dbname"]
 ```
 
 - rencolls.sh
+
 ```
 *************************************************
 Rename collection names of a mongo db
@@ -645,6 +710,7 @@ Examples:
 ```
 
 - backuponedb.sh
+
 ```
 *************************************************
 Backup a mongo db with BSON format
@@ -654,6 +720,7 @@ Usage: backuponedb.sh [--help | --db "dbtobackup" [--backupprefix "prefix" defau
 ```
 
 - backupdbs.sh
+
 ```
 *************************************************
 Backup mongo dbs with BSON format
@@ -663,6 +730,7 @@ Usage: backupdbs.sh [--help | --alldbs | --dbs "searchstring" [--backupprefix "p
 ```
 
 - restoreonedb.sh
+
 ```
 *************************************************
 Restore a mongo db with BSON format
@@ -672,6 +740,7 @@ Usage: restoreonedb.sh [--help | --dirbackup "path_abs_dir_backup" --dbsource "d
 ```
 
 - restoredbs.sh
+
 ```
 *************************************************
 Restore mongo dbs with BSON format
@@ -681,6 +750,7 @@ Usage: restoredbs.sh [--help | --dirbackup "path_abs_dir_backup" <--dbs "searchs
 ```
 
 - STHbackupdbs.sh (a specific process to backup MongoDB databases with slashes inside collection names)
+
 ```
 *************************************************
 STH backup databases
@@ -690,6 +760,7 @@ Usage: STHbackupdbs.sh [--help | --done]
 ```
 
 - STHrestoreonedb.sh (a specific process to restore a MongoDB database with slashes inside collection names)
+
 ```
 *************************************************
 WARNING: Restore databases is very dangerous...
@@ -704,11 +775,13 @@ We assume that the MongoDB databases are named as prefix '^sth_'<br>
 Then we execute two steps:
 
 - Backup of all databases no '^sth_'
+
 ```
 ./backupdbs.sh  --dbs '^(?!sth_)' --backupprefix backupnosth
 ```
 
 - Backup of all databases '^sth_'
+
 ```
 /STHbackupdbs.sh --done
 ```
@@ -722,7 +795,7 @@ We show step by step howto create a virtual machine image for OpenStack. We will
 
 - Create new machine as:
 
-  ```
+```
 Name: Centos7-1611
 Linux RedHat 64 bits
 1024Mb RAM
@@ -732,11 +805,12 @@ Uncheck Enable audio
 One net adapter:
 - Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
 Add cdrom ISO CentOS-7-x86_64-DVD-1611.iso
-  ```
+```
 
 - Start machine
 
 - Data for installer in order:
+
 ```
 - Language installation process -> Continue
 
@@ -774,6 +848,7 @@ groups wheel, adm, systemd-journal
 - Reboot
 
 - Enter SSH in new machine
+
 ```
 # DNS utils
 yum -y install net-tools bind-utils
