@@ -717,5 +717,252 @@ Then we execute two steps:
 In the future we realize these tools more simple and efficient that current tools
 
 
-## 6.- Enjoy it...
+## 6.- Create a virtual machine image for OpenStack
+We show step by step howto create a virtual machine image for OpenStack. We will use VirtualBox for this task
+
+CENTOS7_TEMPLATE_FOR_OPENSTACK
+
+This VM is compatible with virtualbox too, except that we need to configure cloud-user with password or ssh public key, or use sysadmin user with password or ssh public key
+
+- Create new machine as:
+```
+Name: Centos7-1611
+Linux RedHat 64 bits
+1024Mb RAM
+1CPU
+Hard disk VDI dinamic reserved 20Gb
+Uncheck Enable audio
+One net adapter:
+- Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
+Add cdrom ISO CentOS-7-x86_64-DVD-1611.iso
+```
+
+- Start machine
+
+- Data for installer in order:
+```
+- Language installation process -> Continue
+
+- Network and hostname
+Default name
+Configure
+One NIC enp0s3 automatic connected required IPV4
+Annotate IP and add to putty for later access
+
+- Date and time
+Date Madrid with NTP
+
+- Language support add Español España
+
+- Keyboard add Spanish Castillian and configure to first keyboard
+
+- Installation destination -> Done
+
+- Disable kdump
+
+- Security policy
+Apply security policy (by default)
+
+- Minimal installation
+
+- Create user admin
+name sysadmin
+pass ...
+Make this user administrator
+groups wheel, adm, systemd-journal
+```
+
+- Begin install
+
+- Reboot
+
+- Enter SSH in new machine
+```
+# DNS utils
+yum -y install net-tools bind-utils
+# NTP
+yum -y install ntp ntpdate
+
+# DISABLE/ENABLE to permissive selinux (by now disable)
+sed -i 's/^SELINUX=.*$/SELINUX=disabled/g' /etc/selinux/config
+setenforce 0
+
+# FIREWALLD  disable
+systemctl stop firewalld
+systemctl disable firewalld
+systemctl mask firewalld
+
+# NOTE: we don't delete NetworkManager. When deploy in OST, NetworkManager configures automatically all interfaces
+# After, if we don't need NetworkManager, we can uninstall it
+
+# EPEL
+yum -y install epel-release
+
+# Yum plugins
+yum -y install yum-plugin-remove-with-leaves yum-plugin-ovl yum-utils pv
+
+# Openstack cloud
+yum -y install curl cloud-init cloud-utils-growpart acpid
+systemctl enable acpid
+systemctl start acpid
+
+# For Centos7-1611, for our particular purposes, we update all packages. We can skip this step for reduce image size
+yum -y update
+
+# Create standard net interface
+echo 'DEVICE="eth0"
+BOOTPROTO="dhcp"
+BOOTPROTOv6="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+USERCTL="yes"
+PEERDNS="yes"
+IPV6INIT="yes"
+PERSISTENT_DHCLIENT="1"' > /etc/sysconfig/network-scripts/ifcfg-eth0
+
+rm -f /etc/sysconfig/network-scripts/ifcfg-enp0s3
+
+# Configure correctly the network for good access to OST metadata
+echo 'NETWORKING=yes
+NOZEROCONF=yes' > /etc/sysconfig/network
+
+# Configure cloud-init
+Edit /etc/cloud/cloud.cfg
+Replace
+---
+    name: centos
+---
+by
+---
+    name: cloud-user
+---
+And comment line:
+# ssh_pwauth:   0
+
+In cloud_init_modules (After  - ssh)
+---
+ - resolv-conf
+---
+
+# Remove persistent net rules
+ln -s /dev/null /etc/udev/rules.d/80-net-name-slot.rules
+rm -f /etc/udev/rules.d/70-persistent-ipoib.rules
+
+# Change grub config
+Edit /etc/default/grub and replace by:
+GRUB_TIMEOUT=1
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT=saved
+GRUB_DISABLE_SUBMENU=true
+GRUB_TERMINAL="serial console"
+GRUB_SERIAL_COMMAND="serial --speed=115200"
+GRUB_CMDLINE_LINUX="console=ttyS0,115200n8 console=tty0 vconsole.font=latarcyrheb-sun16 crashkernel=auto vconsole.keymap=es"
+GRUB_DISABLE_RECOVERY="true"
+
+# Launch:
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
+# Set keymap
+localectl set-keymap --no-convert es
+localectl set-x11-keymap --no-convert es
+
+localectl status
+---
+   System Locale: LANG=en_US.UTF-8
+       VC Keymap: es
+      X11 Layout: es
+---
+
+# Add sysadmin to /etc/sudoers file
+sysadmin ALL=(ALL) NOPASSWD: ALL
+
+# NOTE: If we need to configure sysadmin to use specific public key, add an .ssh/authorized_keys
+As sysadmin:
+mkdir -p /home/sysadmin/.ssh
+Create /home/sysadmin/.ssh/authorized_keys
+ssh-rsa ...
+chmod 700 /home/cloud-user/.ssh
+chmod 600 /home/cloud-user/.ssh/*
+
+# Clean...
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
+dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
+
+# To enter with sysadmin remotely, after first reboot (cloud-init disable all password autentication for all users)
+Edit /etc/ssh/sshd_config
+Add:
+Match User sysadmin
+---
+	PasswordAuthentication yes
+---
+
+reboot
+
+# Enter in the machine and test OK and remove other things
+package-cleanup -y --oldkernels --count=1
+
+# When the image is working properly (disable sysadmin access remotely, only for console)
+Edit and comment
+/etc/ssh/sshd_config
+# Match User sysadmin
+# 	PasswordAuthentication yes
+
+Edit /etc/cloud/cloud.cfg
+Uncomment
+ssh_pwauth:   0
+
+# Clean cloud-init data created
+userdel -r cloud-user
+rm -f /etc/sudoers.d/90-cloud-init-users /etc/group- /etc/gshadow- /etc/passwd- /etc/shadow-
+rm -rf /var/lib/cloud
+
+# Clean
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
+dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
+
+# Clean logs
+rm -rf /tmp/*
+rm -f /root/.bash_history
+rm -f /home/sysadmin/.bash_history
+rm -f /var/log/cloud-init*.log
+
+# WARN: Shutdown machine, not reboot......
+shutdown -h now
+
+# From outside of VirtualBox (we use Cygwin)
+
+# Reduce image
+VBoxManage modifymedium "D:\VMs\Centos7-1611\Centos7-1611.vdi" --compact
+
+# Convert your virtual box image to raw format
+VBoxManage clonehd "D:\VMs\Centos7-1611\Centos7-1611.vdi" "D:\compartido\Centos7-1611.raw" --format raw
+
+# In other VM with Centos 7 with shared folder "D:\compartido"
+yum install kvm qemu-img
+yum install libguestfs-tools
+
+# Convert the image to qcow2 format
+qemu-img convert -f raw /media/sf_compartido/Centos7-1611.raw -O qcow2 /media/sf_compartido/Centos7-1611.qcow2 && rm -f /media/sf_compartido/Centos7-1611.raw
+
+# For edit images... Skip this if we don't need
+# export LIBGUESTFS_BACKEND=direct
+Edit /etc/libvirt/qemu.conf
+Uncomment user and group root
+systemctl start libvirtd
+systemctl enable libvirtd
+virt-ls -a /media/sf_compartido/CentOS-7-x86_64-GenericCloud-1608.qcow2 -R /lib/systemd/system
+guestmount -a /var/lib/libvirt/images/xenserver.qcow2 -m /dev/sda1 /mnt
+
+
+- Upload to openstack (we use http://telefonica.github.io/iot-utils/)
+Goto tenant (with OST client tools in cygwin)
+. venv-ansible-2.2.0.0/bin/activate
+. openstackEPG.sh
+(venv-ansible-2.2.0.0) [admin@caprica ~][...]-[...]$
+
+openstack image create Centos7-1611 --disk-format qcow2 --file "D:\compartido\Centos7-1611.qcow2"
+```
+
+
+## 7.- Enjoy it...
 
