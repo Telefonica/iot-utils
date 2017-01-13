@@ -718,15 +718,10 @@ In the future we realize these tools more simple and efficient that current tool
 
 
 ## 6.- Create a virtual machine image for OpenStack
-We show step by step howto create a virtual machine image for OpenStack. We will use VirtualBox for this task
-
-CENTOS7_TEMPLATE_FOR_OPENSTACK
-
-This VM is compatible with virtualbox too, except that we need to configure cloud-user with password or ssh public key, or use sysadmin user with password or ssh public key
+We show step by step howto create a virtual machine image for OpenStack. We will use VirtualBox for this task. This VM is compatible with virtualbox too, except that we need to configure cloud-user with password or ssh public key, or use sysadmin user with password or ssh public key
 
 - Create new machine as:
-
-```
+  ```
 Name: Centos7-1611
 Linux RedHat 64 bits
 1024Mb RAM
@@ -736,7 +731,7 @@ Uncheck Enable audio
 One net adapter:
 - Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
 Add cdrom ISO CentOS-7-x86_64-DVD-1611.iso
-```
+  ```
 
 - Start machine
 
