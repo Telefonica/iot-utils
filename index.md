@@ -725,6 +725,7 @@ CENTOS7_TEMPLATE_FOR_OPENSTACK
 This VM is compatible with virtualbox too, except that we need to configure cloud-user with password or ssh public key, or use sysadmin user with password or ssh public key
 
 - Create new machine as:
+
 ```
 Name: Centos7-1611
 Linux RedHat 64 bits
