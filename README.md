@@ -955,8 +955,8 @@ As sysadmin:
 mkdir -p /home/sysadmin/.ssh
 Create /home/sysadmin/.ssh/authorized_keys
 ssh-rsa ...
-chmod 700 /home/cloud-user/.ssh
-chmod 600 /home/cloud-user/.ssh/*
+chmod 700 /home/sysadmin/.ssh
+chmod 600 /home/sysadmin/.ssh/*
 
 # Clean...
 yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
