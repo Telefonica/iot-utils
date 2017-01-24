@@ -815,7 +815,7 @@ Add cdrom ISO CentOS-7-x86_64-DVD-1611.iso
 - Language installation process -> Continue
 
 - Network and hostname
-Default name
+NOTE: Assure name localhost (without .localdomain)
 Configure
 One NIC enp0s3 automatic connected required IPV4
 Annotate IP and add to putty for later access
@@ -926,23 +926,25 @@ GRUB_TIMEOUT=1
 GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
 GRUB_DEFAULT=saved
 GRUB_DISABLE_SUBMENU=true
-GRUB_TERMINAL="serial console"
-GRUB_SERIAL_COMMAND="serial --speed=115200"
-GRUB_CMDLINE_LINUX="console=ttyS0,115200n8 console=tty0 vconsole.font=latarcyrheb-sun16 crashkernel=auto vconsole.keymap=es"
+GRUB_TERMINAL="console serial"
+GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"
+GRUB_CMDLINE_LINUX="console=crashkernel=auto console=tty0 console=ttyS0,115200n8 vconsole.keymap=es nofb nomodeset vga=791"
 GRUB_DISABLE_RECOVERY="true"
 
 # Launch:
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
-# Set keymap
-localectl set-keymap --no-convert es
-localectl set-x11-keymap --no-convert es
+# Set keymap and model
+localectl set-keymap es pc105
+localectl set-x11-keymap es pc105
 
 localectl status
 ---
    System Locale: LANG=en_US.UTF-8
        VC Keymap: es
+VC Toggle Keymap: pc105
       X11 Layout: es
+       X11 Model: pc105
 ---
 
 # Add sysadmin to /etc/sudoers file
@@ -964,9 +966,7 @@ dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync &
 Edit /etc/ssh/sshd_config
 Add:
 Match User sysadmin
----
-	PasswordAuthentication yes
----
+  PasswordAuthentication yes
 
 reboot
 
@@ -976,8 +976,8 @@ package-cleanup -y --oldkernels --count=1
 # When the image is working properly (disable sysadmin access remotely, only for console)
 Edit and comment
 /etc/ssh/sshd_config
-# Match User sysadmin
-# 	PasswordAuthentication yes
+#Match User sysadmin
+#  PasswordAuthentication yes
 
 Edit /etc/cloud/cloud.cfg
 Uncomment
@@ -990,7 +990,7 @@ rm -rf /var/lib/cloud
 
 # Clean
 yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
-dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
+dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 5 && sync && rm -rf /bigemptyfile
 
 # Clean logs
 rm -rf /tmp/*
@@ -1007,14 +1007,14 @@ shutdown -h now
 VBoxManage modifymedium "D:\VMs\Centos7-1611\Centos7-1611.vdi" --compact
 
 # Convert your virtual box image to raw format
-VBoxManage clonehd "D:\VMs\Centos7-1611\Centos7-1611.vdi" "D:\compartido\Centos7-1611.raw" --format raw
+VBoxManage clonehd "D:\VMs\Centos7-1611\Centos7-1611.vdi" "D:\compartido\Centos7-7.3.1611.raw" --format raw
 
 # In other VM with Centos 7 with shared folder "D:\compartido"
 yum install kvm qemu-img
 yum install libguestfs-tools
 
 # Convert the image to qcow2 format
-qemu-img convert -f raw /media/sf_compartido/Centos7-1611.raw -O qcow2 /media/sf_compartido/Centos7-1611.qcow2 && rm -f /media/sf_compartido/Centos7-1611.raw
+qemu-img convert -f raw /media/sf_compartido/Centos7-7.3.1611.raw -O qcow2 /media/sf_compartido/Centos7-7.3.1611.qcow2 && rm -f /media/sf_compartido/Centos7-7.3.1611.raw
 
 # For edit images... Skip this if we don't need
 # export LIBGUESTFS_BACKEND=direct
@@ -1032,7 +1032,7 @@ Goto tenant (with OST client tools in cygwin)
 . openstackEPG.sh
 (venv-ansible-2.2.0.0) [admin@caprica ~][...]-[...]$
 
-openstack image create Centos7-1611 --disk-format qcow2 --file "D:\compartido\Centos7-1611.qcow2"
+openstack image create Centos7-7.3.1611 --disk-format qcow2 --file "D:\compartido\Centos7-7.3.1611.qcow2"
 ```
 
 
