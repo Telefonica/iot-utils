@@ -958,6 +958,10 @@ ssh-rsa ...
 chmod 700 /home/sysadmin/.ssh
 chmod 600 /home/sysadmin/.ssh/*
 
+# Remove cloud-init default domainname localdomain
+sed -i -e 's/localdomain//g' /usr/lib/python2.7/site-packages/cloudinit/sources/__init__.py
+rm -f /usr/lib/python2.7/site-packages/cloudinit/sources/__init__.py[co]
+
 # Clean...
 yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
@@ -997,6 +1001,8 @@ rm -rf /tmp/*
 rm -f /root/.bash_history
 rm -f /home/sysadmin/.bash_history
 rm -f /var/log/cloud-init*.log
+rm -f /var/log/messages*
+history -cw
 
 # WARN: Shutdown machine, not reboot......
 shutdown -h now
