@@ -815,7 +815,7 @@ Add cdrom ISO CentOS-7-x86_64-DVD-1611.iso
 - Language installation process -> Continue
 
 - Network and hostname
-NOTE: Assure name localhost (without .localdomain)
+NOTE: Configure name distinct as localhost.localdomain. Simple name: centos
 Configure
 One NIC enp0s3 automatic connected required IPV4
 Annotate IP and add to putty for later access
