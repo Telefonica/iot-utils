@@ -1,4 +1,5 @@
 StrictHostKeyChecking no
+UserKnownHostsFile /dev/null
 ServerAliveInterval 30
 ServerAliveCountMax 3
 ControlMaster no
