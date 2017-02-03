@@ -3,7 +3,6 @@ UserKnownHostsFile /dev/null
 ServerAliveInterval 30
 ServerAliveCountMax 3
 ControlMaster no
-LogLevel quiet
 
 Host github.com 
  IdentityFile ~/.ssh/id_rsa_private_github
