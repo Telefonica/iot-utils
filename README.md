@@ -942,7 +942,7 @@ GRUB_DEFAULT=saved
 GRUB_DISABLE_SUBMENU=true
 GRUB_TERMINAL="console serial"
 GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"
-GRUB_CMDLINE_LINUX="console=crashkernel=auto console=tty0 console=ttyS0,115200n8 vconsole.keymap=es nofb nomodeset vga=791"
+GRUB_CMDLINE_LINUX="crashkernel=auto console=tty0 console=ttyS0,115200n8 vconsole.keymap=es nofb nomodeset vga=791"
 
 # Launch:
 grub2-mkconfig -o /boot/grub2/grub.cfg
