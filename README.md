@@ -1,9 +1,5 @@
 # General utilities
 
-```bash
-rmalliotimages.sh [--help | --rm [--onlydangling]]
-```
-
 ## 1.- Easy manage environments hosts access
 For easy manage environment hosts access<br>
 Needs:
