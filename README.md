@@ -1,7 +1,7 @@
 # General utilities
 
 ```bash
-rmalliotimages.sh [--help | --rm [--onlydangling]
+rmalliotimages.sh [--help | --rm [--onlydangling]]
 ```
 
 ## 1.- Easy manage environments hosts access
