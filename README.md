@@ -827,7 +827,7 @@ Date Madrid with NTP
 
 - Language support add Español España
 
-- Keyboard add Spanish Castillian and configure to first keyboard
+- Keyboard add Spanish Castillian Winkeys and configure to first keyboard
 
 - Installation destination -> Done
 
