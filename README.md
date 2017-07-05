@@ -948,17 +948,17 @@ GRUB_CMDLINE_LINUX="crashkernel=auto console=tty0 console=ttyS0,115200n8 vconsol
 grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Set keymap and model
-localectl set-keymap es,us pc105
-localectl set-x11-keymap es,us pc105
-localectl set-keymap es,us pc105
-localectl set-x11-keymap es,us pc105
+localectl set-keymap es-winkeys,us pc105
+localectl set-x11-keymap es-winkeys,us pc105
+localectl set-keymap es-winkeys,us pc105
+localectl set-x11-keymap es-winkeys,us pc105
 
 localectl status
 ---
    System Locale: LANG=en_US.UTF-8
-       VC Keymap: es,us
+       VC Keymap: es-winkeys,us
 VC Toggle Keymap: pc105
-      X11 Layout: es,us
+      X11 Layout: es-winkeys,us
        X11 Model: pc105
 ---
 
