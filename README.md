@@ -796,7 +796,7 @@ We show step by step howto create a virtual machine image for OpenStack. We will
 - Create new machine as:
 
 ```
-Name: Centos7.3-1611-20170515
+Name: Centos7.3-1611-20170705
 Linux RedHat 64 bits
 512Mb RAM
 1CPU
@@ -883,7 +883,7 @@ yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
 
 # For Centos7-1611, for our particular purposes, we update all packages. We can skip this step for reduce image size
 yum -y update
@@ -893,7 +893,7 @@ yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
 
 # Create standard net interface
 echo 'DEVICE="eth0"
@@ -983,7 +983,7 @@ yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
 
 # To enter with sysadmin remotely, after first reboot (cloud-init disable all password autentication for all users)
 Edit /etc/ssh/sshd_config
@@ -1021,7 +1021,7 @@ yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 5 && sync && rm -rf /bigemptyfile
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
 
 # Clean history
 rm -f /root/.bash_history
@@ -1034,17 +1034,17 @@ shutdown -h now
 # From outside of VirtualBox (we use Cygwin)
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
 
 # Convert your virtual box image to raw format
-VBoxManage clonehd "D:\VMs\Centos7.3-1611-20170515\Centos7.3-1611-20170515.vdi" "D:\compartido\Centos7.3-1611-20170515.raw" --format raw
+VBoxManage clonehd "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" "D:\compartido\Centos7.3-1611-20170705.raw" --format raw
 
 # In other VM with Centos 7 with shared folder "D:\compartido"
 yum install kvm qemu-img
 yum install libguestfs-tools
 
 # Convert the image to qcow2 format
-qemu-img convert -f raw /media/sf_compartido/Centos7.3-1611-20170515.raw -O qcow2 /media/sf_compartido/Centos7.3-1611-20170515.qcow2 && rm -f /media/sf_compartido/Centos7.3-1611-20170515.raw
+qemu-img convert -f raw /media/sf_compartido/Centos7.3-1611-20170705.raw -O qcow2 /media/sf_compartido/Centos7.3-1611-20170705.qcow2 && rm -f /media/sf_compartido/Centos7.3-1611-20170705.raw
 
 # For edit images... Skip this if we don't need
 # export LIBGUESTFS_BACKEND=direct
@@ -1062,7 +1062,7 @@ Goto tenant (with OST client tools in cygwin)
 . openstackEPG.sh
 (venv-ansible-2.2.0.0) [admin@caprica ~][...]-[...]$
 
-openstack image create Centos7.3-1611-20170515 --disk-format qcow2 --file "D:\compartido\Centos7.3-1611-20170515.qcow2"
+openstack image create Centos7.3-1611-20170705 --disk-format qcow2 --file "D:\compartido\Centos7.3-1611-20170705.qcow2"
 ```
 
 
