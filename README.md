@@ -1006,7 +1006,7 @@ Edit /etc/cloud/cloud.cfg
 Uncomment
 ssh_pwauth:   0
 
-# Clean cloud-init data created
+# Clean data created and cloud-init
 userdel -r cloud-user
 rm -f /etc/sudoers.d/90-cloud-init-users /etc/group- /etc/gshadow- /etc/passwd- /etc/shadow-
 rm -rf /var/lib/cloud
@@ -1020,21 +1020,19 @@ rm -f /var/log/messages*
 yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 5 && sync && rm -rf /bigemptyfile
 
-# Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
-
 # Clean history
 rm -f /root/.bash_history
 rm -f /home/sysadmin/.bash_history
 cat /dev/null > /home/sysadmin/.bash_history && cat /dev/null > /root/.bash_history && history -c
+sync
 
 # WARN: Shutdown machine, not reboot......
 shutdown -h now
 
-# From outside of VirtualBox (we use Cygwin)
-
 # Reduce image
 VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
+
+# From outside of VirtualBox (we use Cygwin)
 
 # Convert your virtual box image to raw format
 VBoxManage clonehd "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" "D:\compartido\Centos7.3-1611-20170705.raw" --format raw
