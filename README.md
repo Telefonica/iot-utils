@@ -55,12 +55,11 @@ sudo pip list --outdated | sed 's/(.*//g' | xargs -n1 pip install -U
 
 ### 1.3.- Install Ansible WinRM and OpenStack client tools (Linux)
 First choose versions
-- For Ansible 2.2.0.0 (actual)
+- For Ansible 2.3.2.0 and WinRM 0.2.2 (actual)
 
 ```
-# Ansible 2.2.0.0 version
-ANSIBLE_VERSION=2.2.0.0
-WINRM_VERSION=0.2.1
+ANSIBLE_VERSION=2.3.2.0
+WINRM_VERSION=0.2.2
 ```
 
 Then install software
@@ -83,29 +82,28 @@ pip install pywinrm==${WINRM_VERSION}
   If we will work inside OST environments, we need to install the OpenStack client tools. We have actually KILO supported.
 
 ```
-pip install --upgrade python-cinderclient==1.9.0
-pip install --upgrade python-glanceclient==2.5.0
-pip install --upgrade python-heatclient==1.6.1
-pip install --upgrade python-keystoneclient==3.8.0
-pip install --upgrade python-neutronclient==6.0.0
-pip install --upgrade python-novaclient==6.0.0
-pip install --upgrade python-openstackclient==3.4.1
-pip install --upgrade python-swiftclient==3.2.0
-pip install --upgrade python-designateclient==2.3.0
-pip install --upgrade python-ironicclient==1.8.0
-pip install --upgrade python-magnumclient==2.3.1
-pip install --upgrade python-mistralclient==2.1.2
-pip install --upgrade python-troveclient==2.6.0
-pip install --upgrade shade==1.13.2
+pip install --upgrade python-cinderclient
+pip install --upgrade python-glanceclient
+pip install --upgrade python-heatclient
+pip install --upgrade python-keystoneclient
+pip install --upgrade python-neutronclient
+pip install --upgrade python-novaclient
+pip install --upgrade python-openstackclient
+pip install --upgrade python-swiftclient
+pip install --upgrade python-designateclient
+pip install --upgrade python-ironicclient
+pip install --upgrade python-magnumclient
+pip install --upgrade python-mistralclient
+pip install --upgrade python-troveclient
+pip install --upgrade shade
 ```
 
 - Generate python requirements file for backup software versions<br>
   We recommend to generate the requirements file of this python environment
 
 ```
-# Ansible 2.2.0.0 version
-ANSIBLE_VERSION=2.2.0.0
-WINRM_VERSION=0.2.1
+ANSIBLE_VERSION=2.3.2.0
+WINRM_VERSION=0.2.2
 
 pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ```
@@ -113,16 +111,12 @@ pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 - To recreate other python virtual environment
 
 ```
-# Ansible 2.2.0.0 version
-ANSIBLE_VERSION=2.2.0.0
-WINRM_VERSION=0.2.1
+ANSIBLE_VERSION=2.3.2.0
+WINRM_VERSION=0.2.2
 
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
 pip install -r $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 ```
-
-- Download requirements file Ansible
-[requirements-ansible-2.2.0.0-OST-kilo.txt](myenvironments/conf/requirements-ansible-2.2.0.0-OST-kilo.txt)
 
 
 ### 1.4.- Install Ansible WinRM and OpenStack client tools (Windows with CygWin)
@@ -176,9 +170,8 @@ pip list --format=columns --outdated
 
 # Workaround to compile with gcc (u_int header type unknown)
 export CFLAGS="-D_DEFAULT_SOURCE"
-# Ansible 2.2.0.0 version
-ANSIBLE_VERSION=2.2.0.0
-WINRM_VERSION=0.2.1
+ANSIBLE_VERSION=2.3.2.0
+WINRM_VERSION=0.2.2
 
 rm -rf ~/venv-ansible-${ANSIBLE_VERSION}
 virtualenv ~/venv-ansible-${ANSIBLE_VERSION}
@@ -191,20 +184,20 @@ pip install ansible==${ANSIBLE_VERSION}
 # Install WIN RM for work with Windows machines
 pip install pywinrm==${WINRM_VERSION}
 
-pip install --upgrade python-cinderclient==1.9.0
-pip install --upgrade python-glanceclient==2.5.0
-pip install --upgrade python-heatclient==1.6.1
-pip install --upgrade python-keystoneclient==3.8.0
-pip install --upgrade python-neutronclient==6.0.0
-pip install --upgrade python-novaclient==6.0.0
-pip install --upgrade python-openstackclient==3.4.1
-pip install --upgrade python-swiftclient==3.2.0
-pip install --upgrade python-designateclient==2.3.0
-pip install --upgrade python-ironicclient==1.8.0
-pip install --upgrade python-magnumclient==2.3.1
-pip install --upgrade python-mistralclient==2.1.2
-pip install --upgrade python-troveclient==2.6.0
-pip install --upgrade shade==1.13.2
+pip install --upgrade python-cinderclient
+pip install --upgrade python-glanceclient
+pip install --upgrade python-heatclient
+pip install --upgrade python-keystoneclient
+pip install --upgrade python-neutronclient
+pip install --upgrade python-novaclient
+pip install --upgrade python-openstackclient
+pip install --upgrade python-swiftclient
+pip install --upgrade python-designateclient
+pip install --upgrade python-ironicclient
+pip install --upgrade python-magnumclient
+pip install --upgrade python-mistralclient
+pip install --upgrade python-troveclient
+pip install --upgrade shade
 
 pip freeze > $HOME/requirements-ansible-${ANSIBLE_VERSION}-OST-kilo.txt
 
@@ -783,7 +776,7 @@ Then we execute two steps:
 - Backup of all databases '^sth_'
 
 ```
-/STHbackupdbs.sh --done
+./STHbackupdbs.sh --done
 ```
 
 #### 5.2.2.- Tools for MongoDB versions 3.3.x and higher
@@ -1056,9 +1049,9 @@ guestmount -a /var/lib/libvirt/images/xenserver.qcow2 -m /dev/sda1 /mnt
 
 - Upload to openstack (we use http://telefonica.github.io/iot-utils/)
 Goto tenant (with OST client tools in cygwin)
-. venv-ansible-2.2.0.0/bin/activate
+. venv-ansible-2.3.2.0/bin/activate
 . openstackEPG.sh
-(venv-ansible-2.2.0.0) [admin@caprica ~][...]-[...]$
+(venv-ansible-2.3.2.0) [admin@caprica ~][...]-[...]$
 
 openstack image create Centos7.3-1611-20170705 --disk-format qcow2 --file "D:\compartido\Centos7.3-1611-20170705.qcow2"
 ```
