@@ -1016,7 +1016,7 @@ dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 5 && sync &
 # Clean history
 rm -f /root/.bash_history
 rm -f /home/sysadmin/.bash_history
-cat /dev/null > /home/sysadmin/.bash_history && cat /dev/null > /root/.bash_history && history -c
+cat /dev/null > /home/sysadmin/.bash_history && chown sysadmin.sysadmin /home/sysadmin/.bash_history && cat /dev/null > /root/.bash_history && history -c
 sync
 
 # WARN: Shutdown machine, not reboot......
