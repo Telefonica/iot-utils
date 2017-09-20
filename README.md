@@ -870,27 +870,40 @@ yum -y install yum-plugin-remove-with-leaves yum-plugin-ovl yum-utils pv
 
 # OpenStack cloud
 yum -y install curl cloud-init cloud-utils-growpart acpid
+systemctl disable cloud-init
 systemctl enable acpid
 systemctl start acpid
 
 # Clean...
-yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rm -rf /var/cache/yum && rpm -vv --rebuilddb
+sync && echo 3 > /proc/sys/vm/drop_caches && xfs_fsr -v
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
-# Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
+# Shutdown machine
+shutdown -h now
 
-# For Centos7-1611, for our particular purposes, we update all packages. We can skip this step for reduce image size
+# Reduce image
+VBoxManage modifymedium "D:\VMs\Centos7.4-1708-20170920\Centos7.4-1708-20170920.vdi" --compact
+
+# Start machine
+
+# Update all packages
 yum -y update
 
 # Clean...
-yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rm -rf /var/cache/yum && rpm -vv --rebuilddb
+sync && echo 3 > /proc/sys/vm/drop_caches && xfs_fsr -v
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
-# Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
+# Shutdown machine
+shutdown -h now
 
-# Create standard net interface
+# Reduce image
+VBoxManage modifymedium "D:\VMs\Centos7.4-1708-20170920\Centos7.4-1708-20170920.vdi" --compact
+
+# Start machine
+
+# Create standard net interfaces
 echo 'DEVICE="eth0"
 BOOTPROTO="dhcp"
 BOOTPROTOv6="dhcp"
@@ -900,8 +913,26 @@ USERCTL="yes"
 PEERDNS="yes"
 IPV6INIT="yes"
 PERSISTENT_DHCLIENT="1"' > /etc/sysconfig/network-scripts/ifcfg-eth0
+echo 'DEVICE="eth1"
+BOOTPROTO="dhcp"
+BOOTPROTOv6="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+USERCTL="yes"
+PEERDNS="yes"
+IPV6INIT="yes"
+PERSISTENT_DHCLIENT="1"' > /etc/sysconfig/network-scripts/ifcfg-eth1
+echo 'DEVICE="eth2"
+BOOTPROTO="dhcp"
+BOOTPROTOv6="dhcp"
+ONBOOT="yes"
+TYPE="Ethernet"
+USERCTL="yes"
+PEERDNS="yes"
+IPV6INIT="yes"
+PERSISTENT_DHCLIENT="1"' > /etc/sysconfig/network-scripts/ifcfg-eth2
 
-rm -f /etc/sysconfig/network-scripts/ifcfg-enp0s3
+rm -f /etc/sysconfig/network-scripts/[ifcfg-enp0s3,ifcfg-enp0s8,ifcfg-enp0s9]
 
 # Configure correctly the network for good access to OST metadata
 echo 'NETWORKING=yes
