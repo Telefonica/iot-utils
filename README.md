@@ -797,12 +797,14 @@ Hard disk VDI dinamic reserved 20Gb
 Bidirectional Share clipboard
 Bidirectional Drag and Drop
 Uncheck Enable audio
-One net adapter:
-- Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
+Three net adapters:
+- First adapter: Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
+- Second adapter: Bridge adapter Intel(R) Dual Band Wireless-AC 3160. Promiscuous mode. Allow all
+- Third adapter: Bridge adapter NAT
 Add CDROM ISO CentOS-7-x86_64-DVD-1611.iso
 ```
 
-- Start machine
+- Start machine. Select Install Centos
 
 - Data for installer in order:
 
@@ -811,12 +813,13 @@ Add CDROM ISO CentOS-7-x86_64-DVD-1611.iso
 
 - Network and hostname
 NOTE: Configure name distinct as localhost.localdomain. Simple name: centos
-Configure
-One NIC enp0s3 automatic connected required IPV4
-Annotate IP and add to putty for later access
+Configure adapters:
+  - NIC enp0s3: Automatically connect to this network and require IPV4
+    Annotate IP and add to putty for later access
+  - NIC enp0s8: Automatically connect to this network and require IPV4
+  - NIC enp0s9: Automatically connect to this network and require IPV4
 
-- Date and time
-Date Madrid with NTP
+- Date and time: Europe/Madrid. Then click in Done
 
 - Language support add Español España
 
@@ -826,8 +829,7 @@ Date Madrid with NTP
 
 - Disable kdump
 
-- Security policy
-Apply security policy (by default)
+- Security policy -> Done
 
 - Minimal installation
 
