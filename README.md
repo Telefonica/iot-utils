@@ -789,7 +789,7 @@ We show step by step howto create a virtual machine image for OpenStack. We will
 - Create new machine as:
 
 ```
-Name: Centos7.3-1611-20170705
+Name: Centos7.4-1708-20170920
 Linux RedHat 64 bits
 512Mb RAM
 1CPU
@@ -801,7 +801,7 @@ Three net adapters:
 - First adapter: Bridge adapter Realtek PCIe GBE Family controller. Promiscuous mode. Allow all
 - Second adapter: Bridge adapter Intel(R) Dual Band Wireless-AC 3160. Promiscuous mode. Allow all
 - Third adapter: Bridge adapter NAT
-Add CDROM ISO CentOS-7-x86_64-DVD-1611.iso
+Add CDROM ISO CentOS-7-x86_64-Minimal-1708.iso
 ```
 
 - Start machine. Select Install Centos
@@ -871,6 +871,7 @@ yum -y install yum-plugin-remove-with-leaves yum-plugin-ovl yum-utils pv
 # OpenStack cloud
 yum -y install curl cloud-init cloud-utils-growpart acpid
 systemctl disable cloud-init
+TODO fail this...
 systemctl enable acpid
 systemctl start acpid
 
@@ -951,7 +952,7 @@ by
 And comment line:
 # ssh_pwauth:   0
 
-In cloud_init_modules (After  - ssh)
+In cloud_init_modules (After  - ssh) add this line:
 ---
  - resolv-conf
 ---
@@ -1005,11 +1006,17 @@ sed -i -e 's/localdomain//g' /usr/lib/python2.7/site-packages/cloudinit/sources/
 rm -f /usr/lib/python2.7/site-packages/cloudinit/sources/__init__.py[co]
 
 # Clean...
-yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rm -rf /var/cache/yum && rpm -vv --rebuilddb
+sync && echo 3 > /proc/sys/vm/drop_caches && xfs_fsr -v
 dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
+# Shutdown machine
+shutdown -h now
+
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.4-1708-20170920\Centos7.4-1708-20170920.vdi" --compact
+
+# Start machine
 
 # To enter with sysadmin remotely, after first reboot (cloud-init disable all password autentication for all users)
 Edit /etc/ssh/sshd_config
@@ -1042,9 +1049,10 @@ rm -rf /tmp/*
 rm -f /var/log/cloud-init*.log
 rm -f /var/log/messages*
 
-# Clean
-yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rpm -vv --rebuilddb
-dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 5 && sync && rm -rf /bigemptyfile
+# Clean...
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rm -rf /var/cache/yum && rpm -vv --rebuilddb
+sync && echo 3 > /proc/sys/vm/drop_caches && xfs_fsr -v
+dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
 
 # Clean history
 rm -f /root/.bash_history
@@ -1052,23 +1060,33 @@ rm -f /home/sysadmin/.bash_history
 cat /dev/null > /home/sysadmin/.bash_history && chown sysadmin.sysadmin /home/sysadmin/.bash_history && cat /dev/null > /root/.bash_history && history -c
 sync
 
-# WARN: Shutdown machine, not reboot......
+# Clean...
+yum clean all && rm -rf /var/lib/yum/yumdb && rm -rf /var/lib/yum/history && rm -rf /var/cache/yum && rpm -vv --rebuilddb
+sync && echo 3 > /proc/sys/vm/drop_caches && xfs_fsr -v
+dd if=/dev/zero | pv | dd of=/bigemptyfile bs=4096k || sync && sleep 1 && sync && rm -rf /bigemptyfile
+
+# Shutdown machine
 shutdown -h now
 
 # Reduce image
-VBoxManage modifymedium "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" --compact
+VBoxManage modifymedium "D:\VMs\Centos7.4-1708-20170920\Centos7.4-1708-20170920.vdi" --compact
+
+# Start machine
 
 # From outside of VirtualBox (we use Cygwin)
 
 # Convert your virtual box image to raw format
-VBoxManage clonehd "D:\VMs\Centos7.3-1611-20170705\Centos7.3-1611-20170705.vdi" "D:\compartido\Centos7.3-1611-20170705.raw" --format raw
+VBoxManage clonehd "D:\VMs\Centos7.4-1708-20170920\Centos7.4-1708-20170920.vdi" "D:\compartido\Centos7.4-1708-20170920.raw" --format raw
 
 # In other VM with Centos 7 with shared folder "D:\compartido"
 yum install kvm qemu-img
 yum install libguestfs-tools
 
 # Convert the image to qcow2 format
-qemu-img convert -f raw /media/sf_compartido/Centos7.3-1611-20170705.raw -O qcow2 /media/sf_compartido/Centos7.3-1611-20170705.qcow2 && rm -f /media/sf_compartido/Centos7.3-1611-20170705.raw
+qemu-img convert -f raw /media/sf_compartido/Centos7.4-1708-20170920.raw -O qcow2 /media/sf_compartido/Centos7.4-1708-20170920-big.qcow2 && rm -f /media/sf_compartido/Centos7.4-1708-20170920.raw
+
+# Reduce image size using the virt-sparsify command
+virt-sparsify --compress /media/sf_compartido/Centos7.4-1708-20170920-big.qcow2 /media/sf_compartido/Centos7.4-1708-20170920.qcow2 && rm -f /media/sf_compartido/Centos7.4-1708-20170920-big.qcow2
 
 # For edit images... Skip this if we don't need
 # export LIBGUESTFS_BACKEND=direct
@@ -1086,7 +1104,7 @@ Goto tenant (with OST client tools in cygwin)
 . openstackEPG.sh
 (venv-ansible-2.3.2.0) [admin@caprica ~][...]-[...]$
 
-openstack image create Centos7.3-1611-20170705 --disk-format qcow2 --file "D:\compartido\Centos7.3-1611-20170705.qcow2"
+openstack image create Centos7.4-1708-20170920 --disk-format qcow2 --file "D:\compartido\Centos7.4-1708-20170920.qcow2"
 ```
 
 
